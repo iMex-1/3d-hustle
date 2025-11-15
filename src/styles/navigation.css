@@ -28,11 +28,11 @@
 
 .nav-brand .brand-icon {
     font-size: 1.5rem;
-    color: #6366f1;
+    color: #dda15e;
 }
 
 .nav-brand h2 {
-    color: #6366f1;
+    color: #dda15e;
     font-size: 1.25rem;
     white-space: nowrap;
 }
@@ -62,7 +62,7 @@
 
 .nav-links li a:hover,
 .nav-links li.active a {
-    color: #6366f1;
+    color: #dda15e;
 }
 
 /* Dropdown */
@@ -125,7 +125,7 @@
 
 .dropdown-menu li a:hover {
     background: #f0f9ff;
-    color: #6366f1;
+    color: #dda15e;
 }
 
 /* Right side */
@@ -141,7 +141,7 @@
     display: flex;
     align-items: stretch;
     background: #f9fafb;
-    border: 2px solid #e5e7eb;
+    border: 2px solid white;
     border-radius: 8px;
     overflow: hidden;
     transition: all 0.3s;
@@ -149,15 +149,21 @@
 }
 
 .search-form:focus-within {
-    border-color: #6366f1;
+    border-color: #dda15e;
     background: white;
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.search-input:focus {
+    border-color: white !important;
+    outline: none !important;
 }
 
 .search-input {
     padding: 0 1rem;
     border: none;
     background: transparent;
+    border-radius: 8px 0px 0px 8px !important;
     outline: none;
     width: 200px;
     font-size: 0.9rem;
@@ -170,7 +176,7 @@
 
 .search-btn {
     padding: 0 1rem;
-    background: #6366f1;
+    background: #dda15e;
     color: white;
     border: none;
     cursor: pointer;
@@ -182,7 +188,7 @@
 }
 
 .search-btn:hover {
-    background: #4f46e5;
+    background: #b78144;
 }
 
 .search-btn svg {
@@ -216,8 +222,8 @@
     gap: 0.5rem;
     padding: 0.5rem 1.5rem;
     background: transparent;
-    color: #6366f1;
-    border: 1px solid #6366f1;
+    color: #dda15e;
+    border: 1px solid #dda15e;
     border-radius: 5px;
     transition: all 0.3s;
     white-space: nowrap;
@@ -226,7 +232,7 @@
 
 .btn-login:hover,
 .btn-logout:hover {
-    background: #6366f1;
+    background: #b78144;
     color: white;
 }
 
