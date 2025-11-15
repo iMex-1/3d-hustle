@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { FaHome, FaImages, FaUserShield, FaSignInAlt, FaSignOutAlt, FaCube, FaInfoCircle, FaEnvelope, FaChevronDown, FaSearch } from 'react-icons/fa';
+import { FaHome, FaImages, FaUserShield, FaSignInAlt, FaSignOutAlt, FaCube, FaInfoCircle, FaEnvelope, FaChevronDown, FaSearch, FaBars, FaTimes } from 'react-icons/fa';
 import '../styles/navigation.css';
 
 function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
     const [showCategories, setShowCategories] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
 
     const categories = ['Furniture', 'Lighting', 'Decoration'];
@@ -40,23 +41,33 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
 
     const handleCategoryClick = (category) => {
         setShowCategories(false);
+        setMobileMenuOpen(false);
         onNavigate('gallery', { category });
+    };
+
+    const handleNavClick = (page, options) => {
+        setMobileMenuOpen(false);
+        onNavigate(page, options);
     };
 
     return (
         <nav className="navigation">
             <div className="nav-container">
-                <div className="nav-brand" onClick={() => onNavigate('home')}>
+                <div className="nav-brand" onClick={() => handleNavClick('home')}>
                     <img src="/logo/Logo.png" alt="OakMesh" className="brand-logo" />
                     <h2 className="brand-name">OakMesh</h2>
                 </div>
 
-                <ul className="nav-links">
+                <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                    {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+                </button>
+
+                <ul className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
                     <li className={currentPage === 'home' ? 'active' : ''}>
-                        <a onClick={() => onNavigate('home')}><FaHome /> Home</a>
+                        <a onClick={() => handleNavClick('home')}><FaHome /> Home</a>
                     </li>
                     <li className={currentPage === 'gallery' ? 'active' : ''}>
-                        <a onClick={() => onNavigate('gallery')}><FaImages /> Gallery</a>
+                        <a onClick={() => handleNavClick('gallery')}><FaImages /> Gallery</a>
                     </li>
                     <li className="nav-dropdown" ref={dropdownRef}>
                         <a className="dropdown-toggle" onClick={toggleCategories}>
@@ -73,16 +84,34 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
                         )}
                     </li>
                     <li className={currentPage === 'about' ? 'active' : ''}>
-                        <a onClick={() => onNavigate('about')}><FaInfoCircle /> About</a>
+                        <a onClick={() => handleNavClick('about')}><FaInfoCircle /> About</a>
                     </li>
                     <li className={currentPage === 'contact' ? 'active' : ''}>
-                        <a onClick={() => onNavigate('contact')}><FaEnvelope /> Contact</a>
+                        <a onClick={() => handleNavClick('contact')}><FaEnvelope /> Contact</a>
                     </li>
                     {user && user.role === 'admin' && (
                         <li className={currentPage === 'admin' ? 'active' : ''}>
-                            <a onClick={() => onNavigate('admin')}><FaUserShield /> Dashboard</a>
+                            <a onClick={() => handleNavClick('admin')}><FaUserShield /> Dashboard</a>
                         </li>
                     )}
+                    {!user && (
+                        <li className={currentPage === 'login' ? 'active' : ''}>
+                            <a onClick={() => handleNavClick('login')}><FaSignInAlt /> Login</a>
+                        </li>
+                    )}
+
+                    {/* Mobile Auth */}
+                    <li className="mobile-auth-item">
+                        {user ? (
+                            <a onClick={() => { onLogout(); setMobileMenuOpen(false); }}>
+                                <FaSignOutAlt /> Logout (Admin: {user.username})
+                            </a>
+                        ) : (
+                            <a onClick={() => handleNavClick('login')}>
+                                <FaSignInAlt /> Login
+                            </a>
+                        )}
+                    </li>
                 </ul>
 
                 <div className="nav-right">
@@ -100,13 +129,14 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
                     </form>
 
                     <div className="nav-auth">
-                        {user ? (
+                        {user && (
                             <div className="user-menu">
                                 <span className="username">Admin: {user.username}</span>
-                                <button onClick={onLogout} className="btn-logout"><FaSignOutAlt /> Logout</button>
+                                <button onClick={() => { onLogout(); setMobileMenuOpen(false); }} className="btn-logout">
+                                    <FaSignOutAlt />
+                                    <span className="btn-text">Logout</span>
+                                </button>
                             </div>
-                        ) : (
-                            <button onClick={() => onNavigate('login')} className="btn-login"><FaSignInAlt /> Admin Login</button>
                         )}
                     </div>
                 </div>

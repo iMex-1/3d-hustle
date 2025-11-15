@@ -32,7 +32,7 @@
     align-items: center;
     gap: 0.75rem;
     padding: 1rem 2rem;
-    background: #6366f1;
+    background: #dda15e;
     color: white;
     border: none;
     border-radius: 12px;
@@ -44,7 +44,7 @@
 }
 
 .btn-add-object:hover {
-    background: #4f46e5;
+    background: #cb791c;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
 }
@@ -94,7 +94,7 @@
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background: #10b981;
+    background: #bc6c25;
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 20px;
@@ -115,7 +115,7 @@
 }
 
 .object-category {
-    color: #6366f1;
+    color: #dda15e;
     font-weight: 600;
     font-size: 0.9rem;
     margin-bottom: 0.75rem;
@@ -204,11 +204,11 @@
 
 .btn-edit {
     background: #e0e7ff;
-    color: #6366f1;
+    color: #dda15e;
 }
 
 .btn-edit:hover {
-    background: #6366f1;
+    background: #dda15e;
     color: white;
 }
 
@@ -320,7 +320,7 @@
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #6366f1;
+    border-color: #dda15e;
 }
 
 .form-group textarea {
@@ -345,7 +345,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: #6366f1;
+    color: #dda15e;
     font-weight: 600;
 }
 
@@ -374,7 +374,7 @@
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
-    background: #10b981;
+    background: #bc6c25;
     color: white;
     padding: 0.25rem 0.75rem;
     border-radius: 12px;
@@ -413,11 +413,11 @@
 
 .btn-set-primary {
     background: white;
-    color: #6366f1;
+    color: #dda15e;
 }
 
 .btn-set-primary:hover {
-    background: #6366f1;
+    background: #dda15e;
     color: white;
 }
 
@@ -451,7 +451,7 @@
 }
 
 .format-checkbox:hover {
-    border-color: #6366f1;
+    border-color: #dda15e;
     background: #f0f9ff;
 }
 
@@ -480,6 +480,7 @@
     cursor: pointer;
     transition: all 0.3s;
     font-size: 1rem;
+    text-align: center;
 }
 
 .btn-cancel {
@@ -492,12 +493,13 @@
 }
 
 .btn-submit {
-    background: #6366f1;
+    background: #dda15e;
     color: white;
+    text-align: center;
 }
 
 .btn-submit:hover {
-    background: #4f46e5;
+    background: #cb791c;
 }
 
 /* Responsive */
@@ -544,18 +546,19 @@
     font-size: 1.05rem;
     line-height: 1.7;
     color: #666;
+    text-align: center;
 }
 
 .modal-header h2 {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    color: #dc2626;
+    color: #dda15e;
 }
 
 .modal-header h2 svg {
     font-size: 1.5rem;
-    color: #dc2626;
+    color: #dda15e;
 }
 
 /* Button styles */
@@ -571,6 +574,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    text-align: center;
 }
 
 .modal-actions .btn-delete:hover {

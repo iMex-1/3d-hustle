@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaLock, FaUser } from 'react-icons/fa';
+import { FaLock, FaUser, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { authenticateAdmin } from '../data/users';
 import '../styles/auth.css';
 
@@ -7,6 +7,7 @@ function Login({ onLogin, onNavigate }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -39,13 +40,23 @@ function Login({ onLogin, onNavigate }) {
 
                     <div className="form-group">
                         <label><FaLock /> Password</label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter admin password"
-                            required
-                        />
+                        <div className="password-input-wrapper">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Enter admin password"
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="toggle-password"
+                                onClick={() => setShowPassword(!showPassword)}
+                                aria-label={showPassword ? "Hide password" : "Show password"}
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                        </div>
                     </div>
 
                     {error && <p className="error-message">{error}</p>}
