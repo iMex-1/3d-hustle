@@ -499,6 +499,7 @@
     .slide-btn {
         padding: 16px 28px;
         font-size: 0.95rem;
+        justify-content: center;
     }
 
     .carousel-nav {
@@ -526,6 +527,7 @@
     .slide-btn {
         padding: 14px 24px;
         font-size: 0.9rem;
+        justify-content: center;
     }
 
     .featured-section {
