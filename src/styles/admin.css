@@ -275,6 +275,13 @@
 .modal-header h2 {
     font-size: 1.75rem;
     color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.modal-header h2 svg {
+    font-size: 1.5rem;
 }
 
 .modal-close {
@@ -557,16 +564,12 @@
     text-align: center;
 }
 
-.modal-header h2 {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: #dda15e;
+.modal-small .modal-header h2 {
+    color: #dc2626;
 }
 
-.modal-header h2 svg {
-    font-size: 1.5rem;
-    color: #dda15e;
+.modal-small .modal-header h2 svg {
+    color: #dc2626;
 }
 
 /* Button styles */

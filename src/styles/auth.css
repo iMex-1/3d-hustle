@@ -75,21 +75,6 @@
     background: #cb791c;
 }
 
-.auth-switch {
-    text-align: center;
-    margin-top: 1.5rem;
-    color: #666;
-}
-
-.auth-switch a {
-    color: #dda15e;
-    font-weight: 600;
-}
-
-.auth-switch a:hover {
-    text-decoration: underline;
-}
-
 .demo-credentials {
     margin-top: 2rem;
     padding: 1rem;
@@ -107,7 +92,7 @@
     color: #333;
 }
 
-.auth -subtitle {
+.auth-subtitle {
     text-align: center;
     color: #666;
     font-size: 0.95rem;
