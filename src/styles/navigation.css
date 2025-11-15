@@ -1,0 +1,85 @@
+.navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand h2 {
+    color: #6366f1;
+    cursor: pointer;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-links li a {
+    color: #666;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links li a:hover,
+.nav-links li.active a {
+    color: #6366f1;
+}
+
+.nav-auth {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.username {
+    color: #666;
+    font-weight: 500;
+}
+
+.btn-login,
+.btn-logout {
+    padding: 0.5rem 1.5rem;
+    background: transparent;
+    color: #6366f1;
+    border: 1px solid #6366f1;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.btn-register {
+    padding: 0.5rem 1.5rem;
+    background: #6366f1;
+    color: white;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.btn-login:hover,
+.btn-logout:hover {
+    background: #6366f1;
+    color: white;
+}
+
+.btn-register:hover {
+    background: #4f46e5;
+}

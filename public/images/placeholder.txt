@@ -1,0 +1,10 @@
+Placeholder images needed:
+- chair.jpg
+- lamp.jpg
+- vase.jpg
+- table.jpg
+- floor-lamp.jpg
+- frame.jpg
+
+You can add your own 3D object images here or use placeholder image services like:
+https://via.placeholder.com/400x300
