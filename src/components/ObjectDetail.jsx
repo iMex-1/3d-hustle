@@ -1,3 +1,4 @@
+import { FaArrowLeft, FaDownload, FaCube, FaChartBar } from 'react-icons/fa';
 import { objects } from '../data/objects';
 import '../styles/object-detail.css';
 
@@ -20,12 +21,19 @@ function ObjectDetail({ objectId, onNavigate }) {
     return (
         <div className="object-detail">
             <button className="btn-back" onClick={() => onNavigate('gallery')}>
-                ← Back to Gallery
+                <FaArrowLeft /> Back to Gallery
             </button>
 
             <div className="detail-container">
                 <div className="detail-image">
-                    <img src={object.image} alt={object.name} />
+                    <model-viewer
+                        src={object.model}
+                        alt={object.name}
+                        auto-rotate
+                        camera-controls
+                        shadow-intensity="1"
+                        style={{ width: '100%', height: '100%' }}
+                    ></model-viewer>
                 </div>
 
                 <div className="detail-info">
@@ -65,7 +73,7 @@ function ObjectDetail({ objectId, onNavigate }) {
                                     className="btn-download"
                                     onClick={() => handleDownload(format)}
                                 >
-                                    Download {format}
+                                    <FaDownload /> Download {format}
                                 </button>
                             ))}
                         </div>

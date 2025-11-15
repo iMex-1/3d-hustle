@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FaCube, FaDownload, FaSearch } from 'react-icons/fa';
 import { objects } from '../data/objects';
 import '../styles/gallery.css';
 
@@ -48,7 +49,14 @@ function Gallery({ onSelectObject }) {
                 {filteredObjects.map(obj => (
                     <div key={obj.id} className="gallery-card" onClick={() => onSelectObject(obj.id)}>
                         <div className="card-image">
-                            <img src={obj.image} alt={obj.name} />
+                            <model-viewer
+                                src={obj.model}
+                                alt={obj.name}
+                                auto-rotate
+                                camera-controls
+                                shadow-intensity="1"
+                                style={{ width: '100%', height: '100%', background: '#f5f5f5' }}
+                            ></model-viewer>
                             <div className="card-overlay">
                                 <button className="btn-view">View Details</button>
                             </div>
@@ -57,8 +65,8 @@ function Gallery({ onSelectObject }) {
                             <h3>{obj.name}</h3>
                             <span className="badge">{obj.category}</span>
                             <div className="card-meta">
-                                <span>📦 {obj.fileSize}</span>
-                                <span>⬇️ {obj.downloads}</span>
+                                <span><FaCube /> {obj.fileSize}</span>
+                                <span><FaDownload /> {obj.downloads}</span>
                             </div>
                         </div>
                     </div>

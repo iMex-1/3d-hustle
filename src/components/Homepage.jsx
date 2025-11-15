@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { FaRocket, FaEye, FaBook, FaCube, FaDownload, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { objects } from '../data/objects';
 import '../styles/homepage.css';
 
@@ -158,7 +159,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                                 <div className="slide-overlay" />
                                 <div className="slide-content">
                                     <div className="slide-text-content">
-                                        <div className="slide-badge">🎨 {slide.subtitle}</div>
+                                        <div className="slide-badge"><FaCube /> {slide.subtitle}</div>
                                         <h1 className="slide-title">{slide.title}</h1>
                                         <p className="slide-description">{slide.description}</p>
                                         <div className="slide-buttons">
@@ -184,7 +185,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                         onClick={prevSlide}
                         aria-label="Previous slide"
                     >
-                        ‹
+                        <FaChevronLeft />
                     </button>
 
                     <button
@@ -192,7 +193,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                         onClick={nextSlide}
                         aria-label="Next slide"
                     >
-                        ›
+                        <FaChevronRight />
                     </button>
 
                     <div className="carousel-nav">
@@ -218,7 +219,14 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                     {featuredObjects.map(obj => (
                         <div key={obj.id} className="featured-card" onClick={() => onSelectObject(obj.id)}>
                             <div className="card-image">
-                                <img src={obj.image} alt={obj.name} />
+                                <model-viewer
+                                    src={obj.model}
+                                    alt={obj.name}
+                                    auto-rotate
+                                    camera-controls
+                                    shadow-intensity="1"
+                                    style={{ width: '100%', height: '100%', background: '#f5f5f5' }}
+                                ></model-viewer>
                                 <div className="card-overlay-hover">
                                     <button className="btn-view-details">View Details</button>
                                 </div>
@@ -228,8 +236,8 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                                 <p className="category">{obj.category}</p>
                                 <p className="description">{obj.description}</p>
                                 <div className="card-stats">
-                                    <span>📦 {obj.fileSize}</span>
-                                    <span>⬇️ {obj.downloads}</span>
+                                    <span><FaCube /> {obj.fileSize}</span>
+                                    <span><FaDownload /> {obj.downloads}</span>
                                 </div>
                             </div>
                         </div>
