@@ -74,6 +74,15 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    cursor: pointer;
+}
+
+.dropdown-toggle svg:last-child {
+    transition: transform 0.3s ease;
+}
+
+.dropdown-toggle svg.rotate {
+    transform: rotate(180deg);
 }
 
 .dropdown-menu {
@@ -88,6 +97,7 @@
     min-width: 180px;
     padding: 0.5rem 0;
     animation: slideDown 0.2s ease;
+    z-index: 1000;
 }
 
 @keyframes slideDown {

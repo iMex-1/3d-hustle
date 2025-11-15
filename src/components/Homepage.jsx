@@ -32,13 +32,8 @@ function Homepage({ onNavigate, onSelectObject, user }) {
             image: '/heroslides/Slide1.png',
             title: 'Welcome to 3D Marketplace',
             subtitle: 'Premium 3D Models Platform',
-            description: user
-                ? 'Manage your 3D assets from the admin dashboard.'
-                : 'Explore high-quality 3D models in multiple formats.',
-            buttons: user ? [
-                { text: 'Admin Dashboard', action: () => onNavigate('admin'), primary: true },
-                { text: 'Browse Gallery', action: () => onNavigate('gallery') }
-            ] : [
+            description: 'Explore high-quality 3D models in multiple formats.',
+            buttons: [
                 { text: 'Browse Gallery', action: () => onNavigate('gallery'), primary: true },
                 { text: 'View Featured', action: () => document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' }) }
             ]

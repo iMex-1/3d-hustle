@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaCube, FaDownload, FaImage, FaUpload } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaCube, FaDownload, FaUpload, FaExclamationTriangle } from 'react-icons/fa';
+import Notification from './Notification';
 import { objects as initialObjects } from '../data/objects';
 import '../styles/admin.css';
 
@@ -9,17 +10,17 @@ const CATEGORIES = ['Furniture', 'Lighting', 'Decoration'];
 function AdminDashboard() {
     const [objectList, setObjectList] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [notification, setNotification] = useState(null);
+    const [deleteId, setDeleteId] = useState(null);
     const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         category: 'Furniture',
         description: '',
-        images: [],
         model: null,
         modelName: '',
         fileSize: '',
-        polygons: '',
-        vertices: '',
         formats: []
     });
 
@@ -39,37 +40,35 @@ function AdminDashboard() {
         }
     }, [objectList]);
 
+    const showNotification = (message, type = 'success') => {
+        setNotification({ message, type });
+    };
+
     const handleEdit = (obj) => {
         setEditingId(obj.id);
         setFormData({
             name: obj.name,
             category: obj.category,
             description: obj.description,
-            images: typeof obj.image === 'string' ? [obj.image] : obj.images || [obj.image],
             model: null,
             modelName: obj.model,
             fileSize: obj.fileSize,
-            polygons: obj.polygons,
-            vertices: obj.vertices,
             formats: obj.formats
         });
         setShowModal(true);
     };
 
-    const handleDelete = (id) => {
-        if (confirm('Are you sure you want to delete this 3D object? This action cannot be undone.')) {
-            const updatedList = objectList.filter(obj => obj.id !== id);
-            setObjectList(updatedList);
-        }
+    const confirmDelete = (id) => {
+        setDeleteId(id);
+        setShowConfirmModal(true);
     };
 
-    const handleImageUpload = (e) => {
-        const files = Array.from(e.target.files);
-        const imageUrls = files.map(file => URL.createObjectURL(file));
-        setFormData(prev => ({
-            ...prev,
-            images: [...prev.images, ...imageUrls]
-        }));
+    const handleDelete = () => {
+        const updatedList = objectList.filter(obj => obj.id !== deleteId);
+        setObjectList(updatedList);
+        setShowConfirmModal(false);
+        setDeleteId(null);
+        showNotification('Object deleted successfully', 'success');
     };
 
     const handleModelUpload = (e) => {
@@ -77,8 +76,14 @@ function AdminDashboard() {
         if (file) {
             const modelUrl = URL.createObjectURL(file);
             const extension = file.name.split('.').pop().toUpperCase();
+            const fileName = file.name.replace(/\.[^/.]+$/, ''); // Remove extension
+            const formattedName = fileName
+                .replace(/[_-]/g, ' ')
+                .replace(/\b\w/g, l => l.toUpperCase()); // Capitalize words
+
             setFormData(prev => ({
                 ...prev,
+                name: prev.name || formattedName, // Only set if name is empty
                 model: modelUrl,
                 modelName: file.name,
                 fileSize: (file.size / (1024 * 1024)).toFixed(2) + ' MB',
@@ -87,32 +92,11 @@ function AdminDashboard() {
         }
     };
 
-    const removeImage = (index) => {
-        setFormData(prev => ({
-            ...prev,
-            images: prev.images.filter((_, i) => i !== index)
-        }));
-    };
-
-    const moveImageToFirst = (index) => {
-        setFormData(prev => {
-            const newImages = [...prev.images];
-            const [image] = newImages.splice(index, 1);
-            newImages.unshift(image);
-            return { ...prev, images: newImages };
-        });
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if (formData.formats.length === 0) {
-            alert('Please upload a 3D model file');
-            return;
-        }
-
-        if (formData.images.length === 0) {
-            alert('Please upload at least one image');
+            showNotification('Please upload a 3D model file', 'error');
             return;
         }
 
@@ -120,12 +104,14 @@ function AdminDashboard() {
             name: formData.name,
             category: formData.category,
             description: formData.description,
-            image: formData.images[0],
-            images: formData.images,
+            image: 'https://via.placeholder.com/400x300/' +
+                (formData.category === 'Furniture' ? '6366f1' :
+                    formData.category === 'Lighting' ? 'f59e0b' : '10b981') +
+                '/ffffff?text=' + encodeURIComponent(formData.name),
             model: formData.model || formData.modelName,
             fileSize: formData.fileSize,
-            polygons: parseInt(formData.polygons),
-            vertices: parseInt(formData.vertices),
+            polygons: 0,
+            vertices: 0,
             formats: formData.formats
         };
 
@@ -133,6 +119,7 @@ function AdminDashboard() {
             setObjectList(objectList.map(obj =>
                 obj.id === editingId ? { ...obj, ...objectData } : obj
             ));
+            showNotification('Object updated successfully', 'success');
         } else {
             const newObject = {
                 id: Math.max(...objectList.map(o => o.id), 0) + 1,
@@ -141,6 +128,7 @@ function AdminDashboard() {
                 featured: false
             };
             setObjectList([...objectList, newObject]);
+            showNotification('Object created successfully', 'success');
         }
 
         closeModal();
@@ -153,12 +141,9 @@ function AdminDashboard() {
             name: '',
             category: 'Furniture',
             description: '',
-            images: [],
             model: null,
             modelName: '',
             fileSize: '',
-            polygons: '',
-            vertices: '',
             formats: []
         });
     };
@@ -230,7 +215,7 @@ function AdminDashboard() {
                                 <button onClick={() => handleEdit(obj)} className="btn-edit">
                                     <FaEdit /> Edit
                                 </button>
-                                <button onClick={() => handleDelete(obj.id)} className="btn-delete">
+                                <button onClick={() => confirmDelete(obj.id)} className="btn-delete">
                                     <FaTrash /> Delete
                                 </button>
                             </div>
@@ -239,6 +224,7 @@ function AdminDashboard() {
                 ))}
             </div>
 
+            {/* Add/Edit Modal */}
             {showModal && (
                 <div className="modal-overlay" onClick={closeModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -251,53 +237,6 @@ function AdminDashboard() {
 
                         <form onSubmit={handleSubmit} className="modal-form">
                             <div className="form-group">
-                                <label>Object Name *</label>
-                                <input
-                                    type="text"
-                                    value={formData.name}
-                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    placeholder="e.g., Modern Office Chair"
-                                    required
-                                />
-                            </div>
-
-                            <div className="form-row">
-                                <div className="form-group">
-                                    <label>Category *</label>
-                                    <select
-                                        value={formData.category}
-                                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                    >
-                                        {CATEGORIES.map(cat => (
-                                            <option key={cat} value={cat}>{cat}</option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                <div className="form-group">
-                                    <label>File Size</label>
-                                    <input
-                                        type="text"
-                                        value={formData.fileSize}
-                                        onChange={(e) => setFormData({ ...formData, fileSize: e.target.value })}
-                                        placeholder="Auto-filled from upload"
-                                        readOnly
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="form-group">
-                                <label>Description *</label>
-                                <textarea
-                                    value={formData.description}
-                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                    placeholder="Detailed description..."
-                                    rows="3"
-                                    required
-                                />
-                            </div>
-
-                            <div className="form-group">
                                 <label><FaUpload /> Upload 3D Model * (GLB, GLTF, OBJ, FBX, STL)</label>
                                 <input
                                     type="file"
@@ -307,72 +246,43 @@ function AdminDashboard() {
                                 />
                                 {formData.modelName && (
                                     <div className="file-preview">
-                                        <FaCube /> {formData.modelName}
+                                        <FaCube /> {formData.modelName} ({formData.fileSize})
                                     </div>
                                 )}
                             </div>
 
                             <div className="form-group">
-                                <label><FaImage /> Upload Images * (Multiple allowed)</label>
+                                <label>Object Name *</label>
                                 <input
-                                    type="file"
-                                    accept="image/*"
-                                    multiple
-                                    onChange={handleImageUpload}
-                                    className="file-input"
+                                    type="text"
+                                    value={formData.name}
+                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                    placeholder="Auto-filled from file name"
+                                    required
                                 />
-                                {formData.images.length > 0 && (
-                                    <div className="image-preview-grid">
-                                        {formData.images.map((img, index) => (
-                                            <div key={index} className="image-preview-item">
-                                                <img src={img} alt={`Preview ${index + 1}`} />
-                                                {index === 0 && <span className="primary-badge">Primary</span>}
-                                                <div className="image-actions">
-                                                    {index !== 0 && (
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => moveImageToFirst(index)}
-                                                            className="btn-set-primary"
-                                                        >
-                                                            Set as Primary
-                                                        </button>
-                                                    )}
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => removeImage(index)}
-                                                        className="btn-remove-image"
-                                                    >
-                                                        <FaTimes />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
                             </div>
 
-                            <div className="form-row">
-                                <div className="form-group">
-                                    <label>Polygons *</label>
-                                    <input
-                                        type="number"
-                                        value={formData.polygons}
-                                        onChange={(e) => setFormData({ ...formData, polygons: e.target.value })}
-                                        placeholder="45000"
-                                        required
-                                    />
-                                </div>
+                            <div className="form-group">
+                                <label>Category *</label>
+                                <select
+                                    value={formData.category}
+                                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                                >
+                                    {CATEGORIES.map(cat => (
+                                        <option key={cat} value={cat}>{cat}</option>
+                                    ))}
+                                </select>
+                            </div>
 
-                                <div className="form-group">
-                                    <label>Vertices *</label>
-                                    <input
-                                        type="number"
-                                        value={formData.vertices}
-                                        onChange={(e) => setFormData({ ...formData, vertices: e.target.value })}
-                                        placeholder="23000"
-                                        required
-                                    />
-                                </div>
+                            <div className="form-group">
+                                <label>Description *</label>
+                                <textarea
+                                    value={formData.description}
+                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                    placeholder="Detailed description..."
+                                    rows="4"
+                                    required
+                                />
                             </div>
 
                             <div className="form-group">
@@ -402,6 +312,40 @@ function AdminDashboard() {
                         </form>
                     </div>
                 </div>
+            )}
+
+            {/* Confirm Delete Modal */}
+            {showConfirmModal && (
+                <div className="modal-overlay" onClick={() => setShowConfirmModal(false)}>
+                    <div className="modal-content modal-small" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h2><FaExclamationTriangle /> Confirm Delete</h2>
+                            <button className="modal-close" onClick={() => setShowConfirmModal(false)}>
+                                <FaTimes />
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <p>Are you sure you want to delete this 3D object? This action cannot be undone.</p>
+                        </div>
+                        <div className="modal-actions">
+                            <button onClick={() => setShowConfirmModal(false)} className="btn-cancel">
+                                Cancel
+                            </button>
+                            <button onClick={handleDelete} className="btn-delete">
+                                <FaTrash /> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Notification */}
+            {notification && (
+                <Notification
+                    message={notification.message}
+                    type={notification.type}
+                    onClose={() => setNotification(null)}
+                />
             )}
         </div>
     );

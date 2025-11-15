@@ -209,10 +209,8 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
+    background: transparent;
     border: none;
-    border-radius: 50%;
     width: 60px;
     height: 60px;
     display: flex;
@@ -222,14 +220,13 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 50;
     color: white;
-    font-size: 2rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    font-size: 2.5rem;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .carousel-arrow:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-50%) scale(1.15);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-50%) scale(1.2);
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
 }
 
 .carousel-arrow-left {

@@ -1,12 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FaHome, FaImages, FaUserShield, FaSignInAlt, FaSignOutAlt, FaCube, FaInfoCircle, FaEnvelope, FaChevronDown, FaSearch } from 'react-icons/fa';
 import '../styles/navigation.css';
 
 function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
     const [showCategories, setShowCategories] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const dropdownRef = useRef(null);
 
     const categories = ['Furniture', 'Lighting', 'Decoration'];
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowCategories(false);
+            }
+        };
+
+        if (showCategories) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showCategories]);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -14,6 +32,10 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
             onSearch(searchQuery);
             onNavigate('gallery');
         }
+    };
+
+    const toggleCategories = () => {
+        setShowCategories(!showCategories);
     };
 
     const handleCategoryClick = (category) => {
@@ -36,13 +58,9 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
                     <li className={currentPage === 'gallery' ? 'active' : ''}>
                         <a onClick={() => onNavigate('gallery')}><FaImages /> Gallery</a>
                     </li>
-                    <li
-                        className="nav-dropdown"
-                        onMouseEnter={() => setShowCategories(true)}
-                        onMouseLeave={() => setShowCategories(false)}
-                    >
-                        <a className="dropdown-toggle">
-                            <FaCube /> Categories <FaChevronDown />
+                    <li className="nav-dropdown" ref={dropdownRef}>
+                        <a className="dropdown-toggle" onClick={toggleCategories}>
+                            <FaCube /> Categories <FaChevronDown className={showCategories ? 'rotate' : ''} />
                         </a>
                         {showCategories && (
                             <ul className="dropdown-menu">

@@ -28,7 +28,20 @@ function ObjectDetail({ objectId, onNavigate }) {
     }
 
     const handleDownload = (format) => {
-        alert(`Downloading ${object.name} in ${format} format...`);
+        // Create a temporary link and trigger download
+        const link = document.createElement('a');
+        link.href = object.model;
+        link.download = `${object.name.replace(/\s+/g, '_')}.${format.toLowerCase()}`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Update download count
+        const updatedObjects = objects.map(obj =>
+            obj.id === object.id ? { ...obj, downloads: obj.downloads + 1 } : obj
+        );
+        localStorage.setItem('3d_objects', JSON.stringify(updatedObjects));
+        setObjects(updatedObjects);
     };
 
     return (
