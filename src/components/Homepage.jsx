@@ -29,12 +29,12 @@ function Homepage({ onNavigate, onSelectObject, user }) {
         {
             id: 'welcome',
             type: 'welcome',
-            image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1200&h=800&fit=crop',
+            image: '/heroslides/Slide1.png',
             title: 'Welcome to 3D Marketplace',
             subtitle: 'Premium 3D Models Platform',
             description: user
-                ? 'Access our complete collection of 3D models. Manage and organize your 3D assets from the admin dashboard.'
-                : 'Explore our collection of high-quality 3D models. Browse furniture, decorations, and more in multiple formats.',
+                ? 'Manage your 3D assets from the admin dashboard.'
+                : 'Explore high-quality 3D models in multiple formats.',
             buttons: user ? [
                 { text: 'Admin Dashboard', action: () => onNavigate('admin'), primary: true },
                 { text: 'Browse Gallery', action: () => onNavigate('gallery') }
@@ -46,10 +46,10 @@ function Homepage({ onNavigate, onSelectObject, user }) {
         {
             id: 'models',
             type: 'models',
-            image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&h=800&fit=crop',
+            image: '/heroslides/Slide2.png',
             title: 'Explore 3D Models',
             subtitle: 'High-Quality Assets',
-            description: 'Discover a vast collection of 3D models organized by category. From furniture to lighting and decoration - find everything you need.',
+            description: 'Discover 3D models organized by category. Furniture, lighting, and decoration.',
             buttons: [
                 { text: 'View All Models', action: () => onNavigate('gallery'), primary: true }
             ]
@@ -57,10 +57,10 @@ function Homepage({ onNavigate, onSelectObject, user }) {
         {
             id: 'formats',
             type: 'formats',
-            image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&h=800&fit=crop',
+            image: '/heroslides/Slide3.png',
             title: 'Multiple Formats',
-            subtitle: 'OBJ • FBX • GLB • STL',
-            description: 'Download models in your preferred format. Compatible with all major 3D software including Blender, Maya, 3ds Max, and Unity.',
+            subtitle: 'GLB • GLTF • OBJ • FBX • STL',
+            description: 'Download in your preferred format. Compatible with Blender, Maya, 3ds Max, and Unity.',
             buttons: [
                 { text: 'Learn More', action: () => onNavigate('gallery'), primary: true }
             ]

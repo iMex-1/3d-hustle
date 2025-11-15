@@ -5,11 +5,15 @@ import Gallery from './components/Gallery';
 import ObjectDetail from './components/ObjectDetail';
 import Login from './components/Login';
 import AdminDashboard from './components/AdminDashboard';
+import About from './components/About';
+import Contact from './components/Contact';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedObjectId, setSelectedObjectId] = useState(null);
   const [user, setUser] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
@@ -29,13 +33,24 @@ function App() {
     setCurrentPage('home');
   };
 
-  const handleNavigate = (page) => {
+  const handleNavigate = (page, options = {}) => {
     if (page === 'admin' && (!user || user.role !== 'admin')) {
       alert('Admin access required');
       return;
     }
     setCurrentPage(page);
     setSelectedObjectId(null);
+
+    if (options.category) {
+      setSelectedCategory(options.category);
+    } else {
+      setSelectedCategory(null);
+    }
+  };
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    setSelectedCategory(null);
   };
 
   const handleSelectObject = (objectId) => {
@@ -48,9 +63,13 @@ function App() {
       case 'home':
         return <Homepage onNavigate={handleNavigate} onSelectObject={handleSelectObject} user={user} />;
       case 'gallery':
-        return <Gallery onSelectObject={handleSelectObject} />;
+        return <Gallery onSelectObject={handleSelectObject} searchQuery={searchQuery} selectedCategory={selectedCategory} />;
       case 'detail':
         return <ObjectDetail objectId={selectedObjectId} onNavigate={handleNavigate} />;
+      case 'about':
+        return <About />;
+      case 'contact':
+        return <Contact />;
       case 'login':
         return <Login onLogin={handleLogin} onNavigate={handleNavigate} />;
       case 'admin':
@@ -67,6 +86,7 @@ function App() {
         onNavigate={handleNavigate}
         user={user}
         onLogout={handleLogout}
+        onSearch={handleSearch}
       />
       <main className="main-content">
         {renderPage()}

@@ -3,7 +3,7 @@ import { FaCube, FaDownload, FaSearch } from 'react-icons/fa';
 import { objects as initialObjects } from '../data/objects';
 import '../styles/gallery.css';
 
-function Gallery({ onSelectObject }) {
+function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCategory = null }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [objects, setObjects] = useState([]);
@@ -19,6 +19,20 @@ function Gallery({ onSelectObject }) {
             setObjects(initialObjects);
         }
     }, []);
+
+    // Update search term from props
+    useEffect(() => {
+        if (searchQuery) {
+            setSearchTerm(searchQuery);
+        }
+    }, [searchQuery]);
+
+    // Update category from props
+    useEffect(() => {
+        if (propCategory) {
+            setSelectedCategory(propCategory);
+        }
+    }, [propCategory]);
 
     const filteredObjects = objects.filter(obj => {
         const matchesSearch = obj.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

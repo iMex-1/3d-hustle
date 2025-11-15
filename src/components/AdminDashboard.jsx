@@ -1,28 +1,28 @@
 import { useState, useEffect } from 'react';
-import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaCube, FaDownload } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaCube, FaDownload, FaImage, FaUpload } from 'react-icons/fa';
 import { objects as initialObjects } from '../data/objects';
 import '../styles/admin.css';
 
-// Supported 3D file formats
 const SUPPORTED_FORMATS = ['GLB', 'GLTF', 'OBJ', 'FBX', 'STL'];
 const CATEGORIES = ['Furniture', 'Lighting', 'Decoration'];
 
 function AdminDashboard() {
     const [objectList, setObjectList] = useState([]);
+    const [showModal, setShowModal] = useState(false);
     const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         category: 'Furniture',
         description: '',
-        image: '',
-        model: '',
+        images: [],
+        model: null,
+        modelName: '',
         fileSize: '',
         polygons: '',
         vertices: '',
         formats: []
     });
 
-    // Load objects from localStorage or use initial data
     useEffect(() => {
         const savedObjects = localStorage.getItem('3d_objects');
         if (savedObjects) {
@@ -33,7 +33,6 @@ function AdminDashboard() {
         }
     }, []);
 
-    // Save to localStorage whenever objectList changes
     useEffect(() => {
         if (objectList.length > 0) {
             localStorage.setItem('3d_objects', JSON.stringify(objectList));
@@ -46,13 +45,15 @@ function AdminDashboard() {
             name: obj.name,
             category: obj.category,
             description: obj.description,
-            image: obj.image,
-            model: obj.model,
+            images: typeof obj.image === 'string' ? [obj.image] : obj.images || [obj.image],
+            model: null,
+            modelName: obj.model,
             fileSize: obj.fileSize,
             polygons: obj.polygons,
             vertices: obj.vertices,
             formats: obj.formats
         });
+        setShowModal(true);
     };
 
     const handleDelete = (id) => {
@@ -62,47 +63,110 @@ function AdminDashboard() {
         }
     };
 
+    const handleImageUpload = (e) => {
+        const files = Array.from(e.target.files);
+        const imageUrls = files.map(file => URL.createObjectURL(file));
+        setFormData(prev => ({
+            ...prev,
+            images: [...prev.images, ...imageUrls]
+        }));
+    };
+
+    const handleModelUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const modelUrl = URL.createObjectURL(file);
+            const extension = file.name.split('.').pop().toUpperCase();
+            setFormData(prev => ({
+                ...prev,
+                model: modelUrl,
+                modelName: file.name,
+                fileSize: (file.size / (1024 * 1024)).toFixed(2) + ' MB',
+                formats: [extension]
+            }));
+        }
+    };
+
+    const removeImage = (index) => {
+        setFormData(prev => ({
+            ...prev,
+            images: prev.images.filter((_, i) => i !== index)
+        }));
+    };
+
+    const moveImageToFirst = (index) => {
+        setFormData(prev => {
+            const newImages = [...prev.images];
+            const [image] = newImages.splice(index, 1);
+            newImages.unshift(image);
+            return { ...prev, images: newImages };
+        });
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if (formData.formats.length === 0) {
-            alert('Please select at least one 3D format');
+            alert('Please upload a 3D model file');
             return;
         }
 
+        if (formData.images.length === 0) {
+            alert('Please upload at least one image');
+            return;
+        }
+
+        const objectData = {
+            name: formData.name,
+            category: formData.category,
+            description: formData.description,
+            image: formData.images[0],
+            images: formData.images,
+            model: formData.model || formData.modelName,
+            fileSize: formData.fileSize,
+            polygons: parseInt(formData.polygons),
+            vertices: parseInt(formData.vertices),
+            formats: formData.formats
+        };
+
         if (editingId) {
-            // Update existing object
             setObjectList(objectList.map(obj =>
-                obj.id === editingId ? { ...obj, ...formData } : obj
+                obj.id === editingId ? { ...obj, ...objectData } : obj
             ));
-            setEditingId(null);
         } else {
-            // Add new object
             const newObject = {
                 id: Math.max(...objectList.map(o => o.id), 0) + 1,
-                ...formData,
+                ...objectData,
                 downloads: 0,
                 featured: false
             };
             setObjectList([...objectList, newObject]);
         }
 
-        resetForm();
+        closeModal();
     };
 
-    const resetForm = () => {
+    const closeModal = () => {
+        setShowModal(false);
+        setEditingId(null);
         setFormData({
             name: '',
             category: 'Furniture',
             description: '',
-            image: '',
-            model: '',
+            images: [],
+            model: null,
+            modelName: '',
             fileSize: '',
             polygons: '',
             vertices: '',
             formats: []
         });
-        setEditingId(null);
+    };
+
+    const toggleFeatured = (id) => {
+        setObjectList(objectList.map(obj =>
+            obj.id === id ? { ...obj, featured: !obj.featured } : obj
+        ));
     };
 
     const handleFormatToggle = (format) => {
@@ -114,195 +178,231 @@ function AdminDashboard() {
         }));
     };
 
-    const toggleFeatured = (id) => {
-        setObjectList(objectList.map(obj =>
-            obj.id === id ? { ...obj, featured: !obj.featured } : obj
-        ));
-    };
-
     return (
         <div className="admin-dashboard">
             <div className="admin-header">
-                <h1><FaCube /> 3D Object Management Dashboard</h1>
-                <p className="admin-subtitle">Manage your 3D marketplace inventory</p>
-                <div className="format-info">
-                    <strong>Supported Formats:</strong> {SUPPORTED_FORMATS.join(', ')}
+                <div>
+                    <h1><FaCube /> Objects Manager</h1>
+                    <p className="admin-subtitle">Manage your 3D marketplace inventory</p>
                 </div>
+                <button className="btn-add-object" onClick={() => setShowModal(true)}>
+                    <FaPlus /> Add Object
+                </button>
             </div>
 
-            <div className="admin-content">
-                <div className="admin-form">
-                    <h2>{editingId ? <><FaEdit /> Edit Object</> : <><FaPlus /> Add New Object</>}</h2>
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label>Object Name *</label>
-                            <input
-                                type="text"
-                                value={formData.name}
-                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                placeholder="e.g., Modern Office Chair"
-                                required
-                            />
+            <div className="objects-grid">
+                {objectList.map(obj => (
+                    <div key={obj.id} className="object-card">
+                        <div className="object-card-preview">
+                            <model-viewer
+                                src={obj.model}
+                                alt={obj.name}
+                                auto-rotate
+                                camera-controls
+                                style={{ width: '100%', height: '100%' }}
+                            ></model-viewer>
+                            {obj.featured && <span className="featured-badge">Featured</span>}
                         </div>
-
-                        <div className="form-group">
-                            <label>Category *</label>
-                            <select
-                                value={formData.category}
-                                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                            >
-                                {CATEGORIES.map(cat => (
-                                    <option key={cat} value={cat}>{cat}</option>
+                        <div className="object-card-content">
+                            <h3>{obj.name}</h3>
+                            <p className="object-category">{obj.category}</p>
+                            <p className="object-description">{obj.description}</p>
+                            <div className="object-meta">
+                                <span><FaCube /> {obj.fileSize}</span>
+                                <span><FaDownload /> {obj.downloads}</span>
+                            </div>
+                            <div className="object-formats">
+                                {obj.formats.map(format => (
+                                    <span key={format} className="format-badge">{format}</span>
                                 ))}
-                            </select>
+                            </div>
+                        </div>
+                        <div className="object-card-actions">
+                            <label className="featured-toggle">
+                                <input
+                                    type="checkbox"
+                                    checked={obj.featured}
+                                    onChange={() => toggleFeatured(obj.id)}
+                                />
+                                Featured
+                            </label>
+                            <div className="action-buttons">
+                                <button onClick={() => handleEdit(obj)} className="btn-edit">
+                                    <FaEdit /> Edit
+                                </button>
+                                <button onClick={() => handleDelete(obj.id)} className="btn-delete">
+                                    <FaTrash /> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {showModal && (
+                <div className="modal-overlay" onClick={closeModal}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h2>{editingId ? 'Edit Object' : 'Add New Object'}</h2>
+                            <button className="modal-close" onClick={closeModal}>
+                                <FaTimes />
+                            </button>
                         </div>
 
-                        <div className="form-group">
-                            <label>Description *</label>
-                            <textarea
-                                value={formData.description}
-                                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                placeholder="Detailed description of the 3D object..."
-                                rows="3"
-                                required
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label>3D Model Path * (relative to /models/)</label>
-                            <input
-                                type="text"
-                                value={formData.model}
-                                onChange={(e) => setFormData({ ...formData, model: e.target.value })}
-                                placeholder="/models/your-model.glb"
-                                required
-                            />
-                            <small>Place your 3D file in the public/models/ folder</small>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Preview Image URL</label>
-                            <input
-                                type="text"
-                                value={formData.image}
-                                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                                placeholder="https://example.com/image.jpg or leave for placeholder"
-                            />
-                        </div>
-
-                        <div className="form-row">
+                        <form onSubmit={handleSubmit} className="modal-form">
                             <div className="form-group">
-                                <label>File Size *</label>
+                                <label>Object Name *</label>
                                 <input
                                     type="text"
-                                    value={formData.fileSize}
-                                    onChange={(e) => setFormData({ ...formData, fileSize: e.target.value })}
-                                    placeholder="e.g., 12.5 MB"
+                                    value={formData.name}
+                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                    placeholder="e.g., Modern Office Chair"
                                     required
                                 />
                             </div>
 
-                            <div className="form-group">
-                                <label>Polygons *</label>
-                                <input
-                                    type="number"
-                                    value={formData.polygons}
-                                    onChange={(e) => setFormData({ ...formData, polygons: parseInt(e.target.value) || '' })}
-                                    placeholder="45000"
-                                    required
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label>Vertices *</label>
-                                <input
-                                    type="number"
-                                    value={formData.vertices}
-                                    onChange={(e) => setFormData({ ...formData, vertices: parseInt(e.target.value) || '' })}
-                                    placeholder="23000"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label>3D File Formats * (Select all that apply)</label>
-                            <div className="format-checkboxes">
-                                {SUPPORTED_FORMATS.map(format => (
-                                    <label key={format} className="format-checkbox">
-                                        <input
-                                            type="checkbox"
-                                            checked={formData.formats.includes(format)}
-                                            onChange={() => handleFormatToggle(format)}
-                                        />
-                                        <span className="format-label">{format}</span>
-                                    </label>
-                                ))}
-                            </div>
-                            <small>Supported: GLB, GLTF, OBJ, FBX, STL</small>
-                        </div>
-
-                        <div className="form-actions">
-                            <button type="submit" className="btn-submit">
-                                <FaSave /> {editingId ? 'Update Object' : 'Add Object'}
-                            </button>
-                            {editingId && (
-                                <button type="button" onClick={resetForm} className="btn-cancel">
-                                    <FaTimes /> Cancel
-                                </button>
-                            )}
-                        </div>
-                    </form>
-                </div>
-
-                <div className="admin-list">
-                    <h2>Manage Objects ({objectList.length})</h2>
-                    <div className="object-list">
-                        {objectList.map(obj => (
-                            <div key={obj.id} className="object-item">
-                                <div className="object-preview">
-                                    <model-viewer
-                                        src={obj.model}
-                                        alt={obj.name}
-                                        auto-rotate
-                                        camera-controls
-                                        style={{ width: '100%', height: '100%' }}
-                                    ></model-viewer>
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label>Category *</label>
+                                    <select
+                                        value={formData.category}
+                                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                                    >
+                                        {CATEGORIES.map(cat => (
+                                            <option key={cat} value={cat}>{cat}</option>
+                                        ))}
+                                    </select>
                                 </div>
-                                <div className="object-info">
-                                    <h3>{obj.name}</h3>
-                                    <p className="object-category">{obj.category}</p>
-                                    <div className="object-meta">
-                                        <span><FaCube /> {obj.fileSize}</span>
-                                        <span><FaDownload /> {obj.downloads}</span>
+
+                                <div className="form-group">
+                                    <label>File Size</label>
+                                    <input
+                                        type="text"
+                                        value={formData.fileSize}
+                                        onChange={(e) => setFormData({ ...formData, fileSize: e.target.value })}
+                                        placeholder="Auto-filled from upload"
+                                        readOnly
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Description *</label>
+                                <textarea
+                                    value={formData.description}
+                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                    placeholder="Detailed description..."
+                                    rows="3"
+                                    required
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label><FaUpload /> Upload 3D Model * (GLB, GLTF, OBJ, FBX, STL)</label>
+                                <input
+                                    type="file"
+                                    accept=".glb,.gltf,.obj,.fbx,.stl"
+                                    onChange={handleModelUpload}
+                                    className="file-input"
+                                />
+                                {formData.modelName && (
+                                    <div className="file-preview">
+                                        <FaCube /> {formData.modelName}
                                     </div>
-                                    <div className="object-formats">
-                                        {obj.formats.map(format => (
-                                            <span key={format} className="format-badge">{format}</span>
+                                )}
+                            </div>
+
+                            <div className="form-group">
+                                <label><FaImage /> Upload Images * (Multiple allowed)</label>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    multiple
+                                    onChange={handleImageUpload}
+                                    className="file-input"
+                                />
+                                {formData.images.length > 0 && (
+                                    <div className="image-preview-grid">
+                                        {formData.images.map((img, index) => (
+                                            <div key={index} className="image-preview-item">
+                                                <img src={img} alt={`Preview ${index + 1}`} />
+                                                {index === 0 && <span className="primary-badge">Primary</span>}
+                                                <div className="image-actions">
+                                                    {index !== 0 && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => moveImageToFirst(index)}
+                                                            className="btn-set-primary"
+                                                        >
+                                                            Set as Primary
+                                                        </button>
+                                                    )}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeImage(index)}
+                                                        className="btn-remove-image"
+                                                    >
+                                                        <FaTimes />
+                                                    </button>
+                                                </div>
+                                            </div>
                                         ))}
                                     </div>
-                                    <label className="featured-toggle">
-                                        <input
-                                            type="checkbox"
-                                            checked={obj.featured}
-                                            onChange={() => toggleFeatured(obj.id)}
-                                        />
-                                        Featured
-                                    </label>
+                                )}
+                            </div>
+
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label>Polygons *</label>
+                                    <input
+                                        type="number"
+                                        value={formData.polygons}
+                                        onChange={(e) => setFormData({ ...formData, polygons: e.target.value })}
+                                        placeholder="45000"
+                                        required
+                                    />
                                 </div>
-                                <div className="object-actions">
-                                    <button onClick={() => handleEdit(obj)} className="btn-edit">
-                                        <FaEdit /> Edit
-                                    </button>
-                                    <button onClick={() => handleDelete(obj.id)} className="btn-delete">
-                                        <FaTrash /> Delete
-                                    </button>
+
+                                <div className="form-group">
+                                    <label>Vertices *</label>
+                                    <input
+                                        type="number"
+                                        value={formData.vertices}
+                                        onChange={(e) => setFormData({ ...formData, vertices: e.target.value })}
+                                        placeholder="23000"
+                                        required
+                                    />
                                 </div>
                             </div>
-                        ))}
+
+                            <div className="form-group">
+                                <label>Additional Formats (Optional)</label>
+                                <div className="format-checkboxes">
+                                    {SUPPORTED_FORMATS.map(format => (
+                                        <label key={format} className="format-checkbox">
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.formats.includes(format)}
+                                                onChange={() => handleFormatToggle(format)}
+                                            />
+                                            <span>{format}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="modal-actions">
+                                <button type="button" onClick={closeModal} className="btn-cancel">
+                                    <FaTimes /> Cancel
+                                </button>
+                                <button type="submit" className="btn-submit">
+                                    <FaSave /> {editingId ? 'Update' : 'Create'} Object
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
