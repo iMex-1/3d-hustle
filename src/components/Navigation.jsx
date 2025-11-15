@@ -47,8 +47,8 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
         <nav className="navigation">
             <div className="nav-container">
                 <div className="nav-brand" onClick={() => onNavigate('home')}>
-                    <FaCube className="brand-icon" />
-                    <h2>3D Marketplace</h2>
+                    <img src="/logo/Logo.png" alt="OakMesh" className="brand-logo" />
+                    <h2 className="brand-name">OakMesh</h2>
                 </div>
 
                 <ul className="nav-links">
