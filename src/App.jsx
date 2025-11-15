@@ -47,7 +47,7 @@ function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        return <Homepage onNavigate={handleNavigate} onSelectObject={handleSelectObject} />;
+        return <Homepage onNavigate={handleNavigate} onSelectObject={handleSelectObject} user={user} />;
       case 'gallery':
         return <Gallery onSelectObject={handleSelectObject} />;
       case 'detail':
@@ -59,7 +59,7 @@ function App() {
       case 'admin':
         return <AdminDashboard />;
       default:
-        return <Homepage onNavigate={handleNavigate} onSelectObject={handleSelectObject} />;
+        return <Homepage onNavigate={handleNavigate} onSelectObject={handleSelectObject} user={user} />;
     }
   };
 
