@@ -1,4 +1,4 @@
-import { FaHome, FaImages, FaUserShield, FaSignInAlt, FaUserPlus, FaSignOutAlt, FaCube } from 'react-icons/fa';
+import { FaHome, FaImages, FaUserShield, FaSignInAlt, FaSignOutAlt, FaCube } from 'react-icons/fa';
 import '../styles/navigation.css';
 
 function Navigation({ currentPage, onNavigate, user, onLogout }) {
@@ -19,7 +19,7 @@ function Navigation({ currentPage, onNavigate, user, onLogout }) {
                     </li>
                     {user && user.role === 'admin' && (
                         <li className={currentPage === 'admin' ? 'active' : ''}>
-                            <a onClick={() => onNavigate('admin')}><FaUserShield /> Admin</a>
+                            <a onClick={() => onNavigate('admin')}><FaUserShield /> Dashboard</a>
                         </li>
                     )}
                 </ul>
@@ -27,14 +27,11 @@ function Navigation({ currentPage, onNavigate, user, onLogout }) {
                 <div className="nav-auth">
                     {user ? (
                         <div className="user-menu">
-                            <span className="username">Welcome, {user.username}</span>
+                            <span className="username">Admin: {user.username}</span>
                             <button onClick={onLogout} className="btn-logout"><FaSignOutAlt /> Logout</button>
                         </div>
                     ) : (
-                        <>
-                            <button onClick={() => onNavigate('login')} className="btn-login"><FaSignInAlt /> Login</button>
-                            <button onClick={() => onNavigate('register')} className="btn-register"><FaUserPlus /> Register</button>
-                        </>
+                        <button onClick={() => onNavigate('login')} className="btn-login"><FaSignInAlt /> Admin Login</button>
                     )}
                 </div>
             </div>

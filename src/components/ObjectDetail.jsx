@@ -1,8 +1,21 @@
+import { useState, useEffect } from 'react';
 import { FaArrowLeft, FaDownload, FaCube, FaChartBar } from 'react-icons/fa';
-import { objects } from '../data/objects';
+import { objects as initialObjects } from '../data/objects';
 import '../styles/object-detail.css';
 
 function ObjectDetail({ objectId, onNavigate }) {
+    const [objects, setObjects] = useState([]);
+
+    // Load objects from localStorage
+    useEffect(() => {
+        const savedObjects = localStorage.getItem('3d_objects');
+        if (savedObjects) {
+            setObjects(JSON.parse(savedObjects));
+        } else {
+            setObjects(initialObjects);
+        }
+    }, []);
+
     const object = objects.find(obj => obj.id === objectId);
 
     if (!object) {

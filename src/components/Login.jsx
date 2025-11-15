@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { authenticateUser } from '../data/users';
+import { FaLock, FaUser } from 'react-icons/fa';
+import { authenticateAdmin } from '../data/users';
 import '../styles/auth.css';
 
 function Login({ onLogin, onNavigate }) {
@@ -9,55 +10,53 @@ function Login({ onLogin, onNavigate }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const user = authenticateUser(username, password);
+        const admin = authenticateAdmin(username, password);
 
-        if (user) {
-            onLogin(user);
-            onNavigate('home');
+        if (admin) {
+            onLogin(admin);
+            onNavigate('admin');
         } else {
-            setError('Invalid username or password');
+            setError('Invalid admin credentials');
         }
     };
 
     return (
         <div className="auth-container">
             <div className="auth-card">
-                <h2>Login</h2>
+                <h2>Admin Login</h2>
+                <p className="auth-subtitle">Access the 3D Marketplace Dashboard</p>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Username</label>
+                        <label><FaUser /> Username</label>
                         <input
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Enter admin username"
                             required
                         />
                     </div>
 
                     <div className="form-group">
-                        <label>Password</label>
+                        <label><FaLock /> Password</label>
                         <input
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Enter admin password"
                             required
                         />
                     </div>
 
                     {error && <p className="error-message">{error}</p>}
 
-                    <button type="submit" className="btn-submit">Login</button>
+                    <button type="submit" className="btn-submit">Login to Dashboard</button>
                 </form>
 
-                <p className="auth-switch">
-                    Don't have an account?{' '}
-                    <a onClick={() => onNavigate('register')}>Register here</a>
-                </p>
-
                 <div className="demo-credentials">
-                    <p><strong>Demo Credentials:</strong></p>
-                    <p>Admin: admin / admin123</p>
-                    <p>User: user / user123</p>
+                    <p><strong>Admin Credentials:</strong></p>
+                    <p>Username: admin</p>
+                    <p>Password: admin123</p>
                 </div>
             </div>
         </div>

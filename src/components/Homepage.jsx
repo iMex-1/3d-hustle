@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { FaRocket, FaEye, FaBook, FaCube, FaDownload, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { objects } from '../data/objects';
+import { objects as initialObjects } from '../data/objects';
 import '../styles/homepage.css';
 
 function Homepage({ onNavigate, onSelectObject, user }) {
@@ -9,8 +9,19 @@ function Homepage({ onNavigate, onSelectObject, user }) {
     const [isDragging, setIsDragging] = useState(false);
     const [touchStartX, setTouchStartX] = useState(0);
     const [touchDeltaX, setTouchDeltaX] = useState(0);
+    const [objects, setObjects] = useState([]);
     const containerRef = useRef(null);
     const autoPlayInterval = 5000;
+
+    // Load objects from localStorage
+    useEffect(() => {
+        const savedObjects = localStorage.getItem('3d_objects');
+        if (savedObjects) {
+            setObjects(JSON.parse(savedObjects));
+        } else {
+            setObjects(initialObjects);
+        }
+    }, []);
 
     const featuredObjects = objects.filter(obj => obj.featured);
 
@@ -22,15 +33,14 @@ function Homepage({ onNavigate, onSelectObject, user }) {
             title: 'Welcome to 3D Marketplace',
             subtitle: 'Premium 3D Models Platform',
             description: user
-                ? 'Access our complete collection of 3D models. Preview, download, and use them in your projects instantly.'
-                : 'Explore our free collection of 3D models. Sign in to download and access premium features.',
+                ? 'Access our complete collection of 3D models. Manage and organize your 3D assets from the admin dashboard.'
+                : 'Explore our collection of high-quality 3D models. Browse furniture, decorations, and more in multiple formats.',
             buttons: user ? [
-                { text: 'Browse Gallery', action: () => onNavigate('gallery'), primary: true },
-                { text: 'View Featured', action: () => document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' }) }
+                { text: 'Admin Dashboard', action: () => onNavigate('admin'), primary: true },
+                { text: 'Browse Gallery', action: () => onNavigate('gallery') }
             ] : [
                 { text: 'Browse Gallery', action: () => onNavigate('gallery'), primary: true },
-                { text: 'Sign In', action: () => onNavigate('login') },
-                { text: 'Register', action: () => onNavigate('register') }
+                { text: 'View Featured', action: () => document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' }) }
             ]
         },
         {

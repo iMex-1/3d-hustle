@@ -1,13 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaCube, FaDownload, FaSearch } from 'react-icons/fa';
-import { objects } from '../data/objects';
+import { objects as initialObjects } from '../data/objects';
 import '../styles/gallery.css';
 
 function Gallery({ onSelectObject }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
+    const [objects, setObjects] = useState([]);
 
     const categories = ['All', 'Furniture', 'Lighting', 'Decoration'];
+
+    // Load objects from localStorage
+    useEffect(() => {
+        const savedObjects = localStorage.getItem('3d_objects');
+        if (savedObjects) {
+            setObjects(JSON.parse(savedObjects));
+        } else {
+            setObjects(initialObjects);
+        }
+    }, []);
 
     const filteredObjects = objects.filter(obj => {
         const matchesSearch = obj.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

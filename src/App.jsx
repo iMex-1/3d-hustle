@@ -4,7 +4,6 @@ import Homepage from './components/Homepage';
 import Gallery from './components/Gallery';
 import ObjectDetail from './components/ObjectDetail';
 import Login from './components/Login';
-import Register from './components/Register';
 import AdminDashboard from './components/AdminDashboard';
 
 function App() {
@@ -54,8 +53,6 @@ function App() {
         return <ObjectDetail objectId={selectedObjectId} onNavigate={handleNavigate} />;
       case 'login':
         return <Login onLogin={handleLogin} onNavigate={handleNavigate} />;
-      case 'register':
-        return <Register onLogin={handleLogin} onNavigate={handleNavigate} />;
       case 'admin':
         return <AdminDashboard />;
       default:
