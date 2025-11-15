@@ -35,7 +35,7 @@
 
 .search-input:focus {
     outline: none;
-    border-color: #6366f1;
+    border-color: #dda15e;
 }
 
 .category-filters {
@@ -53,14 +53,14 @@
 }
 
 .filter-btn:hover {
-    border-color: #6366f1;
-    color: #6366f1;
+    border-color: #dda15e;
+    color: #dda15e;
 }
 
 .filter-btn.active {
-    background: #6366f1;
+    background: #dda15e;
     color: white;
-    border-color: #6366f1;
+    border-color: #dda15e;
 }
 
 .gallery-grid {
@@ -130,8 +130,8 @@
 .badge {
     display: inline-block;
     padding: 0.25rem 0.75rem;
-    background: #e0e7ff;
-    color: #6366f1;
+    background: #dda25e3c;
+    color: #cb791c;
     border-radius: 20px;
     font-size: 0.85rem;
     margin-bottom: 0.75rem;

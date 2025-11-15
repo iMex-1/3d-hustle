@@ -55,6 +55,7 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="search-input"
+
                 />
 
                 <div className="category-filters">

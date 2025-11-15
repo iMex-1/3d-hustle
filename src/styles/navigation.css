@@ -170,10 +170,10 @@
     align-items: stretch;
     background: #f9fafb;
     border: 2px solid white;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
     transition: all 0.3s;
-    height: 40px;
+    height: 38px;
 }
 
 .search-form:focus-within {
@@ -183,7 +183,7 @@
 }
 
 .search-input:focus {
-    border-color: white !important;
+    border-color: #dda15e !important;
     outline: none !important;
 }
 

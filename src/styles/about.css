@@ -3,7 +3,7 @@
 }
 
 .about-hero {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(#c69153 0%, #dda15e 80%, #f5f5f5 100%);
     color: white;
     padding: 6rem 2rem 4rem;
     text-align: center;
@@ -65,7 +65,7 @@
 
 .feature-icon {
     font-size: 3rem;
-    color: #6366f1;
+    color: #dda15e;
     margin-bottom: 1rem;
 }
 
@@ -89,7 +89,7 @@
 .offer-item {
     padding: 1.5rem;
     background: #f9fafb;
-    border-left: 4px solid #6366f1;
+    border-left: 4px solid #dda15e;
     border-radius: 8px;
 }
 
@@ -115,10 +115,10 @@
 .software-list li {
     padding: 1rem;
     background: white;
-    border: 2px solid #e0e7ff;
+    border: 2px solid #dda15e;
     border-radius: 8px;
     text-align: center;
-    color: #6366f1;
+    color: #dda15e;
     font-weight: 600;
     transition: all 0.3s;
 }
