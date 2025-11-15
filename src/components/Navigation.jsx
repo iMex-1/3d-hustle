@@ -94,13 +94,6 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
                             <a onClick={() => handleNavClick('admin')}><FaUserShield /> Dashboard</a>
                         </li>
                     )}
-                    {!user && (
-                        <li className={currentPage === 'login' ? 'active' : ''}>
-                            <a onClick={() => handleNavClick('login')}><FaSignInAlt /> Login</a>
-                        </li>
-                    )}
-
-                    {/* Mobile Auth */}
                     <li className="mobile-auth-item">
                         {user ? (
                             <a onClick={() => { onLogout(); setMobileMenuOpen(false); }}>
