@@ -203,8 +203,9 @@
 }
 
 .btn-edit {
-    background: #e0e7ff;
-    color: #dda15e;
+    background: #dda25e3c;
+    color: #bc6c25;
+    border: 1px solid #dda15e;
 }
 
 .btn-edit:hover {
@@ -215,6 +216,7 @@
 .btn-delete {
     background: #fee;
     color: #ef4444;
+    border: 1px solid #ef4444;
 }
 
 .btn-delete:hover {
@@ -374,7 +376,7 @@
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
-    background: #bc6c25;
+    background: #bc6c25 !important;
     color: white;
     padding: 0.25rem 0.75rem;
     border-radius: 12px;

@@ -104,7 +104,7 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
                     <li className="mobile-auth-item">
                         {user ? (
                             <a onClick={() => { onLogout(); setMobileMenuOpen(false); }}>
-                                <FaSignOutAlt /> Logout (Admin: {user.username})
+                                <FaSignOutAlt /> Logout
                             </a>
                         ) : (
                             <a onClick={() => handleNavClick('login')}>
@@ -128,17 +128,7 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
                         </button>
                     </form>
 
-                    <div className="nav-auth">
-                        {user && (
-                            <div className="user-menu">
-                                <span className="username">Admin: {user.username}</span>
-                                <button onClick={() => { onLogout(); setMobileMenuOpen(false); }} className="btn-logout">
-                                    <FaSignOutAlt />
-                                    <span className="btn-text">Logout</span>
-                                </button>
-                            </div>
-                        )}
-                    </div>
+
                 </div>
             </div>
         </nav>
