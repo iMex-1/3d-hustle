@@ -7,6 +7,7 @@ import Login from './components/Login';
 import AdminDashboard from './components/AdminDashboard';
 import About from './components/About';
 import Contact from './components/Contact';
+import Notification from './components/Notification';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -14,6 +15,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
@@ -35,7 +37,7 @@ function App() {
 
   const handleNavigate = (page, options = {}) => {
     if (page === 'admin' && (!user || user.role !== 'admin')) {
-      alert('Admin access required');
+      setNotification({ message: 'Accès administrateur requis', type: 'error' });
       return;
     }
     setCurrentPage(page);
@@ -91,6 +93,13 @@ function App() {
       <main className="main-content">
         {renderPage()}
       </main>
+      {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
     </div>
   );
 }
