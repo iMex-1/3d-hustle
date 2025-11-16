@@ -87,7 +87,7 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
                                 camera-controls
                                 shadow-intensity="1"
                                 loading="lazy"
-                                reveal="interaction"
+                                interaction-prompt="none"
                                 style={{ width: '100%', height: '100%', background: '#f5f5f5' }}
                             ></model-viewer>
                             <div className="card-overlay">

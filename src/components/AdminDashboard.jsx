@@ -185,7 +185,7 @@ function AdminDashboard() {
                                 auto-rotate
                                 camera-controls
                                 loading="lazy"
-                                reveal="interaction"
+                                interaction-prompt="none"
                                 style={{ width: '100%', height: '100%' }}
                             ></model-viewer>
                             {obj.featured && <span className="featured-badge">En Vedette</span>}

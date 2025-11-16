@@ -1,31 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
-import { FaHome, FaImages, FaUserShield, FaSignInAlt, FaSignOutAlt, FaCube, FaInfoCircle, FaEnvelope, FaChevronDown, FaSearch, FaBars, FaTimes } from 'react-icons/fa';
+import { useState } from 'react';
+import { FaHome, FaImages, FaUserShield, FaSignInAlt, FaSignOutAlt, FaInfoCircle, FaEnvelope, FaSearch, FaBars, FaTimes } from 'react-icons/fa';
 import '../styles/navigation.css';
 
 function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
-    const [showCategories, setShowCategories] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const dropdownRef = useRef(null);
-
-    const categories = ['Mobilier', 'Éclairage', 'Décoration'];
-
-    // Close dropdown when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setShowCategories(false);
-            }
-        };
-
-        if (showCategories) {
-            document.addEventListener('mousedown', handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [showCategories]);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -33,16 +12,6 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
             onSearch(searchQuery);
             onNavigate('gallery');
         }
-    };
-
-    const toggleCategories = () => {
-        setShowCategories(!showCategories);
-    };
-
-    const handleCategoryClick = (category) => {
-        setShowCategories(false);
-        setMobileMenuOpen(false);
-        onNavigate('gallery', { category });
     };
 
     const handleNavClick = (page, options) => {
@@ -64,44 +33,30 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
 
                 <ul className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
                     <li className={currentPage === 'home' ? 'active' : ''}>
-                        <a onClick={() => handleNavClick('home')}><FaHome /> Accueil</a>
+                        <a onClick={() => handleNavClick('home')}><FaHome /><span className="nav-text">Accueil</span></a>
                     </li>
                     <li className={currentPage === 'gallery' ? 'active' : ''}>
-                        <a onClick={() => handleNavClick('gallery')}><FaImages /> Galerie</a>
-                    </li>
-                    <li className="nav-dropdown" ref={dropdownRef}>
-                        <a className="dropdown-toggle" onClick={toggleCategories}>
-                            <FaCube /> Catégories <FaChevronDown className={showCategories ? 'rotate' : ''} />
-                        </a>
-                        {showCategories && (
-                            <ul className="dropdown-menu">
-                                {categories.map(cat => (
-                                    <li key={cat}>
-                                        <a onClick={() => handleCategoryClick(cat)}>{cat}</a>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
+                        <a onClick={() => handleNavClick('gallery')}><FaImages /><span className="nav-text">Galerie</span></a>
                     </li>
                     <li className={currentPage === 'about' ? 'active' : ''}>
-                        <a onClick={() => handleNavClick('about')}><FaInfoCircle /> À propos</a>
+                        <a onClick={() => handleNavClick('about')}><FaInfoCircle /><span className="nav-text">À propos</span></a>
                     </li>
                     <li className={currentPage === 'contact' ? 'active' : ''}>
-                        <a onClick={() => handleNavClick('contact')}><FaEnvelope /> Contact</a>
+                        <a onClick={() => handleNavClick('contact')}><FaEnvelope /><span className="nav-text">Contact</span></a>
                     </li>
                     {user && user.role === 'admin' && (
                         <li className={currentPage === 'admin' ? 'active' : ''}>
-                            <a onClick={() => handleNavClick('admin')}><FaUserShield /> Tableau de bord</a>
+                            <a onClick={() => handleNavClick('admin')}><FaUserShield /><span className="nav-text">Admin</span></a>
                         </li>
                     )}
-                    <li className="mobile-auth-item">
+                    <li className="auth-item">
                         {user ? (
                             <a onClick={() => { onLogout(); setMobileMenuOpen(false); }}>
-                                <FaSignOutAlt /> Déconnexion
+                                <FaSignOutAlt /><span className="nav-text">Déconnexion</span>
                             </a>
                         ) : (
                             <a onClick={() => handleNavClick('login')}>
-                                <FaSignInAlt /> Connexion
+                                <FaSignInAlt /><span className="nav-text">Connexion</span>
                             </a>
                         )}
                     </li>
