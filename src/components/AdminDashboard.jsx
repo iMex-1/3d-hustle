@@ -86,7 +86,7 @@ function AdminDashboard() {
                 name: prev.name || formattedName, // Only set if name is empty
                 model: modelUrl,
                 modelName: file.name,
-                fileSize: (file.size / (1024 * 1024)).toFixed(2) + ' MB',
+                fileSize: (file.size / (1024 * 1024)).toFixed(2) + ' Mo',
                 formats: [extension]
             }));
         }
@@ -184,6 +184,8 @@ function AdminDashboard() {
                                 alt={obj.name}
                                 auto-rotate
                                 camera-controls
+                                loading="lazy"
+                                reveal="interaction"
                                 style={{ width: '100%', height: '100%' }}
                             ></model-viewer>
                             {obj.featured && <span className="featured-badge">En Vedette</span>}

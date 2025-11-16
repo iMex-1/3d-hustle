@@ -10,9 +10,9 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
 
     const categories = ['Tout', 'Mobilier', 'Éclairage', 'Décoration'];
     const categoryMap = {
-        'Mobilier': 'Furniture',
-        'Éclairage': 'Lighting',
-        'Décoration': 'Decoration'
+        'Mobilier': 'Mobilier',
+        'Éclairage': 'Éclairage',
+        'Décoration': 'Décoration'
     };
 
     // Load objects from localStorage
@@ -86,6 +86,8 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
                                 auto-rotate
                                 camera-controls
                                 shadow-intensity="1"
+                                loading="lazy"
+                                reveal="interaction"
                                 style={{ width: '100%', height: '100%', background: '#f5f5f5' }}
                             ></model-viewer>
                             <div className="card-overlay">
