@@ -30,34 +30,34 @@ function Homepage({ onNavigate, onSelectObject, user }) {
             id: 'welcome',
             type: 'welcome',
             image: '/heroslides/Slide1.png',
-            title: 'Welcome to 3D Marketplace',
-            subtitle: 'Premium 3D Models Platform',
-            description: 'Explore high-quality 3D models in multiple formats.',
+            title: 'Bienvenue sur OakMesh',
+            subtitle: 'Plateforme de Modèles 3D Premium',
+            description: 'Explorez des modèles 3D de haute qualité dans plusieurs formats.',
             buttons: [
-                { text: 'Browse Gallery', action: () => onNavigate('gallery'), primary: true },
-                { text: 'View Featured', action: () => document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' }) }
+                { text: 'Parcourir la Galerie', action: () => onNavigate('gallery'), primary: true },
+                { text: 'Voir les Vedettes', action: () => document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' }) }
             ]
         },
         {
             id: 'models',
             type: 'models',
             image: '/heroslides/Slide2.png',
-            title: 'Explore 3D Models',
-            subtitle: 'High-Quality Assets',
-            description: 'Discover 3D models organized by category. Furniture, lighting, and decoration.',
+            title: 'Explorez les Modèles 3D',
+            subtitle: 'Ressources de Haute Qualité',
+            description: 'Découvrez des modèles 3D organisés par catégorie. Mobilier, éclairage et décoration.',
             buttons: [
-                { text: 'View All Models', action: () => onNavigate('gallery'), primary: true }
+                { text: 'Voir Tous les Modèles', action: () => onNavigate('gallery'), primary: true }
             ]
         },
         {
             id: 'formats',
             type: 'formats',
             image: '/heroslides/Slide3.png',
-            title: 'Multiple Formats',
+            title: 'Formats Multiples',
             subtitle: 'GLB • GLTF • OBJ • FBX • STL',
-            description: 'Download in your preferred format. Compatible with Blender, Maya, 3ds Max, and Unity.',
+            description: 'Téléchargez dans votre format préféré. Compatible avec Blender, Maya, 3ds Max et Unity.',
             buttons: [
-                { text: 'Learn More', action: () => onNavigate('gallery'), primary: true }
+                { text: 'En Savoir Plus', action: () => onNavigate('gallery'), primary: true }
             ]
         }
     ];
@@ -215,9 +215,9 @@ function Homepage({ onNavigate, onSelectObject, user }) {
             </div>
             <section className="featured-section" id="featured">
                 <div className="section-header">
-                    <h2 className="section-title">Featured 3D Models</h2>
+                    <h2 className="section-title">Modèles 3D en Vedette</h2>
                     <p className="section-description">
-                        Handpicked premium models ready for your next project
+                        Modèles premium sélectionnés pour votre prochain projet
                     </p>
                 </div>
                 <div className="featured-grid">
@@ -233,7 +233,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                                     style={{ width: '100%', height: '100%', background: '#f5f5f5' }}
                                 ></model-viewer>
                                 <div className="card-overlay-hover">
-                                    <button className="btn-view-details">View Details</button>
+                                    <button className="btn-view-details">Voir les Détails</button>
                                 </div>
                             </div>
                             <div className="card-content">

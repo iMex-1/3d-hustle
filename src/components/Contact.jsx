@@ -33,15 +33,15 @@ function Contact() {
         <div className="contact-page">
             <section className="contact-hero">
                 <div className="contact-hero-content">
-                    <h1>Get In Touch</h1>
-                    <p>Have questions? We'd love to hear from you.</p>
+                    <h1>Contactez-Nous</h1>
+                    <p>Des questions ? Nous serions ravis de vous entendre.</p>
                 </div>
             </section>
 
             <section className="contact-content">
                 <div className="contact-info">
-                    <h2>Contact Information</h2>
-                    <p>Reach out to us through any of these channels:</p>
+                    <h2>Informations de Contact</h2>
+                    <p>Contactez-nous via l'un de ces canaux :</p>
 
                     <div className="info-cards">
                         <div className="info-card">
@@ -56,7 +56,7 @@ function Contact() {
                             <div className="info-icon">
                                 <FaPhone />
                             </div>
-                            <h3>Phone</h3>
+                            <h3>Téléphone</h3>
                             <p>+1 (555) 123-4567</p>
                         </div>
 
@@ -64,30 +64,30 @@ function Contact() {
                             <div className="info-icon">
                                 <FaMapMarkerAlt />
                             </div>
-                            <h3>Location</h3>
-                            <p>123 Design Street<br />Creative City, CC 12345</p>
+                            <h3>Localisation</h3>
+                            <p>123 Rue du Design<br />Ville Créative, CC 12345</p>
                         </div>
                     </div>
                 </div>
 
                 <div className="contact-form-container">
-                    <h2>Send Us a Message</h2>
+                    <h2>Envoyez-Nous un Message</h2>
                     {submitted ? (
                         <div className="success-message">
                             <FaPaperPlane />
-                            <h3>Message Sent!</h3>
-                            <p>Thank you for contacting us. We'll get back to you soon.</p>
+                            <h3>Message Envoyé !</h3>
+                            <p>Merci de nous avoir contactés. Nous vous répondrons bientôt.</p>
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit} className="contact-form">
                             <div className="form-group">
-                                <label>Name *</label>
+                                <label>Nom *</label>
                                 <input
                                     type="text"
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChange}
-                                    placeholder="Your name"
+                                    placeholder="Votre nom"
                                     required
                                 />
                             </div>
@@ -99,19 +99,19 @@ function Contact() {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleChange}
-                                    placeholder="your.email@example.com"
+                                    placeholder="votre.email@exemple.com"
                                     required
                                 />
                             </div>
 
                             <div className="form-group">
-                                <label>Subject *</label>
+                                <label>Sujet *</label>
                                 <input
                                     type="text"
                                     name="subject"
                                     value={formData.subject}
                                     onChange={handleChange}
-                                    placeholder="What is this about?"
+                                    placeholder="De quoi s'agit-il ?"
                                     required
                                 />
                             </div>
@@ -122,14 +122,14 @@ function Contact() {
                                     name="message"
                                     value={formData.message}
                                     onChange={handleChange}
-                                    placeholder="Your message..."
+                                    placeholder="Votre message..."
                                     rows="6"
                                     required
                                 />
                             </div>
 
                             <button type="submit" className="btn-submit">
-                                <FaPaperPlane /> Send Message
+                                <FaPaperPlane /> Envoyer le Message
                             </button>
                         </form>
                     )}

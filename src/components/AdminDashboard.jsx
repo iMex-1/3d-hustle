@@ -5,7 +5,7 @@ import { objects as initialObjects } from '../data/objects';
 import '../styles/admin.css';
 
 const SUPPORTED_FORMATS = ['GLB', 'GLTF', 'OBJ', 'FBX', 'STL'];
-const CATEGORIES = ['Furniture', 'Lighting', 'Decoration'];
+const CATEGORIES = ['Mobilier', 'Éclairage', 'Décoration'];
 
 function AdminDashboard() {
     const [objectList, setObjectList] = useState([]);
@@ -16,7 +16,7 @@ function AdminDashboard() {
     const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
-        category: 'Furniture',
+        category: 'Mobilier',
         description: '',
         model: null,
         modelName: '',
@@ -68,7 +68,7 @@ function AdminDashboard() {
         setObjectList(updatedList);
         setShowConfirmModal(false);
         setDeleteId(null);
-        showNotification('Object deleted successfully', 'success');
+        showNotification('Objet supprimé avec succès', 'success');
     };
 
     const handleModelUpload = (e) => {
@@ -96,7 +96,7 @@ function AdminDashboard() {
         e.preventDefault();
 
         if (formData.formats.length === 0) {
-            showNotification('Please upload a 3D model file', 'error');
+            showNotification('Veuillez télécharger un fichier de modèle 3D', 'error');
             return;
         }
 
@@ -105,8 +105,8 @@ function AdminDashboard() {
             category: formData.category,
             description: formData.description,
             image: 'https://via.placeholder.com/400x300/' +
-                (formData.category === 'Furniture' ? '6366f1' :
-                    formData.category === 'Lighting' ? 'f59e0b' : '10b981') +
+                (formData.category === 'Mobilier' ? '6366f1' :
+                    formData.category === 'Éclairage' ? 'f59e0b' : '10b981') +
                 '/ffffff?text=' + encodeURIComponent(formData.name),
             model: formData.model || formData.modelName,
             fileSize: formData.fileSize,
@@ -119,7 +119,7 @@ function AdminDashboard() {
             setObjectList(objectList.map(obj =>
                 obj.id === editingId ? { ...obj, ...objectData } : obj
             ));
-            showNotification('Object updated successfully', 'success');
+            showNotification('Objet mis à jour avec succès', 'success');
         } else {
             const newObject = {
                 id: Math.max(...objectList.map(o => o.id), 0) + 1,
@@ -128,7 +128,7 @@ function AdminDashboard() {
                 featured: false
             };
             setObjectList([...objectList, newObject]);
-            showNotification('Object created successfully', 'success');
+            showNotification('Objet créé avec succès', 'success');
         }
 
         closeModal();
@@ -139,7 +139,7 @@ function AdminDashboard() {
         setEditingId(null);
         setFormData({
             name: '',
-            category: 'Furniture',
+            category: 'Mobilier',
             description: '',
             model: null,
             modelName: '',
@@ -167,11 +167,11 @@ function AdminDashboard() {
         <div className="admin-dashboard">
             <div className="admin-header">
                 <div>
-                    <h1><FaCube /> Objects Manager</h1>
-                    <p className="admin-subtitle">Manage your 3D marketplace inventory</p>
+                    <h1><FaCube /> Gestionnaire d'Objets</h1>
+                    <p className="admin-subtitle">Gérez l'inventaire de votre marketplace 3D</p>
                 </div>
                 <button className="btn-add-object" onClick={() => setShowModal(true)}>
-                    <FaPlus /> Add Object
+                    <FaPlus /> Ajouter un Objet
                 </button>
             </div>
 
@@ -186,7 +186,7 @@ function AdminDashboard() {
                                 camera-controls
                                 style={{ width: '100%', height: '100%' }}
                             ></model-viewer>
-                            {obj.featured && <span className="featured-badge">Featured</span>}
+                            {obj.featured && <span className="featured-badge">En Vedette</span>}
                         </div>
                         <div className="object-card-content">
                             <h3>{obj.name}</h3>
@@ -209,14 +209,14 @@ function AdminDashboard() {
                                     checked={obj.featured}
                                     onChange={() => toggleFeatured(obj.id)}
                                 />
-                                Featured
+                                En Vedette
                             </label>
                             <div className="action-buttons">
                                 <button onClick={() => handleEdit(obj)} className="btn-edit">
-                                    <FaEdit /> Edit
+                                    <FaEdit /> Modifier
                                 </button>
                                 <button onClick={() => confirmDelete(obj.id)} className="btn-delete">
-                                    <FaTrash /> Delete
+                                    <FaTrash /> Supprimer
                                 </button>
                             </div>
                         </div>
@@ -229,7 +229,7 @@ function AdminDashboard() {
                 <div className="modal-overlay" onClick={closeModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
-                            <h2>{editingId ? 'Edit Object' : 'Add New Object'}</h2>
+                            <h2>{editingId ? 'Modifier l\'Objet' : 'Ajouter un Nouvel Objet'}</h2>
                             <button className="modal-close" onClick={closeModal}>
                                 <FaTimes />
                             </button>
@@ -237,7 +237,7 @@ function AdminDashboard() {
 
                         <form onSubmit={handleSubmit} className="modal-form">
                             <div className="form-group">
-                                <label><FaUpload /> Upload 3D Model * (GLB, GLTF, OBJ, FBX, STL)</label>
+                                <label><FaUpload /> Télécharger un Modèle 3D * (GLB, GLTF, OBJ, FBX, STL)</label>
                                 <input
                                     type="file"
                                     accept=".glb,.gltf,.obj,.fbx,.stl"
@@ -252,18 +252,18 @@ function AdminDashboard() {
                             </div>
 
                             <div className="form-group">
-                                <label>Object Name *</label>
+                                <label>Nom de l'Objet *</label>
                                 <input
                                     type="text"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    placeholder="Auto-filled from file name"
+                                    placeholder="Rempli automatiquement depuis le nom du fichier"
                                     required
                                 />
                             </div>
 
                             <div className="form-group">
-                                <label>Category *</label>
+                                <label>Catégorie *</label>
                                 <select
                                     value={formData.category}
                                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
@@ -279,14 +279,14 @@ function AdminDashboard() {
                                 <textarea
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                    placeholder="Detailed description..."
+                                    placeholder="Description détaillée..."
                                     rows="4"
                                     required
                                 />
                             </div>
 
                             <div className="form-group">
-                                <label>Additional Formats (Optional)</label>
+                                <label>Formats Supplémentaires (Optionnel)</label>
                                 <div className="format-checkboxes">
                                     {SUPPORTED_FORMATS.map(format => (
                                         <label key={format} className="format-checkbox">
@@ -303,10 +303,10 @@ function AdminDashboard() {
 
                             <div className="modal-actions">
                                 <button type="button" onClick={closeModal} className="btn-cancel">
-                                    <FaTimes /> Cancel
+                                    <FaTimes /> Annuler
                                 </button>
                                 <button type="submit" className="btn-submit">
-                                    <FaSave /> {editingId ? 'Update' : 'Create'} Object
+                                    <FaSave /> {editingId ? 'Mettre à Jour' : 'Créer'} l'Objet
                                 </button>
                             </div>
                         </form>
@@ -319,20 +319,20 @@ function AdminDashboard() {
                 <div className="modal-overlay" onClick={() => setShowConfirmModal(false)}>
                     <div className="modal-content modal-small" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
-                            <h2><FaExclamationTriangle /> Confirm Delete</h2>
+                            <h2><FaExclamationTriangle /> Confirmer la Suppression</h2>
                             <button className="modal-close" onClick={() => setShowConfirmModal(false)}>
                                 <FaTimes />
                             </button>
                         </div>
                         <div className="modal-body">
-                            <p>Are you sure you want to delete this 3D object? This action cannot be undone.</p>
+                            <p>Êtes-vous sûr de vouloir supprimer cet objet 3D ? Cette action ne peut pas être annulée.</p>
                         </div>
                         <div className="modal-actions">
                             <button onClick={() => setShowConfirmModal(false)} className="btn-cancel">
-                                Cancel
+                                Annuler
                             </button>
                             <button onClick={handleDelete} className="btn-delete">
-                                <FaTrash /> Delete
+                                <FaTrash /> Supprimer
                             </button>
                         </div>
                     </div>

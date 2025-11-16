@@ -21,8 +21,8 @@ function ObjectDetail({ objectId, onNavigate }) {
     if (!object) {
         return (
             <div className="object-detail">
-                <p>Object not found</p>
-                <button onClick={() => onNavigate('gallery')}>Back to Gallery</button>
+                <p>Objet non trouvé</p>
+                <button onClick={() => onNavigate('gallery')}>Retour à la Galerie</button>
             </div>
         );
     }
@@ -47,7 +47,7 @@ function ObjectDetail({ objectId, onNavigate }) {
     return (
         <div className="object-detail">
             <button className="btn-back" onClick={() => onNavigate('gallery')}>
-                <FaArrowLeft /> Back to Gallery
+                <FaArrowLeft /> Retour à la Galerie
             </button>
 
             <div className="detail-container">
@@ -69,29 +69,29 @@ function ObjectDetail({ objectId, onNavigate }) {
                     <p className="description">{object.description}</p>
 
                     <div className="specs">
-                        <h3>Specifications</h3>
+                        <h3>Spécifications</h3>
                         <div className="spec-grid">
                             <div className="spec-item">
-                                <span className="spec-label">File Size</span>
+                                <span className="spec-label">Taille du Fichier</span>
                                 <span className="spec-value">{object.fileSize}</span>
                             </div>
                             <div className="spec-item">
-                                <span className="spec-label">Polygons</span>
+                                <span className="spec-label">Polygones</span>
                                 <span className="spec-value">{object.polygons.toLocaleString()}</span>
                             </div>
                             <div className="spec-item">
-                                <span className="spec-label">Vertices</span>
+                                <span className="spec-label">Sommets</span>
                                 <span className="spec-value">{object.vertices.toLocaleString()}</span>
                             </div>
                             <div className="spec-item">
-                                <span className="spec-label">Downloads</span>
+                                <span className="spec-label">Téléchargements</span>
                                 <span className="spec-value">{object.downloads.toLocaleString()}</span>
                             </div>
                         </div>
                     </div>
 
                     <div className="download-section">
-                        <h3>Available Formats</h3>
+                        <h3>Formats Disponibles</h3>
                         <div className="format-buttons">
                             {object.formats.map(format => (
                                 <button
@@ -99,7 +99,7 @@ function ObjectDetail({ objectId, onNavigate }) {
                                     className="btn-download"
                                     onClick={() => handleDownload(format)}
                                 >
-                                    <FaDownload /> Download {format}
+                                    <FaDownload /> Télécharger {format}
                                 </button>
                             ))}
                         </div>

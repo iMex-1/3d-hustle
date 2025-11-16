@@ -5,10 +5,15 @@ import '../styles/gallery.css';
 
 function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCategory = null }) {
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('All');
+    const [selectedCategory, setSelectedCategory] = useState('Tout');
     const [objects, setObjects] = useState([]);
 
-    const categories = ['All', 'Furniture', 'Lighting', 'Decoration'];
+    const categories = ['Tout', 'Mobilier', 'Éclairage', 'Décoration'];
+    const categoryMap = {
+        'Mobilier': 'Furniture',
+        'Éclairage': 'Lighting',
+        'Décoration': 'Decoration'
+    };
 
     // Load objects from localStorage
     useEffect(() => {
@@ -37,21 +42,21 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
     const filteredObjects = objects.filter(obj => {
         const matchesSearch = obj.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             obj.description.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory = selectedCategory === 'All' || obj.category === selectedCategory;
+        const matchesCategory = selectedCategory === 'Tout' || obj.category === categoryMap[selectedCategory];
         return matchesSearch && matchesCategory;
     });
 
     return (
         <div className="gallery">
             <div className="gallery-header">
-                <h1>3D Object Gallery</h1>
-                <p>Browse our collection of {objects.length} premium 3D models</p>
+                <h1>Galerie d'Objets 3D</h1>
+                <p>Parcourez notre collection de {objects.length} modèles 3D premium</p>
             </div>
 
             <div className="gallery-controls">
                 <input
                     type="text"
-                    placeholder="Search objects..."
+                    placeholder="Rechercher des objets..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="search-input"
@@ -84,7 +89,7 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
                                 style={{ width: '100%', height: '100%', background: '#f5f5f5' }}
                             ></model-viewer>
                             <div className="card-overlay">
-                                <button className="btn-view">View Details</button>
+                                <button className="btn-view">Voir les Détails</button>
                             </div>
                         </div>
                         <div className="card-info">
@@ -101,7 +106,7 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
 
             {filteredObjects.length === 0 && (
                 <div className="no-results">
-                    <p>No objects found matching your criteria</p>
+                    <p>Aucun objet trouvé correspondant à vos critères</p>
                 </div>
             )}
         </div>

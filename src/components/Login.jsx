@@ -17,42 +17,42 @@ function Login({ onLogin, onNavigate }) {
             onLogin(admin);
             onNavigate('admin');
         } else {
-            setError('Invalid admin credentials');
+            setError('Identifiants administrateur invalides');
         }
     };
 
     return (
         <div className="auth-container">
             <div className="auth-card">
-                <h2>Admin Login</h2>
-                <p className="auth-subtitle">Access the 3D Marketplace Dashboard</p>
+                <h2>Connexion Administrateur</h2>
+                <p className="auth-subtitle">Accédez au Tableau de Bord de la Marketplace 3D</p>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label><FaUser /> Username</label>
+                        <label><FaUser /> Nom d'utilisateur</label>
                         <input
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            placeholder="Enter admin username"
+                            placeholder="Entrez le nom d'utilisateur admin"
                             required
                         />
                     </div>
 
                     <div className="form-group">
-                        <label><FaLock /> Password</label>
+                        <label><FaLock /> Mot de passe</label>
                         <div className="password-input-wrapper">
                             <input
                                 type={showPassword ? "text" : "password"}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Enter admin password"
+                                placeholder="Entrez le mot de passe admin"
                                 required
                             />
                             <button
                                 type="button"
                                 className="toggle-password"
                                 onClick={() => setShowPassword(!showPassword)}
-                                aria-label={showPassword ? "Hide password" : "Show password"}
+                                aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                             >
                                 {showPassword ? <FaEyeSlash /> : <FaEye />}
                             </button>
@@ -61,13 +61,13 @@ function Login({ onLogin, onNavigate }) {
 
                     {error && <p className="error-message">{error}</p>}
 
-                    <button type="submit" className="btn-submit">Login to Dashboard</button>
+                    <button type="submit" className="btn-submit">Se Connecter au Tableau de Bord</button>
                 </form>
 
                 <div className="demo-credentials">
-                    <p><strong>Admin Credentials:</strong></p>
-                    <p>Username: admin</p>
-                    <p>Password: admin123</p>
+                    <p><strong>Identifiants Admin :</strong></p>
+                    <p>Nom d'utilisateur : admin</p>
+                    <p>Mot de passe : admin123</p>
                 </div>
             </div>
         </div>

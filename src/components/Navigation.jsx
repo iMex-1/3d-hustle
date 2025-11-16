@@ -8,7 +8,7 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
 
-    const categories = ['Furniture', 'Lighting', 'Decoration'];
+    const categories = ['Mobilier', 'Éclairage', 'Décoration'];
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -64,14 +64,14 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
 
                 <ul className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
                     <li className={currentPage === 'home' ? 'active' : ''}>
-                        <a onClick={() => handleNavClick('home')}><FaHome /> Home</a>
+                        <a onClick={() => handleNavClick('home')}><FaHome /> Accueil</a>
                     </li>
                     <li className={currentPage === 'gallery' ? 'active' : ''}>
-                        <a onClick={() => handleNavClick('gallery')}><FaImages /> Gallery</a>
+                        <a onClick={() => handleNavClick('gallery')}><FaImages /> Galerie</a>
                     </li>
                     <li className="nav-dropdown" ref={dropdownRef}>
                         <a className="dropdown-toggle" onClick={toggleCategories}>
-                            <FaCube /> Categories <FaChevronDown className={showCategories ? 'rotate' : ''} />
+                            <FaCube /> Catégories <FaChevronDown className={showCategories ? 'rotate' : ''} />
                         </a>
                         {showCategories && (
                             <ul className="dropdown-menu">
@@ -84,24 +84,24 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
                         )}
                     </li>
                     <li className={currentPage === 'about' ? 'active' : ''}>
-                        <a onClick={() => handleNavClick('about')}><FaInfoCircle /> About</a>
+                        <a onClick={() => handleNavClick('about')}><FaInfoCircle /> À propos</a>
                     </li>
                     <li className={currentPage === 'contact' ? 'active' : ''}>
                         <a onClick={() => handleNavClick('contact')}><FaEnvelope /> Contact</a>
                     </li>
                     {user && user.role === 'admin' && (
                         <li className={currentPage === 'admin' ? 'active' : ''}>
-                            <a onClick={() => handleNavClick('admin')}><FaUserShield /> Dashboard</a>
+                            <a onClick={() => handleNavClick('admin')}><FaUserShield /> Tableau de bord</a>
                         </li>
                     )}
                     <li className="mobile-auth-item">
                         {user ? (
                             <a onClick={() => { onLogout(); setMobileMenuOpen(false); }}>
-                                <FaSignOutAlt /> Logout
+                                <FaSignOutAlt /> Déconnexion
                             </a>
                         ) : (
                             <a onClick={() => handleNavClick('login')}>
-                                <FaSignInAlt /> Login
+                                <FaSignInAlt /> Connexion
                             </a>
                         )}
                     </li>
@@ -111,7 +111,7 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
                     <form className="search-form" onSubmit={handleSearch}>
                         <input
                             type="text"
-                            placeholder="Search models..."
+                            placeholder="Rechercher des modèles..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="search-input"
