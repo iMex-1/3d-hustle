@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Navigation from './components/Navigation';
 import Homepage from './components/Homepage';
@@ -11,12 +12,11 @@ import Contact from './components/Contact';
 import Notification from './components/Notification';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home');
-  const [selectedObjectId, setSelectedObjectId] = useState(null);
   const [user, setUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [notification, setNotification] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
@@ -33,22 +33,6 @@ function App() {
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem('user');
-    setCurrentPage('home');
-  };
-
-  const handleNavigate = (page, options = {}) => {
-    if (page === 'admin' && (!user || user.role !== 'admin')) {
-      setNotification({ message: 'Accès administrateur requis', type: 'error' });
-      return;
-    }
-    setCurrentPage(page);
-    setSelectedObjectId(null);
-
-    if (options.category) {
-      setSelectedCategory(options.category);
-    } else {
-      setSelectedCategory(null);
-    }
   };
 
   const handleSearch = (query) => {
@@ -56,52 +40,124 @@ function App() {
     setSelectedCategory(null);
   };
 
-  const handleSelectObject = (objectId) => {
-    setSelectedObjectId(objectId);
-    setCurrentPage('detail');
-  };
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home':
-        return <Homepage onNavigate={handleNavigate} onSelectObject={handleSelectObject} user={user} />;
-      case 'gallery':
-        return <Gallery onSelectObject={handleSelectObject} searchQuery={searchQuery} selectedCategory={selectedCategory} />;
-      case 'detail':
-        return <ObjectDetail objectId={selectedObjectId} onNavigate={handleNavigate} />;
-      case 'about':
-        return <About />;
-      case 'contact':
-        return <Contact />;
-      case 'login':
-        return <Login onLogin={handleLogin} onNavigate={handleNavigate} />;
-      case 'admin':
-        return <AdminDashboard />;
-      default:
-        return <Homepage onNavigate={handleNavigate} onSelectObject={handleSelectObject} user={user} />;
+  const ProtectedRoute = ({ children }) => {
+    if (!user || user.role !== 'admin') {
+      setNotification({ message: 'Accès administrateur requis', type: 'error' });
+      return <Navigate to="/" replace />;
     }
+    return children;
   };
 
   return (
     <div className="app">
       <Navigation
-        currentPage={currentPage}
-        onNavigate={handleNavigate}
         user={user}
         onLogout={handleLogout}
         onSearch={handleSearch}
       />
       <AnimatePresence mode="wait">
-        <motion.main
-          key={currentPage}
-          className="main-content"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-        >
-          {renderPage()}
-        </motion.main>
+        <Routes location={location} key={location.pathname}>
+          <Route
+            path="/"
+            element={
+              <motion.main
+                className="main-content"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Homepage user={user} />
+              </motion.main>
+            }
+          />
+          <Route
+            path="/gallery"
+            element={
+              <motion.main
+                className="main-content"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Gallery searchQuery={searchQuery} selectedCategory={selectedCategory} />
+              </motion.main>
+            }
+          />
+          <Route
+            path="/object/:id"
+            element={
+              <motion.main
+                className="main-content"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <ObjectDetail />
+              </motion.main>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <motion.main
+                className="main-content"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <About />
+              </motion.main>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <motion.main
+                className="main-content"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Contact />
+              </motion.main>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <motion.main
+                className="main-content"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Login onLogin={handleLogin} />
+              </motion.main>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <motion.main
+                  className="main-content"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <AdminDashboard />
+                </motion.main>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
       </AnimatePresence>
       {notification && (
         <Notification
