@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FaCube, FaDownload, FaSearch } from 'react-icons/fa';
 import { objects as initialObjects } from '../data/objects';
 import '../styles/gallery.css';
@@ -77,33 +78,46 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
             </div>
 
             <div className="gallery-grid">
-                {filteredObjects.map(obj => (
-                    <div key={obj.id} className="gallery-card" onClick={() => onSelectObject(obj.id)}>
-                        <div className="card-image">
-                            <model-viewer
-                                src={obj.model}
-                                alt={obj.name}
-                                auto-rotate
-                                camera-controls
-                                shadow-intensity="1"
-                                loading="lazy"
-                                interaction-prompt="none"
-                                style={{ width: '100%', height: '100%', background: '#f5f5f5' }}
-                            ></model-viewer>
-                            <div className="card-overlay">
-                                <button className="btn-view">Voir les Détails</button>
+                <AnimatePresence>
+                    {filteredObjects.map((obj, index) => (
+                        <motion.div
+                            key={obj.id}
+                            className="gallery-card"
+                            onClick={() => onSelectObject(obj.id)}
+                            layout
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            transition={{ duration: 0.3, delay: index * 0.05 }}
+                            whileHover={{ y: -10, transition: { duration: 0.2 } }}
+                            whileTap={{ scale: 0.95 }}
+                        >
+                            <div className="card-image">
+                                <model-viewer
+                                    src={obj.model}
+                                    alt={obj.name}
+                                    auto-rotate
+                                    camera-controls
+                                    shadow-intensity="1"
+                                    loading="lazy"
+                                    interaction-prompt="none"
+                                    style={{ width: '100%', height: '100%', background: '#f5f5f5' }}
+                                ></model-viewer>
+                                <div className="card-overlay">
+                                    <button className="btn-view">Voir les Détails</button>
+                                </div>
                             </div>
-                        </div>
-                        <div className="card-info">
-                            <h3>{obj.name}</h3>
-                            <span className="badge">{obj.category}</span>
-                            <div className="card-meta">
-                                <span><FaCube /> {obj.fileSize}</span>
-                                <span><FaDownload /> {obj.downloads}</span>
+                            <div className="card-info">
+                                <h3>{obj.name}</h3>
+                                <span className="badge">{obj.category}</span>
+                                <div className="card-meta">
+                                    <span><FaCube /> {obj.fileSize}</span>
+                                    <span><FaDownload /> {obj.downloads}</span>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                ))}
+                        </motion.div>
+                    ))}
+                </AnimatePresence>
             </div>
 
             {filteredObjects.length === 0 && (

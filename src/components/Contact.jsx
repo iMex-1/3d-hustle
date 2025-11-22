@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaPaperPlane } from 'react-icons/fa';
 import '../styles/contact.css';
 
@@ -44,42 +45,71 @@ function Contact() {
                     <p>Contactez-nous via l'un de ces canaux :</p>
 
                     <div className="info-cards">
-                        <div className="info-card">
+                        <motion.div
+                            className="info-card"
+                            initial={{ opacity: 0, x: -50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5, delay: 0.1 }}
+                            whileHover={{ scale: 1.05 }}
+                        >
                             <div className="info-icon">
                                 <FaEnvelope />
                             </div>
                             <h3>Email</h3>
                             <p>support@3dmarketplace.com</p>
-                        </div>
+                        </motion.div>
 
-                        <div className="info-card">
+                        <motion.div
+                            className="info-card"
+                            initial={{ opacity: 0, x: -50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            whileHover={{ scale: 1.05 }}
+                        >
                             <div className="info-icon">
                                 <FaPhone />
                             </div>
                             <h3>Téléphone</h3>
                             <p>+1 (555) 123-4567</p>
-                        </div>
+                        </motion.div>
 
-                        <div className="info-card">
+                        <motion.div
+                            className="info-card"
+                            initial={{ opacity: 0, x: -50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5, delay: 0.3 }}
+                            whileHover={{ scale: 1.05 }}
+                        >
                             <div className="info-icon">
                                 <FaMapMarkerAlt />
                             </div>
                             <h3>Localisation</h3>
                             <p>123 Rue du Design<br />Ville Créative, CC 12345</p>
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
 
                 <div className="contact-form-container">
                     <h2>Envoyez-Nous un Message</h2>
                     {submitted ? (
-                        <div className="success-message">
+                        <motion.div
+                            className="success-message"
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.5 }}
+                        >
                             <FaPaperPlane />
                             <h3>Message Envoyé !</h3>
                             <p>Merci de nous avoir contactés. Nous vous répondrons bientôt.</p>
-                        </div>
+                        </motion.div>
                     ) : (
-                        <form onSubmit={handleSubmit} className="contact-form">
+                        <motion.form
+                            onSubmit={handleSubmit}
+                            className="contact-form"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5 }}
+                        >
                             <div className="form-group">
                                 <label>Nom *</label>
                                 <input
@@ -128,10 +158,15 @@ function Contact() {
                                 />
                             </div>
 
-                            <button type="submit" className="btn-submit">
+                            <motion.button
+                                type="submit"
+                                className="btn-submit"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
                                 <FaPaperPlane /> Envoyer le Message
-                            </button>
-                        </form>
+                            </motion.button>
+                        </motion.form>
                     )}
                 </div>
             </section>

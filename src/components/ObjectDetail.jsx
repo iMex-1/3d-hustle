@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { FaArrowLeft, FaDownload, FaCube, FaChartBar } from 'react-icons/fa';
 import { objects as initialObjects } from '../data/objects';
 import '../styles/object-detail.css';
@@ -46,12 +47,24 @@ function ObjectDetail({ objectId, onNavigate }) {
 
     return (
         <div className="object-detail">
-            <button className="btn-back" onClick={() => onNavigate('gallery')}>
+            <motion.button
+                className="btn-back"
+                onClick={() => onNavigate('gallery')}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+            >
                 <FaArrowLeft /> Retour à la Galerie
-            </button>
+            </motion.button>
 
             <div className="detail-container">
-                <div className="detail-image">
+                <motion.div
+                    className="detail-image"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                >
                     <model-viewer
                         src={object.model}
                         alt={object.name}
@@ -60,9 +73,14 @@ function ObjectDetail({ objectId, onNavigate }) {
                         shadow-intensity="1"
                         style={{ width: '100%', height: '100%' }}
                     ></model-viewer>
-                </div>
+                </motion.div>
 
-                <div className="detail-info">
+                <motion.div
+                    className="detail-info"
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <h1>{object.name}</h1>
                     <span className="category-badge">{object.category}</span>
 
@@ -93,18 +111,23 @@ function ObjectDetail({ objectId, onNavigate }) {
                     <div className="download-section">
                         <h3>Formats Disponibles</h3>
                         <div className="format-buttons">
-                            {object.formats.map(format => (
-                                <button
+                            {object.formats.map((format, index) => (
+                                <motion.button
                                     key={format}
                                     className="btn-download"
                                     onClick={() => handleDownload(format)}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.3, delay: 0.4 + index * 0.1 }}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
                                 >
                                     <FaDownload /> Télécharger {format}
-                                </button>
+                                </motion.button>
                             ))}
                         </div>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </div>
     );

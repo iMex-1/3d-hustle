@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { FaCube, FaUsers, FaRocket, FaHeart } from 'react-icons/fa';
 import '../styles/about.css';
 
@@ -22,37 +23,61 @@ function About() {
                 </div>
 
                 <div className="features-grid">
-                    <div className="feature-card">
+                    <motion.div
+                        className="feature-card"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.1 }}
+                        whileHover={{ scale: 1.05 }}
+                    >
                         <div className="feature-icon">
                             <FaCube />
                         </div>
                         <h3>Modèles de Qualité</h3>
                         <p>Chaque modèle 3D est soigneusement sélectionné et optimisé pour un usage professionnel.</p>
-                    </div>
+                    </motion.div>
 
-                    <div className="feature-card">
+                    <motion.div
+                        className="feature-card"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        whileHover={{ scale: 1.05 }}
+                    >
                         <div className="feature-icon">
                             <FaRocket />
                         </div>
                         <h3>Formats Multiples</h3>
                         <p>Téléchargez au format GLB, GLTF, OBJ, FBX ou STL pour une compatibilité maximale.</p>
-                    </div>
+                    </motion.div>
 
-                    <div className="feature-card">
+                    <motion.div
+                        className="feature-card"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                        whileHover={{ scale: 1.05 }}
+                    >
                         <div className="feature-icon">
                             <FaUsers />
                         </div>
                         <h3>Facile à Utiliser</h3>
                         <p>Parcourez, prévisualisez et téléchargez avec notre interface intuitive et notre visionneuse 3D.</p>
-                    </div>
+                    </motion.div>
 
-                    <div className="feature-card">
+                    <motion.div
+                        className="feature-card"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                        whileHover={{ scale: 1.05 }}
+                    >
                         <div className="feature-icon">
                             <FaHeart />
                         </div>
                         <h3>Toujours en Croissance</h3>
                         <p>De nouveaux modèles ajoutés régulièrement pour garder vos projets créatifs frais.</p>
-                    </div>
+                    </motion.div>
                 </div>
 
                 <div className="about-section">

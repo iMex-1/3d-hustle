@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { FaRocket, FaEye, FaBook, FaCube, FaDownload, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { objects as initialObjects } from '../data/objects';
 import '../styles/homepage.css';
@@ -221,8 +222,17 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                     </p>
                 </div>
                 <div className="featured-grid">
-                    {featuredObjects.map(obj => (
-                        <div key={obj.id} className="featured-card" onClick={() => onSelectObject(obj.id)}>
+                    {featuredObjects.map((obj, index) => (
+                        <motion.div
+                            key={obj.id}
+                            className="featured-card"
+                            onClick={() => onSelectObject(obj.id)}
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                            whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                            whileTap={{ scale: 0.95 }}
+                        >
                             <div className="card-image">
                                 <model-viewer
                                     src={obj.model}
@@ -247,7 +257,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                                     <span><FaDownload /> {obj.downloads}</span>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </section>
