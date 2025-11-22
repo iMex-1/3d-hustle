@@ -191,17 +191,19 @@ function AdminDashboard() {
                             {obj.featured && <span className="featured-badge">En Vedette</span>}
                         </div>
                         <div className="object-card-content">
-                            <h3>{obj.name}</h3>
-                            <p className="object-category">{obj.category}</p>
-                            <p className="object-description">{obj.description}</p>
-                            <div className="object-meta">
-                                <span><FaCube /> {obj.fileSize}</span>
-                                <span><FaDownload /> {obj.downloads}</span>
-                            </div>
-                            <div className="object-formats">
-                                {obj.formats.map(format => (
-                                    <span key={format} className="format-badge">{format}</span>
-                                ))}
+                            <div className="object-card-info">
+                                <h3>{obj.name}</h3>
+                                <p className="object-category">{obj.category}</p>
+                                <p className="object-description">{obj.description}</p>
+                                <div className="object-meta">
+                                    <span><FaCube /> {obj.fileSize}</span>
+                                    <span><FaDownload /> {obj.downloads}</span>
+                                </div>
+                                <div className="object-formats">
+                                    {obj.formats.map(format => (
+                                        <span key={format} className="format-badge">{format}</span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                         <div className="object-card-actions">
