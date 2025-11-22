@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaRocket, FaEye, FaBook, FaCube, FaDownload, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { objects as initialObjects } from '../data/objects';
 import '../styles/homepage.css';
 
-function Homepage({ user }) {
-    const navigate = useNavigate();
+function Homepage({ onNavigate, onSelectObject, user }) {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);
     const [isDragging, setIsDragging] = useState(false);
@@ -37,7 +35,7 @@ function Homepage({ user }) {
             subtitle: 'Plateforme de Modèles 3D Premium',
             description: 'Explorez des modèles 3D de haute qualité dans plusieurs formats.',
             buttons: [
-                { text: 'Parcourir la Galerie', action: () => navigate('/gallery'), primary: true },
+                { text: 'Parcourir la Galerie', action: () => onNavigate('gallery'), primary: true },
                 { text: 'Voir les Vedettes', action: () => document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' }) }
             ]
         },
@@ -49,7 +47,7 @@ function Homepage({ user }) {
             subtitle: 'Ressources de Haute Qualité',
             description: 'Découvrez des modèles 3D organisés par catégorie. Mobilier, éclairage et décoration.',
             buttons: [
-                { text: 'Voir Tous les Modèles', action: () => navigate('/gallery'), primary: true }
+                { text: 'Voir Tous les Modèles', action: () => onNavigate('gallery'), primary: true }
             ]
         },
         {
@@ -60,7 +58,7 @@ function Homepage({ user }) {
             subtitle: 'GLB • GLTF • OBJ • FBX • STL',
             description: 'Téléchargez dans votre format préféré. Compatible avec Blender, Maya, 3ds Max et Unity.',
             buttons: [
-                { text: 'En Savoir Plus', action: () => navigate('/gallery'), primary: true }
+                { text: 'En Savoir Plus', action: () => onNavigate('gallery'), primary: true }
             ]
         }
     ];
@@ -228,7 +226,7 @@ function Homepage({ user }) {
                         <motion.div
                             key={obj.id}
                             className="featured-card"
-                            onClick={() => navigate(`/object/${obj.id}`)}
+                            onClick={() => onSelectObject(obj.id)}
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}

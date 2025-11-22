@@ -1,15 +1,13 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FaLock, FaUser, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { authenticateAdmin } from '../data/users';
 import '../styles/auth.css';
 
-function Login({ onLogin }) {
+function Login({ onLogin, onNavigate }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -17,7 +15,7 @@ function Login({ onLogin }) {
 
         if (admin) {
             onLogin(admin);
-            navigate('/admin');
+            onNavigate('admin');
         } else {
             setError('Identifiants administrateur invalides');
         }

@@ -1,13 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaArrowLeft, FaDownload, FaCube, FaChartBar } from 'react-icons/fa';
 import { objects as initialObjects } from '../data/objects';
 import '../styles/object-detail.css';
 
-function ObjectDetail() {
-    const { id } = useParams();
-    const navigate = useNavigate();
+function ObjectDetail({ objectId, onNavigate }) {
     const [objects, setObjects] = useState([]);
 
     // Load objects from localStorage
@@ -20,13 +17,13 @@ function ObjectDetail() {
         }
     }, []);
 
-    const object = objects.find(obj => obj.id === parseInt(id));
+    const object = objects.find(obj => obj.id === objectId);
 
     if (!object) {
         return (
             <div className="object-detail">
                 <p>Objet non trouvé</p>
-                <button onClick={() => navigate('/gallery')}>Retour à la Galerie</button>
+                <button onClick={() => onNavigate('gallery')}>Retour à la Galerie</button>
             </div>
         );
     }
@@ -52,7 +49,7 @@ function ObjectDetail() {
         <div className="object-detail">
             <motion.button
                 className="btn-back"
-                onClick={() => navigate('/gallery')}
+                onClick={() => onNavigate('gallery')}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 whileHover={{ scale: 1.05 }}

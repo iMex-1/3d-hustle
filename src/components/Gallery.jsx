@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaCube, FaDownload, FaSearch } from 'react-icons/fa';
 import { objects as initialObjects } from '../data/objects';
 import '../styles/gallery.css';
 
-function Gallery({ searchQuery = '', selectedCategory: propCategory = null }) {
-    const navigate = useNavigate();
+function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCategory = null }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Tout');
     const [objects, setObjects] = useState([]);
@@ -85,7 +83,7 @@ function Gallery({ searchQuery = '', selectedCategory: propCategory = null }) {
                         <motion.div
                             key={obj.id}
                             className="gallery-card"
-                            onClick={() => navigate(`/object/${obj.id}`)}
+                            onClick={() => onSelectObject(obj.id)}
                             layout
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
