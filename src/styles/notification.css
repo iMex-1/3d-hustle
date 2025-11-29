@@ -5,7 +5,7 @@
     min-width: 320px;
     max-width: 400px;
     padding: 1rem 1.5rem;
-    background: white;
+    background: var(--color-surface, #1E1E1E);
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     display: flex;
@@ -50,7 +50,7 @@
 
 .notification-message {
     flex: 1;
-    color: #333;
+    color: var(--color-on-background, #E0E0E0);
     font-weight: 500;
 }
 
@@ -67,7 +67,7 @@
 }
 
 .notification-close:hover {
-    color: #333;
+    color: var(--color-on-background, #E0E0E0);
 }
 
 @media (max-width: 768px) {
@@ -77,3 +77,4 @@
         min-width: auto;
     }
 }
+

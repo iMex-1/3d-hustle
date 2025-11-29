@@ -4,11 +4,11 @@
     align-items: center;
     justify-content: center;
     padding: 2rem;
-    background: #f5f5f5;
+    background: var(--color-viewport-bg, #0A0A0A);
 }
 
 .auth-card {
-    background: white;
+    background: var(--color-surface, #1E1E1E);
     padding: 2.5rem;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -19,7 +19,7 @@
 .auth-card h2 {
     text-align: center;
     margin-bottom: 2rem;
-    color: #333;
+    color: var(--color-on-background, #E0E0E0);
 }
 
 .form-group {
@@ -29,7 +29,7 @@
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
-    color: #666;
+    color: var(--color-on-surface-secondary, #A0A0A0);
     font-weight: 500;
 }
 
@@ -44,7 +44,7 @@
 
 .form-group input:focus {
     outline: none;
-    border-color: #dda15e;
+    border-color: var(--color-primary, #BB86FC);
 }
 
 .error-message {
@@ -57,7 +57,7 @@
 .btn-submit {
     width: 100%;
     padding: 1rem;
-    background: #dda15e;
+    background: var(--color-primary, #BB86FC);
     color: white;
     border: none;
     border-radius: 6px;
@@ -72,7 +72,7 @@
 }
 
 .btn-submit:hover {
-    background: #cb791c;
+    background: var(--color-primary-hover, #D4A5FF);
 }
 
 .demo-credentials {
@@ -85,16 +85,16 @@
 
 .demo-credentials p {
     margin: 0.25rem 0;
-    color: #666;
+    color: var(--color-on-surface-secondary, #A0A0A0);
 }
 
 .demo-credentials strong {
-    color: #333;
+    color: var(--color-on-background, #E0E0E0);
 }
 
 .auth-subtitle {
     text-align: center;
-    color: #666;
+    color: var(--color-on-surface-secondary, #A0A0A0);
     font-size: 0.95rem;
     margin-bottom: 2rem;
 }
@@ -120,7 +120,7 @@
     right: 0.75rem;
     background: none;
     border: none;
-    color: #666;
+    color: var(--color-on-surface-secondary, #A0A0A0);
     cursor: pointer;
     padding: 0.5rem;
     display: flex;
@@ -131,5 +131,7 @@
 }
 
 .toggle-password:hover {
-    color: #dda15e;
+    color: var(--color-primary, #BB86FC);
 }
+
+

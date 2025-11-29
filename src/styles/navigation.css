@@ -3,9 +3,23 @@
     top: 0;
     left: 0;
     right: 0;
-    background: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid var(--color-border, #3A3A3A);
     z-index: 1000;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .nav-container {
@@ -38,14 +52,14 @@
 }
 
 .nav-brand .brand-name {
-    color: #000000;
+    color: var(--color-on-background, #E0E0E0);
     font-size: 1.35rem;
     font-weight: 700;
     white-space: nowrap;
 }
 
 .nav-brand h2 {
-    color: #dda15e;
+    color: var(--color-primary, #BB86FC);
     font-size: 1.25rem;
     white-space: nowrap;
 }
@@ -67,34 +81,41 @@
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    color: #666;
+    color: var(--color-on-surface-secondary, #A0A0A0);
     font-weight: 500;
-    transition: color 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     white-space: nowrap;
     padding: 0.5rem 0.75rem;
     border-radius: 6px;
     font-size: 0.95rem;
+    position: relative;
 }
 
 .nav-links li a svg {
     font-size: 1rem;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-links li a:hover {
-    color: #dda15e;
-    background: #fef3e2;
+    color: var(--color-primary, #BB86FC);
+    background: rgba(187, 134, 252, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-links li a:hover svg {
+    transform: scale(1.1);
 }
 
 .nav-links li.active a {
-    color: #dda15e;
-    background: #fef3e2;
+    color: var(--color-primary, #BB86FC);
+    background: rgba(187, 134, 252, 0.15);
     font-weight: 600;
 }
 
 /* Auth item styling */
 .auth-item a {
-    color: #dda15e !important;
+    color: var(--color-primary, #BB86FC) !important;
     font-weight: 600 !important;
 }
 
@@ -110,8 +131,8 @@
 .search-form {
     display: flex;
     align-items: stretch;
-    background: #f9fafb;
-    border: 2px solid white;
+    background: var(--color-background-dark, #121212);
+    border: 2px solid var(--color-border, #3A3A3A);
     border-radius: 10px;
     overflow: hidden;
     transition: all 0.3s;
@@ -119,13 +140,13 @@
 }
 
 .search-form:focus-within {
-    border-color: #dda15e;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    border-color: var(--color-primary, #BB86FC);
+    background: var(--color-surface, #1E1E1E);
+    box-shadow: 0 0 0 3px rgba(187, 134, 252, 0.2);
 }
 
 .search-input:focus {
-    border-color: #dda15e !important;
+    border-color: var(--color-primary, #BB86FC) !important;
     outline: none !important;
 }
 
@@ -137,20 +158,20 @@
     outline: none;
     width: 180px;
     font-size: 0.875rem;
-    color: #333;
+    color: var(--color-on-background, #E0E0E0);
 }
 
 .search-input::placeholder {
-    color: #9ca3af;
+    color: var(--color-on-surface-secondary, #A0A0A0);
 }
 
 .search-btn {
     padding: 0 1rem;
-    background: #dda15e;
-    color: white;
+    background: var(--color-primary, #BB86FC);
+    color: var(--color-background-dark, #121212);
     border: none;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -158,11 +179,21 @@
 }
 
 .search-btn:hover {
-    background: #b78144;
+    background: var(--color-primary-hover, #D4A5FF);
+    transform: scale(1.05);
+}
+
+.search-btn:active {
+    transform: scale(0.95);
 }
 
 .search-btn svg {
     font-size: 1rem;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-btn:hover svg {
+    transform: rotate(15deg);
 }
 
 /* Auth */
@@ -192,8 +223,8 @@
     gap: 0.5rem;
     padding: 0.5rem 1.5rem;
     background: transparent;
-    color: #dda15e;
-    border: 1px solid #dda15e;
+    color: var(--color-primary, #BB86FC);
+    border: 1px solid var(--color-primary, #BB86FC);
     border-radius: 5px;
     transition: all 0.3s;
     white-space: nowrap;
@@ -202,7 +233,7 @@
 
 .btn-login:hover,
 .btn-logout:hover {
-    background: #b78144;
+    background: var(--color-primary-hover, #D4A5FF);
     color: white;
 }
 
@@ -243,7 +274,7 @@
     background: none;
     border: none;
     font-size: 1.5rem;
-    color: #333;
+    color: var(--color-on-background, #E0E0E0);
     cursor: pointer;
     padding: 0.5rem;
     z-index: 1001;
@@ -263,13 +294,13 @@
     /* Show mobile auth item */
     .auth-item {
         display: block;
-        border-top: 2px solid #e5e7eb;
+        border-top: 2px solid var(--color-border, #3A3A3A);
         margin-top: 1rem;
         padding-top: 1rem;
     }
 
     .auth-item a {
-        color: #dda15e !important;
+        color: var(--color-primary, #BB86FC) !important;
         font-weight: 600 !important;
     }
 
@@ -282,10 +313,11 @@
         top: 70px;
         left: 0;
         right: 0;
-        background: white;
+        background: var(--color-surface, #1E1E1E);
         flex-direction: column;
         padding: 2rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        border-top: 1px solid var(--color-border, #3A3A3A);
         max-height: 0;
         overflow: hidden;
         opacity: 0;
@@ -303,7 +335,7 @@
         width: 100%;
         text-align: center;
         padding: 0.75rem 0;
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid var(--color-border, #3A3A3A);
     }
 
     .nav-links li a {

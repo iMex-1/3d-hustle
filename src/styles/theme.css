@@ -1,0 +1,386 @@
+/* ============================================
+   DARK THEME - CSS CUSTOM PROPERTIES
+   ============================================ */
+
+:root {
+    /* Dark Theme Color Palette */
+    --color-background-dark: #121212;
+    --color-surface: #1E1E1E;
+    --color-on-background: #E0E0E0;
+    --color-on-surface-secondary: #A0A0A0;
+    --color-primary: #BB86FC;
+    --color-primary-hover: #D4A5FF;
+    --color-primary-rgb: 187, 134, 252;
+    --color-secondary: #03DAC6;
+    --color-secondary-rgb: 3, 218, 198;
+    --color-error: #CF6679;
+    --color-border: #3A3A3A;
+    --color-success: #4CAF50;
+    
+    /* Accent Colors */
+    --color-accent-warm: var(--color-primary, #BB86FC);
+    --color-accent-warm-hover: var(--color-primary-hover, #D4A5FF);
+    --color-accent-warm-rgb: 221, 161, 94;
+    
+    /* Surface Variations */
+    --color-surface-elevated: #2A2A2A;
+    --color-surface-hover: #252525;
+    
+    /* 3D Viewport */
+    --color-viewport-bg: #0A0A0A;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+    --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.7);
+    
+    /* Transitions */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Border Radius */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+    
+    /* Typography */
+    --font-family: 'Roboto', 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 2rem;
+}
+
+/* ============================================
+   GLOBAL DARK THEME STYLES
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    background-color: var(--color-background-dark);
+    color: var(--color-on-background);
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-background-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: var(--radius-full);
+    border: 2px solid var(--color-background-dark);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-on-surface-secondary);
+}
+
+/* ============================================
+   SURFACE ELEMENTS
+   ============================================ */
+
+.surface {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.surface-elevated {
+    background-color: var(--color-surface-elevated);
+    box-shadow: var(--shadow-md);
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+button {
+    font-family: var(--font-family);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all var(--transition-normal);
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-background-dark);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-hover);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--color-on-background);
+    border: 1px solid var(--color-border);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-surface-hover);
+    border-color: var(--color-primary);
+}
+
+.btn-accent {
+    background: linear-gradient(135deg, var(--color-accent-warm) 0%, var(--color-accent-warm-hover) 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-accent:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   INPUT FIELDS
+   ============================================ */
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+textarea,
+select {
+    background-color: var(--color-background-dark);
+    border: 1px solid var(--color-border);
+    color: var(--color-on-background);
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    transition: all var(--transition-normal);
+    width: 100%;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--color-on-surface-secondary);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.2);
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+    border-color: var(--color-on-surface-secondary);
+}
+
+/* ============================================
+   CARDS & CONTAINERS
+   ============================================ */
+
+.card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+/* ============================================
+   NAVIGATION & TABS
+   ============================================ */
+
+.tab-bar {
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tab {
+    padding: 1rem 1.5rem;
+    color: var(--color-on-surface-secondary);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.tab:hover {
+    color: var(--color-on-background);
+    background-color: var(--color-surface-hover);
+}
+
+.tab.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+/* ============================================
+   3D VIEWPORT
+   ============================================ */
+
+.viewport-container {
+    background-color: var(--color-viewport-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+model-viewer {
+    background-color: var(--color-viewport-bg);
+}
+
+/* ============================================
+   TREE/LIST VIEW
+   ============================================ */
+
+.tree-view,
+.list-view {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.tree-item,
+.list-item {
+    padding: 0.75rem 1rem;
+    color: var(--color-on-background);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.tree-item:hover,
+.list-item:hover {
+    background-color: var(--color-surface-hover);
+}
+
+.tree-item.selected,
+.list-item.selected {
+    background-color: rgba(var(--color-primary-rgb), 0.2);
+    border-left: 3px solid var(--color-primary);
+}
+
+/* ============================================
+   MODALS & OVERLAYS
+   ============================================ */
+
+.modal-overlay {
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-xl);
+}
+
+/* ============================================
+   BADGES & LABELS
+   ============================================ */
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+
+.badge-primary {
+    background-color: rgba(var(--color-primary-rgb), 0.2);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+}
+
+.badge-secondary {
+    background-color: rgba(var(--color-secondary-rgb), 0.2);
+    color: var(--color-secondary);
+    border: 1px solid var(--color-secondary);
+}
+
+.badge-accent {
+    background-color: rgba(var(--color-accent-warm-rgb), 0.2);
+    color: var(--color-accent-warm);
+    border: 1px solid var(--color-accent-warm);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.text-primary {
+    color: var(--color-primary);
+}
+
+.text-secondary {
+    color: var(--color-on-surface-secondary);
+}
+
+.text-error {
+    color: var(--color-error);
+}
+
+.bg-surface {
+    background-color: var(--color-surface);
+}
+
+.bg-elevated {
+    background-color: var(--color-surface-elevated);
+}
+
+.border-primary {
+    border-color: var(--color-primary);
+}
+

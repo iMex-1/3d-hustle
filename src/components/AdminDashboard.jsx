@@ -176,8 +176,8 @@ function AdminDashboard() {
             </div>
 
             <div className="objects-grid">
-                {objectList.map(obj => (
-                    <div key={obj.id} className="object-card">
+                {objectList.map((obj, index) => (
+                    <div key={obj.id} className="object-card animate-fade-in-up" style={{ '--index': index }}>
                         <div className="object-card-preview">
                             <model-viewer
                                 src={obj.model}

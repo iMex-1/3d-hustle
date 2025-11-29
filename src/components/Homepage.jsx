@@ -242,7 +242,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                                     shadow-intensity="1"
                                     loading="lazy"
                                     interaction-prompt="none"
-                                    style={{ width: '100%', height: '100%', background: '#f5f5f5' }}
+                                    style={{ width: '100%', height: '100%', background: '#0A0A0A' }}
                                 ></model-viewer>
                                 <div className="card-overlay-hover">
                                     <button className="btn-view-details">Voir les Détails</button>

@@ -3,7 +3,7 @@
 }
 
 .about-hero {
-    background: linear-gradient(#c69153 0%, #dda15e 80%, #f5f5f5 100%);
+    background: linear-gradient(#3A0070 0%, var(--color-primary, #BB86FC) 80%, #f5f5f5 100%);
     color: white;
     padding: 6rem 2rem 4rem;
     text-align: center;
@@ -32,13 +32,13 @@
 .about-section h2 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
-    color: #333;
+    color: var(--color-on-background, #E0E0E0);
 }
 
 .about-section p {
     font-size: 1.1rem;
     line-height: 1.8;
-    color: #666;
+    color: var(--color-on-surface-secondary, #A0A0A0);
     margin-bottom: 1rem;
 }
 
@@ -50,7 +50,7 @@
 }
 
 .feature-card {
-    background: white;
+    background: var(--color-surface, #1E1E1E);
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -65,18 +65,18 @@
 
 .feature-icon {
     font-size: 3rem;
-    color: #dda15e;
+    color: var(--color-primary, #BB86FC);
     margin-bottom: 1rem;
 }
 
 .feature-card h3 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: #333;
+    color: var(--color-on-background, #E0E0E0);
 }
 
 .feature-card p {
-    color: #666;
+    color: var(--color-on-surface-secondary, #A0A0A0);
     line-height: 1.6;
 }
 
@@ -88,19 +88,19 @@
 
 .offer-item {
     padding: 1.5rem;
-    background: #f9fafb;
-    border-left: 4px solid #dda15e;
+    background: var(--color-surface-hover, #252525);
+    border-left: 4px solid var(--color-primary, #BB86FC);
     border-radius: 8px;
 }
 
 .offer-item h4 {
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
-    color: #333;
+    color: var(--color-on-background, #E0E0E0);
 }
 
 .offer-item p {
-    color: #666;
+    color: var(--color-on-surface-secondary, #A0A0A0);
     margin: 0;
 }
 
@@ -114,11 +114,11 @@
 
 .software-list li {
     padding: 1rem;
-    background: white;
-    border: 2px solid #dda15e;
+    background: var(--color-surface, #1E1E1E);
+    border: 2px solid var(--color-primary, #BB86FC);
     border-radius: 8px;
     text-align: center;
-    color: #dda15e;
+    color: var(--color-primary, #BB86FC);
     font-weight: 600;
     transition: all 0.3s;
 }
@@ -141,3 +141,5 @@
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+
