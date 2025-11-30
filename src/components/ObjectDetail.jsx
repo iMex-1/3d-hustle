@@ -12,6 +12,14 @@ function ObjectDetail({ objectId, onNavigate }) {
         localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
     }, []);
 
+    const handleViewerMouseEnter = () => {
+        document.body.style.overflow = 'hidden';
+    };
+
+    const handleViewerMouseLeave = () => {
+        document.body.style.overflow = 'auto';
+    };
+
     const object = objects.find(obj => obj.id === objectId);
 
     if (!object) {
@@ -50,7 +58,11 @@ function ObjectDetail({ objectId, onNavigate }) {
             </button>
 
             <div className="detail-container">
-                <div className="detail-image">
+                <div 
+                    className="detail-image"
+                    onMouseEnter={handleViewerMouseEnter}
+                    onMouseLeave={handleViewerMouseLeave}
+                >
                     {object.xktFile ? (
                         <XeokitViewer xktUrl={object.xktFile} height="100%" width="100%" />
                     ) : (
