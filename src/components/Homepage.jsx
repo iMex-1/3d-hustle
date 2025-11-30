@@ -16,11 +16,22 @@ function Homepage({ onNavigate, onSelectObject, user }) {
 
     // Load objects from localStorage
     useEffect(() => {
-        const savedObjects = localStorage.getItem('3d_objects');
-        if (savedObjects) {
-            setObjects(JSON.parse(savedObjects));
-        } else {
+        const dataVersion = localStorage.getItem('3d_objects_version');
+        const currentVersion = '2.0'; // Updated for new categories
+        
+        if (dataVersion !== currentVersion) {
+            // Force update with new data structure
+            localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
+            localStorage.setItem('3d_objects_version', currentVersion);
             setObjects(initialObjects);
+        } else {
+            const savedObjects = localStorage.getItem('3d_objects');
+            if (savedObjects) {
+                setObjects(JSON.parse(savedObjects));
+            } else {
+                setObjects(initialObjects);
+                localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
+            }
         }
     }, []);
 

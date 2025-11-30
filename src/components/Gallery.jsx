@@ -9,20 +9,26 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
     const [selectedCategory, setSelectedCategory] = useState('Tout');
     const [objects, setObjects] = useState([]);
 
-    const categories = ['Tout', 'Mobilier', 'Éclairage', 'Décoration'];
-    const categoryMap = {
-        'Mobilier': 'Mobilier',
-        'Éclairage': 'Éclairage',
-        'Décoration': 'Décoration'
-    };
+    const categories = ['Tout', 'Zelige', 'Boiserie', 'Platre', 'Autre'];
 
     // Load objects from localStorage
     useEffect(() => {
-        const savedObjects = localStorage.getItem('3d_objects');
-        if (savedObjects) {
-            setObjects(JSON.parse(savedObjects));
-        } else {
+        const dataVersion = localStorage.getItem('3d_objects_version');
+        const currentVersion = '2.0'; // Updated for new categories
+        
+        if (dataVersion !== currentVersion) {
+            // Force update with new data structure
+            localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
+            localStorage.setItem('3d_objects_version', currentVersion);
             setObjects(initialObjects);
+        } else {
+            const savedObjects = localStorage.getItem('3d_objects');
+            if (savedObjects) {
+                setObjects(JSON.parse(savedObjects));
+            } else {
+                setObjects(initialObjects);
+                localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
+            }
         }
     }, []);
 
@@ -43,7 +49,7 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
     const filteredObjects = objects.filter(obj => {
         const matchesSearch = obj.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             obj.description.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory = selectedCategory === 'Tout' || obj.category === categoryMap[selectedCategory];
+        const matchesCategory = selectedCategory === 'Tout' || obj.category === selectedCategory;
         return matchesSearch && matchesCategory;
     });
 

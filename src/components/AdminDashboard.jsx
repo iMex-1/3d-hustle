@@ -5,7 +5,7 @@ import { objects as initialObjects } from '../data/objects';
 import '../styles/admin.css';
 
 const SUPPORTED_FORMATS = ['GLB', 'GLTF', 'OBJ', 'FBX', 'STL'];
-const CATEGORIES = ['Mobilier', 'Éclairage', 'Décoration'];
+const CATEGORIES = ['Zelige', 'Boiserie', 'Platre', 'Autre'];
 
 function AdminDashboard() {
     const [objectList, setObjectList] = useState([]);
@@ -16,7 +16,7 @@ function AdminDashboard() {
     const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
-        category: 'Mobilier',
+        category: 'Zelige',
         description: '',
         model: null,
         modelName: '',
@@ -25,12 +25,22 @@ function AdminDashboard() {
     });
 
     useEffect(() => {
-        const savedObjects = localStorage.getItem('3d_objects');
-        if (savedObjects) {
-            setObjectList(JSON.parse(savedObjects));
-        } else {
-            setObjectList(initialObjects);
+        const dataVersion = localStorage.getItem('3d_objects_version');
+        const currentVersion = '2.0'; // Updated for new categories
+        
+        if (dataVersion !== currentVersion) {
+            // Force update with new data structure
             localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
+            localStorage.setItem('3d_objects_version', currentVersion);
+            setObjectList(initialObjects);
+        } else {
+            const savedObjects = localStorage.getItem('3d_objects');
+            if (savedObjects) {
+                setObjectList(JSON.parse(savedObjects));
+            } else {
+                setObjectList(initialObjects);
+                localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
+            }
         }
     }, []);
 
@@ -105,8 +115,9 @@ function AdminDashboard() {
             category: formData.category,
             description: formData.description,
             image: 'https://via.placeholder.com/400x300/' +
-                (formData.category === 'Mobilier' ? '6366f1' :
-                    formData.category === 'Éclairage' ? 'f59e0b' : '10b981') +
+                (formData.category === 'Zelige' ? 'BB86FC' :
+                    formData.category === 'Boiserie' ? '03DAC6' :
+                    formData.category === 'Platre' ? 'D4A5FF' : 'CF6679') +
                 '/ffffff?text=' + encodeURIComponent(formData.name),
             model: formData.model || formData.modelName,
             fileSize: formData.fileSize,
@@ -139,7 +150,7 @@ function AdminDashboard() {
         setEditingId(null);
         setFormData({
             name: '',
-            category: 'Mobilier',
+            category: 'Zelige',
             description: '',
             model: null,
             modelName: '',
