@@ -185,7 +185,7 @@ function AdminDashboard() {
                     <p className="admin-subtitle">Gérez l'inventaire de modèles IFC/XKT</p>
                 </div>
                 <button className="btn-add-object" onClick={() => setShowModal(true)}>
-                    ➕ Ajouter un Modèle
+                    Ajouter un Modèle
                 </button>
             </div>
 
@@ -227,10 +227,10 @@ function AdminDashboard() {
                             </label>
                             <div className="action-buttons">
                                 <button onClick={() => handleEdit(obj)} className="btn-edit" title="Modifier">
-                                    ✏️
+                                    Modifier
                                 </button>
                                 <button onClick={() => confirmDelete(obj.id)} className="btn-delete" title="Supprimer">
-                                    🗑️
+                                    Supprimer
                                 </button>
                             </div>
                         </div>
@@ -250,7 +250,7 @@ function AdminDashboard() {
 
                         <form onSubmit={handleSubmit} className="modal-form">
                             <div className="form-group">
-                                <label>📤 Télécharger Fichier XKT * (pour visualisation)</label>
+                                <label>Télécharger Fichier XKT * (pour visualisation)</label>
                                 <input
                                     type="file"
                                     accept=".xkt"
@@ -265,7 +265,7 @@ function AdminDashboard() {
                             </div>
 
                             <div className="form-group">
-                                <label>📤 Télécharger Fichier IFC * (pour téléchargement)</label>
+                                <label>Télécharger Fichier IFC * (pour téléchargement)</label>
                                 <input
                                     type="file"
                                     accept=".ifc"
@@ -315,10 +315,10 @@ function AdminDashboard() {
 
                             <div className="modal-actions">
                                 <button type="button" onClick={closeModal} className="btn-cancel">
-                                    ✕ Annuler
+                                    Annuler
                                 </button>
                                 <button type="submit" className="btn-submit">
-                                    💾 {editingId ? 'Mettre à Jour' : 'Créer'} le Modèle
+                                    {editingId ? 'Mettre à Jour' : 'Créer'} le Modèle
                                 </button>
                             </div>
                         </form>
@@ -343,7 +343,7 @@ function AdminDashboard() {
                                 Annuler
                             </button>
                             <button onClick={handleDelete} className="btn-delete">
-                                🗑️ Supprimer
+                                Supprimer
                             </button>
                         </div>
                     </div>
