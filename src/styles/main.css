@@ -9,9 +9,10 @@ body {
     font-weight: 300;
     background: var(--color-background-dark, #0B0B0E);
     background-attachment: fixed;
-    color: var(--color-on-background, #F0F0F0);
+    color: var(--color-on-background, #FFFFFF);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
 }
 
 button, a, input, .card, .filter-btn, .nav-item, .category-card {
