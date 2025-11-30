@@ -8,16 +8,38 @@
     color: var(--color-on-background, white);
     padding: 6rem 2rem 4rem;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(139, 157, 131, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(168, 181, 161, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.contact-hero-content {
+    position: relative;
+    z-index: 1;
 }
 
 .contact-hero-content h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
+    color: #2d3436;
+    font-weight: 700;
 }
 
 .contact-hero-content p {
     font-size: 1.25rem;
-    opacity: 0.9;
+    color: #4a5759;
+    opacity: 0.95;
 }
 
 .contact-content {
@@ -61,8 +83,13 @@
 
 .info-icon {
     font-size: 2rem;
-    color: var(--color-primary, #BB86FC);
+    color: #8B9D83;
     margin-bottom: 1rem;
+    transition: color 0.3s ease;
+}
+
+.info-card:hover .info-icon {
+    color: #6B7D63;
 }
 
 .info-card h3 {
@@ -118,12 +145,12 @@
 .contact-form input:focus,
 .contact-form textarea:focus {
     outline: none;
-    border-color: var(--color-primary, #00A896);
-    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.4);
+    border-color: #8B9D83;
+    box-shadow: 0 0 0 3px rgba(139, 157, 131, 0.2);
 }
 
 .contact-form .form-group:focus-within label {
-    color: var(--color-primary, #00A896);
+    color: #8B9D83;
     transition: color 0.2s cubic-bezier(0.25, 0.8, 0.5, 1);
 }
 
@@ -134,10 +161,10 @@
 .contact-form .btn-submit {
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(135deg, var(--color-primary, #00A896) 0%, var(--color-secondary, #FFB000) 100%);
-    color: #000000;
+    background: linear-gradient(135deg, #8B9D83 0%, #A8B5A1 100%);
+    color: #FFFFFF;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
@@ -146,11 +173,13 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    box-shadow: 0 4px 12px rgba(139, 157, 131, 0.3);
 }
 
 .contact-form .btn-submit:hover {
-    background: linear-gradient(135deg, var(--color-secondary, #FFB000) 0%, var(--color-primary, #00A896) 100%);
-    box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.4);
+    background: linear-gradient(135deg, #6B7D63 0%, #8B9D83 100%);
+    box-shadow: 0 6px 20px rgba(139, 157, 131, 0.4);
+    transform: translateY(-2px);
 }
 
 .success-message {
