@@ -183,8 +183,8 @@
 
 /* Download Section Styling */
 .download-section {
-    background: rgba(99, 102, 241, 0.05);
-    border: 1px solid rgba(99, 102, 241, 0.2);
+    background: rgba(45, 51, 72, 0.4);
+    border: 1px solid rgba(74, 81, 102, 0.5);
     border-radius: 12px;
     padding: 1.5rem;
     margin-top: 2rem;
@@ -192,58 +192,41 @@
 
 .download-section h3 {
     color: #FFFFFF;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.download-section h3::before {
-    content: '📥';
-    font-size: 1.5rem;
+    font-weight: 600;
 }
 
 .download-note {
     margin-top: 1rem;
-    padding: 1rem;
-    background: rgba(0, 0, 0, 0.2);
-    border-left: 3px solid #6366f1;
+    padding: 0.875rem 1rem;
+    background: rgba(0, 0, 0, 0.15);
+    border-left: 2px solid rgba(139, 157, 131, 0.6);
     border-radius: 6px;
     color: #B8BCC8;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     line-height: 1.6;
 }
 
-.download-note::before {
-    content: 'ℹ️ ';
-    margin-right: 0.5rem;
-}
-
 .btn-download {
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+    padding: 0.875rem 1.75rem;
+    background: linear-gradient(135deg, #8B9D83 0%, #A8B5A1 100%);
     color: #FFFFFF;
     border: none;
     border-radius: 8px;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.95rem;
     transition: all 0.3s;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 3px 10px rgba(139, 157, 131, 0.25);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-.btn-download::before {
-    content: '⬇';
-    font-size: 1.2rem;
-}
-
 .btn-download:hover {
-    background: linear-gradient(135deg, #818cf8 0%, #a5b4fc 100%);
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    background: linear-gradient(135deg, #6B7D63 0%, #8B9D83 100%);
+    box-shadow: 0 5px 15px rgba(139, 157, 131, 0.35);
     transform: translateY(-2px);
 }
 
