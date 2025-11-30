@@ -664,3 +664,13 @@
 .card-image .xeokit-viewer-container {
     border-radius: 16px 16px 0 0 !important;
 }
+
+
+/* Style for stats labels */
+.card-stats span {
+    background: rgba(99, 102, 241, 0.1);
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    font-weight: 500;
+}

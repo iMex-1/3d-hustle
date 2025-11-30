@@ -214,3 +214,13 @@
 .gallery-card .card-overlay {
     border-radius: 12px 12px 0 0 !important;
 }
+
+
+/* Style for meta labels */
+.card-meta span {
+    background: rgba(99, 102, 241, 0.1);
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    font-weight: 500;
+}
