@@ -3,10 +3,10 @@
    ============================================ */
 
 :root {
-    /* Balanced Theme - Perfect Contrast */
-    --color-background-dark: #1f2332;
-    --color-surface: #2a3142;
-    --color-surface-rgb: 42, 49, 66;
+    /* Darker Balanced Theme */
+    --color-background-dark: #181c28;
+    --color-surface: #232837;
+    --color-surface-rgb: 35, 40, 55;
     --color-on-background: #FFFFFF;
     --color-on-surface-secondary: #B8BCC8;
     --color-primary: #00A896;
@@ -15,7 +15,7 @@
     --color-secondary: #FFB000;
     --color-secondary-rgb: 255, 176, 0;
     --color-error: #CF6679;
-    --color-border: #3d4254;
+    --color-border: #363c4d;
     --color-success: #4CAF50;
     
     /* Glassmorphism Variables - Multi-Layered 3D */
@@ -36,8 +36,8 @@
     --color-accent-warm-rgb: 221, 161, 94;
     
     /* Surface Variations */
-    --color-surface-elevated: #333a4f;
-    --color-surface-hover: #2f3648;
+    --color-surface-elevated: #2d3348;
+    --color-surface-hover: #282e40;
     
     /* 3D Viewport */
     --color-viewport-bg: #FFFFFF;
