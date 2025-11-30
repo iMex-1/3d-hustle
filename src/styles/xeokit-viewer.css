@@ -1,0 +1,10 @@
+.xeokit-viewer-container {
+    position: relative;
+    background: #0A0A0A;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.xeokit-viewer-container canvas {
+    display: block;
+}

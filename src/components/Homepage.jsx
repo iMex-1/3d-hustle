@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { FaRocket, FaEye, FaBook, FaCube, FaDownload, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { objects as initialObjects } from '../data/objects';
+import XeokitViewer from './XeokitViewer';
 import '../styles/homepage.css';
 
 function Homepage({ onNavigate, onSelectObject, user }) {
@@ -14,25 +13,10 @@ function Homepage({ onNavigate, onSelectObject, user }) {
     const containerRef = useRef(null);
     const autoPlayInterval = 5000;
 
-    // Load objects from localStorage
     useEffect(() => {
-        const dataVersion = localStorage.getItem('3d_objects_version');
-        const currentVersion = '2.0'; // Updated for new categories
-        
-        if (dataVersion !== currentVersion) {
-            // Force update with new data structure
-            localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
-            localStorage.setItem('3d_objects_version', currentVersion);
-            setObjects(initialObjects);
-        } else {
-            const savedObjects = localStorage.getItem('3d_objects');
-            if (savedObjects) {
-                setObjects(JSON.parse(savedObjects));
-            } else {
-                setObjects(initialObjects);
-                localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
-            }
-        }
+        // Always use initialObjects and save to localStorage
+        setObjects(initialObjects);
+        localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
     }, []);
 
     const featuredObjects = objects.filter(obj => obj.featured);
@@ -43,8 +27,8 @@ function Homepage({ onNavigate, onSelectObject, user }) {
             type: 'welcome',
             image: '/heroslides/Slide1.png',
             title: 'Bienvenue sur OakMesh',
-            subtitle: 'Plateforme de Modèles 3D Premium',
-            description: 'Explorez des modèles 3D de haute qualité dans plusieurs formats.',
+            subtitle: 'Plateforme de Modèles BIM',
+            description: 'Explorez des modèles IFC/XKT de haute qualité pour vos projets.',
             buttons: [
                 { text: 'Parcourir la Galerie', action: () => onNavigate('gallery'), primary: true },
                 { text: 'Voir les Vedettes', action: () => document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' }) }
@@ -54,9 +38,9 @@ function Homepage({ onNavigate, onSelectObject, user }) {
             id: 'models',
             type: 'models',
             image: '/heroslides/Slide2.png',
-            title: 'Explorez les Modèles 3D',
+            title: 'Explorez les Modèles BIM',
             subtitle: 'Ressources de Haute Qualité',
-            description: 'Découvrez des modèles 3D organisés par catégorie. Mobilier, éclairage et décoration.',
+            description: 'Découvrez des modèles organisés par catégorie. Architecture, MEP, Structure et Infrastructure.',
             buttons: [
                 { text: 'Voir Tous les Modèles', action: () => onNavigate('gallery'), primary: true }
             ]
@@ -65,9 +49,9 @@ function Homepage({ onNavigate, onSelectObject, user }) {
             id: 'formats',
             type: 'formats',
             image: '/heroslides/Slide3.png',
-            title: 'Formats Multiples',
-            subtitle: 'GLB • GLTF • OBJ • FBX • STL',
-            description: 'Téléchargez dans votre format préféré. Compatible avec Blender, Maya, 3ds Max et Unity.',
+            title: 'Formats IFC & XKT',
+            subtitle: 'Visualisation • Téléchargement',
+            description: 'Visualisez en XKT et téléchargez en IFC. Compatible avec tous les logiciels BIM.',
             buttons: [
                 { text: 'En Savoir Plus', action: () => onNavigate('gallery'), primary: true }
             ]
@@ -176,7 +160,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                                 <div className="slide-overlay" />
                                 <div className="slide-content">
                                     <div className="slide-text-content">
-                                        <div className="slide-badge"><FaCube /> {slide.subtitle}</div>
+                                        <div className="slide-badge">📦 {slide.subtitle}</div>
                                         <h1 className="slide-title">{slide.title}</h1>
                                         <p className="slide-description">{slide.description}</p>
                                         <div className="slide-buttons">
@@ -202,7 +186,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                         onClick={prevSlide}
                         aria-label="Previous slide"
                     >
-                        <FaChevronLeft />
+                        ‹
                     </button>
 
                     <button
@@ -210,7 +194,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                         onClick={nextSlide}
                         aria-label="Next slide"
                     >
-                        <FaChevronRight />
+                        ›
                     </button>
 
                     <div className="carousel-nav">
@@ -227,34 +211,26 @@ function Homepage({ onNavigate, onSelectObject, user }) {
             </div>
             <section className="featured-section" id="featured">
                 <div className="section-header">
-                    <h2 className="section-title">Modèles 3D en Vedette</h2>
+                    <h2 className="section-title">Modèles BIM en Vedette</h2>
                     <p className="section-description">
                         Modèles premium sélectionnés pour votre prochain projet
                     </p>
                 </div>
                 <div className="featured-grid">
-                    {featuredObjects.map((obj, index) => (
-                        <motion.div
+                    {featuredObjects.map((obj) => (
+                        <div
                             key={obj.id}
                             className="featured-card"
                             onClick={() => onSelectObject(obj.id)}
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-                            whileTap={{ scale: 0.95 }}
                         >
                             <div className="card-image">
-                                <model-viewer
-                                    src={obj.model}
-                                    alt={obj.name}
-                                    auto-rotate
-                                    camera-controls
-                                    shadow-intensity="1"
-                                    loading="lazy"
-                                    interaction-prompt="none"
-                                    style={{ width: '100%', height: '100%', background: '#0A0A0A' }}
-                                ></model-viewer>
+                                {obj.xktFile ? (
+                                    <XeokitViewer xktUrl={obj.xktFile} height="100%" width="100%" />
+                                ) : (
+                                    <div style={{ width: '100%', height: '100%', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <p style={{ color: '#666' }}>Pas de prévisualisation</p>
+                                    </div>
+                                )}
                                 <div className="card-overlay-hover">
                                     <button className="btn-view-details">Voir les Détails</button>
                                 </div>
@@ -264,11 +240,11 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                                 <p className="category">{obj.category}</p>
                                 <p className="description">{obj.description}</p>
                                 <div className="card-stats">
-                                    <span><FaCube /> {obj.fileSize}</span>
-                                    <span><FaDownload /> {obj.downloads}</span>
+                                    <span>📦 {obj.fileSize}</span>
+                                    <span>⬇️ {obj.downloads}</span>
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
             </section>
