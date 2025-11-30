@@ -1,9 +1,8 @@
 .categories-page {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 3rem 2rem;
+    width: 100%;
+    padding: 3rem 2.5rem;
     min-height: 100vh;
-    background-color: var(--color-background-dark, #121212);
+    background: transparent;
 }
 
 .categories-header {
@@ -30,9 +29,10 @@
 
 .categories-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
     margin-bottom: 3rem;
+    max-width: 100%;
 }
 
 .category-card {
