@@ -161,20 +161,7 @@ function AdminDashboard() {
         ));
     };
 
-    // Cleanup: Ensure scroll is re-enabled when component unmounts
-    useEffect(() => {
-        return () => {
-            document.body.style.overflow = 'auto';
-        };
-    }, []);
 
-    const handleViewerMouseEnter = () => {
-        document.body.style.overflow = 'hidden';
-    };
-
-    const handleViewerMouseLeave = () => {
-        document.body.style.overflow = 'auto';
-    };
 
     return (
         <div className="admin-dashboard">
@@ -191,11 +178,7 @@ function AdminDashboard() {
             <div className="objects-grid">
                 {objectList.map((obj, index) => (
                     <div key={obj.id} className="object-card animate-fade-in-up" style={{ '--index': index }}>
-                        <div
-                            className="object-card-preview"
-                            onMouseEnter={handleViewerMouseEnter}
-                            onMouseLeave={handleViewerMouseLeave}
-                        >
+                        <div className="object-card-preview">
                             {obj.xktFile ? (
                                 <XeokitViewer xktUrl={obj.xktFile} height="100%" width="100%" />
                             ) : (

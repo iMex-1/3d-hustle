@@ -118,6 +118,12 @@
     background: #FFFFFF;
     overflow: hidden;
     border-radius: 16px 16px 0 0;
+    pointer-events: none;
+    user-select: none;
+}
+
+.object-card-preview canvas {
+    pointer-events: none !important;
 }
 
 .featured-badge {
