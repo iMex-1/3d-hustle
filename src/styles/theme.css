@@ -1,5 +1,5 @@
 /* ============================================
-   DARK THEME - CSS CUSTOM PROPERTIES
+   THEME - CSS CUSTOM PROPERTIES
    ============================================ */
 
 :root {
@@ -69,6 +69,56 @@
     --font-size-xl: 1.25rem;
     --font-size-2xl: 1.5rem;
     --font-size-3xl: 2rem;
+}
+
+/* ============================================
+   LIGHT THEME
+   ============================================ */
+
+[data-theme="light"] {
+    /* Light Theme Color Palette */
+    --color-background-dark: #F5F7FA;
+    --color-surface: #FFFFFF;
+    --color-surface-rgb: 255, 255, 255;
+    --color-on-background: #1A1A1A;
+    --color-on-surface-secondary: #666666;
+    --color-primary: #00A896;
+    --color-primary-hover: #008C7A;
+    --color-primary-rgb: 0, 168, 150;
+    --color-secondary: #FF9500;
+    --color-secondary-rgb: 255, 149, 0;
+    --color-error: #D32F2F;
+    --color-border: #E0E0E0;
+    --color-success: #4CAF50;
+    
+    /* Glassmorphism Variables - Light Mode */
+    --glass-blur-amount: 16px;
+    --glass-bg-opacity: 0.7;
+    --glass-border-color: rgba(0, 168, 150, 0.3);
+    --glass-shadow: 0 2px 4px rgba(0, 0, 0, 0.08),
+                    0 10px 25px rgba(0, 0, 0, 0.12),
+                    0 0 10px 1px rgba(0, 168, 150, 0.05);
+    --glass-shadow-modal: 0 2px 4px rgba(0, 0, 0, 0.1),
+                          0 15px 40px rgba(0, 0, 0, 0.15),
+                          0 0 15px 2px rgba(0, 168, 150, 0.08);
+    
+    /* Accent Colors */
+    --color-accent-warm: #00A896;
+    --color-accent-warm-hover: #008C7A;
+    --color-accent-warm-rgb: 0, 168, 150;
+    
+    /* Surface Variations */
+    --color-surface-elevated: #FFFFFF;
+    --color-surface-hover: #F5F5F5;
+    
+    /* 3D Viewport */
+    --color-viewport-bg: #FAFAFA;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+    --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.18);
 }
 
 /* ============================================
