@@ -176,14 +176,16 @@
 .object-meta {
     display: flex;
     gap: 1rem;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--color-on-surface-secondary, #A0A0A0);
+    flex-wrap: wrap;
 }
 
 .object-meta span {
     display: flex;
     align-items: center;
     gap: 0.25rem;
+    white-space: nowrap;
 }
 
 .format-badge {

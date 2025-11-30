@@ -544,7 +544,12 @@
     display: flex;
     gap: 1rem;
     color: var(--color-on-surface-secondary, #A0A0A0);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.card-stats span {
+    white-space: nowrap;
 }
 
 @keyframes slideInBottom {

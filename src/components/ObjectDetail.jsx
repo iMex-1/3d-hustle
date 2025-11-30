@@ -107,7 +107,7 @@ function ObjectDetail({ objectId, onNavigate }) {
                                 className="btn-download"
                                 onClick={handleDownload}
                             >
-                                ⬇️ Télécharger IFC
+                                Télécharger IFC
                             </button>
                         </div>
                         <p className="download-note">

@@ -160,7 +160,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                                 <div className="slide-overlay" />
                                 <div className="slide-content">
                                     <div className="slide-text-content">
-                                        <div className="slide-badge">📦 {slide.subtitle}</div>
+                                        <div className="slide-badge">{slide.subtitle}</div>
                                         <h1 className="slide-title">{slide.title}</h1>
                                         <p className="slide-description">{slide.description}</p>
                                         <div className="slide-buttons">
@@ -240,8 +240,8 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                                 <p className="category">{obj.category}</p>
                                 <p className="description">{obj.description}</p>
                                 <div className="card-stats">
-                                    <span>📦 {obj.fileSize}</span>
-                                    <span>⬇️ {obj.downloads}</span>
+                                    <span>Taille: {obj.fileSize}</span>
+                                    <span>Téléchargements: {obj.downloads}</span>
                                 </div>
                             </div>
                         </div>

@@ -93,8 +93,8 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
                             <h3>{obj.name}</h3>
                             <span className="badge">{obj.category}</span>
                             <div className="card-meta">
-                                <span>📦 {obj.fileSize}</span>
-                                <span>⬇️ {obj.downloads}</span>
+                                <span>Taille: {obj.fileSize}</span>
+                                <span>Téléchargements: {obj.downloads}</span>
                             </div>
                         </div>
                     </div>

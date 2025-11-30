@@ -181,7 +181,7 @@ function AdminDashboard() {
         <div className="admin-dashboard">
             <div className="admin-header">
                 <div>
-                    <h1>📦 Gestionnaire de Modèles BIM</h1>
+                    <h1>Gestionnaire de Modèles BIM</h1>
                     <p className="admin-subtitle">Gérez l'inventaire de modèles IFC/XKT</p>
                 </div>
                 <button className="btn-add-object" onClick={() => setShowModal(true)}>
@@ -212,8 +212,8 @@ function AdminDashboard() {
                                 <span className="object-category">{obj.category}</span>
                             </div>
                             <div className="object-meta">
-                                <span>📦 {obj.fileSize}</span>
-                                <span>⬇️ {obj.downloads}</span>
+                                <span>Taille: {obj.fileSize}</span>
+                                <span>Téléchargements: {obj.downloads}</span>
                             </div>
                         </div>
                         <div className="object-card-actions">
@@ -259,7 +259,7 @@ function AdminDashboard() {
                                 />
                                 {formData.xktFileName && (
                                     <div className="file-preview">
-                                        📦 {formData.xktFileName} ({formData.fileSize})
+                                        {formData.xktFileName} ({formData.fileSize})
                                     </div>
                                 )}
                             </div>
@@ -274,7 +274,7 @@ function AdminDashboard() {
                                 />
                                 {formData.ifcFileName && (
                                     <div className="file-preview">
-                                        📦 {formData.ifcFileName}
+                                        {formData.ifcFileName}
                                     </div>
                                 )}
                             </div>
