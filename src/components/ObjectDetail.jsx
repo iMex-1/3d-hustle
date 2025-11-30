@@ -1,20 +1,15 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FaArrowLeft, FaDownload, FaCube, FaChartBar } from 'react-icons/fa';
 import { objects as initialObjects } from '../data/objects';
+import XeokitViewer from './XeokitViewer';
 import '../styles/object-detail.css';
 
 function ObjectDetail({ objectId, onNavigate }) {
     const [objects, setObjects] = useState([]);
 
-    // Load objects from localStorage
     useEffect(() => {
-        const savedObjects = localStorage.getItem('3d_objects');
-        if (savedObjects) {
-            setObjects(JSON.parse(savedObjects));
-        } else {
-            setObjects(initialObjects);
-        }
+        // Always use initialObjects and save to localStorage
+        setObjects(initialObjects);
+        localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
     }, []);
 
     const object = objects.find(obj => obj.id === objectId);
@@ -28,16 +23,16 @@ function ObjectDetail({ objectId, onNavigate }) {
         );
     }
 
-    const handleDownload = (format) => {
-        // Create a temporary link and trigger download
+    const handleDownload = () => {
+        if (!object.ifcFile) return;
+
         const link = document.createElement('a');
-        link.href = object.model;
-        link.download = `${object.name.replace(/\s+/g, '_')}.${format.toLowerCase()}`;
+        link.href = object.ifcFile;
+        link.download = `${object.name.replace(/\s+/g, '_')}.ifc`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
 
-        // Update download count
         const updatedObjects = objects.map(obj =>
             obj.id === object.id ? { ...obj, downloads: obj.downloads + 1 } : obj
         );
@@ -47,40 +42,25 @@ function ObjectDetail({ objectId, onNavigate }) {
 
     return (
         <div className="object-detail">
-            <motion.button
+            <button
                 className="btn-back"
                 onClick={() => onNavigate('gallery')}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
             >
-                <FaArrowLeft /> Retour à la Galerie
-            </motion.button>
+                ← Retour à la Galerie
+            </button>
 
             <div className="detail-container">
-                <motion.div
-                    className="detail-image"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <model-viewer
-                        src={object.model}
-                        alt={object.name}
-                        auto-rotate
-                        camera-controls
-                        shadow-intensity="1"
-                        style={{ width: '100%', height: '100%' }}
-                    ></model-viewer>
-                </motion.div>
+                <div className="detail-image">
+                    {object.xktFile ? (
+                        <XeokitViewer xktUrl={object.xktFile} height="100%" width="100%" />
+                    ) : (
+                        <div style={{ width: '100%', height: '100%', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <p style={{ color: '#666' }}>Pas de prévisualisation</p>
+                        </div>
+                    )}
+                </div>
 
-                <motion.div
-                    className="detail-info"
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                >
+                <div className="detail-info">
                     <h1>{object.name}</h1>
                     <span className="category-badge">{object.category}</span>
 
@@ -94,12 +74,12 @@ function ObjectDetail({ objectId, onNavigate }) {
                                 <span className="spec-value">{object.fileSize}</span>
                             </div>
                             <div className="spec-item">
-                                <span className="spec-label">Polygones</span>
-                                <span className="spec-value">{object.polygons.toLocaleString()}</span>
+                                <span className="spec-label">Format de Visualisation</span>
+                                <span className="spec-value">XKT</span>
                             </div>
                             <div className="spec-item">
-                                <span className="spec-label">Sommets</span>
-                                <span className="spec-value">{object.vertices.toLocaleString()}</span>
+                                <span className="spec-label">Format de Téléchargement</span>
+                                <span className="spec-value">IFC</span>
                             </div>
                             <div className="spec-item">
                                 <span className="spec-label">Téléchargements</span>
@@ -109,25 +89,20 @@ function ObjectDetail({ objectId, onNavigate }) {
                     </div>
 
                     <div className="download-section">
-                        <h3>Formats Disponibles</h3>
+                        <h3>Télécharger le Modèle</h3>
                         <div className="format-buttons">
-                            {object.formats.map((format, index) => (
-                                <motion.button
-                                    key={format}
-                                    className="btn-download"
-                                    onClick={() => handleDownload(format)}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.3, delay: 0.4 + index * 0.1 }}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                >
-                                    <FaDownload /> Télécharger {format}
-                                </motion.button>
-                            ))}
+                            <button
+                                className="btn-download"
+                                onClick={handleDownload}
+                            >
+                                ⬇️ Télécharger IFC
+                            </button>
                         </div>
+                        <p className="download-note">
+                            Le fichier IFC peut être ouvert dans Revit, ArchiCAD, Tekla, et autres logiciels BIM.
+                        </p>
                     </div>
-                </motion.div>
+                </div>
             </div>
         </div>
     );

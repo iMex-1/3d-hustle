@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaCube, FaDownload, FaUpload, FaExclamationTriangle } from 'react-icons/fa';
 import Notification from './Notification';
+import XeokitViewer from './XeokitViewer';
 import { objects as initialObjects } from '../data/objects';
 import '../styles/admin.css';
 
-const SUPPORTED_FORMATS = ['GLB', 'GLTF', 'OBJ', 'FBX', 'STL'];
-const CATEGORIES = ['Mobilier', 'Éclairage', 'Décoration'];
+const CATEGORIES = ['Architecture', 'MEP', 'Structure', 'Paysage', 'Infrastructure'];
 
 function AdminDashboard() {
     const [objectList, setObjectList] = useState([]);
@@ -16,22 +15,19 @@ function AdminDashboard() {
     const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
-        category: 'Mobilier',
+        category: 'Architecture',
         description: '',
-        model: null,
-        modelName: '',
-        fileSize: '',
-        formats: []
+        xktFile: null,
+        xktFileName: '',
+        ifcFile: null,
+        ifcFileName: '',
+        fileSize: ''
     });
 
     useEffect(() => {
-        const savedObjects = localStorage.getItem('3d_objects');
-        if (savedObjects) {
-            setObjectList(JSON.parse(savedObjects));
-        } else {
-            setObjectList(initialObjects);
-            localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
-        }
+        // Always use initialObjects and save to localStorage
+        setObjectList(initialObjects);
+        localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
     }, []);
 
     useEffect(() => {
@@ -50,10 +46,11 @@ function AdminDashboard() {
             name: obj.name,
             category: obj.category,
             description: obj.description,
-            model: null,
-            modelName: obj.model,
-            fileSize: obj.fileSize,
-            formats: obj.formats
+            xktFile: obj.xktFile,
+            xktFileName: obj.xktFile,
+            ifcFile: obj.ifcFile,
+            ifcFileName: obj.ifcFile,
+            fileSize: obj.fileSize
         });
         setShowModal(true);
     };
@@ -71,23 +68,33 @@ function AdminDashboard() {
         showNotification('Objet supprimé avec succès', 'success');
     };
 
-    const handleModelUpload = (e) => {
+    const handleXKTUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            const modelUrl = URL.createObjectURL(file);
-            const extension = file.name.split('.').pop().toUpperCase();
-            const fileName = file.name.replace(/\.[^/.]+$/, ''); // Remove extension
+            const fileUrl = URL.createObjectURL(file);
+            const fileName = file.name.replace(/\.[^/.]+$/, '');
             const formattedName = fileName
                 .replace(/[_-]/g, ' ')
-                .replace(/\b\w/g, l => l.toUpperCase()); // Capitalize words
+                .replace(/\b\w/g, l => l.toUpperCase());
 
             setFormData(prev => ({
                 ...prev,
-                name: prev.name || formattedName, // Only set if name is empty
-                model: modelUrl,
-                modelName: file.name,
-                fileSize: (file.size / (1024 * 1024)).toFixed(2) + ' Mo',
-                formats: [extension]
+                name: prev.name || formattedName,
+                xktFile: fileUrl,
+                xktFileName: file.name,
+                fileSize: (file.size / (1024 * 1024)).toFixed(2) + ' Mo'
+            }));
+        }
+    };
+
+    const handleIFCUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const fileUrl = URL.createObjectURL(file);
+            setFormData(prev => ({
+                ...prev,
+                ifcFile: fileUrl,
+                ifcFileName: file.name
             }));
         }
     };
@@ -95,8 +102,13 @@ function AdminDashboard() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (formData.formats.length === 0) {
-            showNotification('Veuillez télécharger un fichier de modèle 3D', 'error');
+        if (!formData.xktFile) {
+            showNotification('Veuillez télécharger un fichier XKT', 'error');
+            return;
+        }
+
+        if (!formData.ifcFile) {
+            showNotification('Veuillez télécharger un fichier IFC', 'error');
             return;
         }
 
@@ -104,15 +116,9 @@ function AdminDashboard() {
             name: formData.name,
             category: formData.category,
             description: formData.description,
-            image: 'https://via.placeholder.com/400x300/' +
-                (formData.category === 'Mobilier' ? '6366f1' :
-                    formData.category === 'Éclairage' ? 'f59e0b' : '10b981') +
-                '/ffffff?text=' + encodeURIComponent(formData.name),
-            model: formData.model || formData.modelName,
-            fileSize: formData.fileSize,
-            polygons: 0,
-            vertices: 0,
-            formats: formData.formats
+            xktFile: formData.xktFile,
+            ifcFile: formData.ifcFile,
+            fileSize: formData.fileSize
         };
 
         if (editingId) {
@@ -139,12 +145,13 @@ function AdminDashboard() {
         setEditingId(null);
         setFormData({
             name: '',
-            category: 'Mobilier',
+            category: 'Architecture',
             description: '',
-            model: null,
-            modelName: '',
-            fileSize: '',
-            formats: []
+            xktFile: null,
+            xktFileName: '',
+            ifcFile: null,
+            ifcFileName: '',
+            fileSize: ''
         });
     };
 
@@ -154,24 +161,15 @@ function AdminDashboard() {
         ));
     };
 
-    const handleFormatToggle = (format) => {
-        setFormData(prev => ({
-            ...prev,
-            formats: prev.formats.includes(format)
-                ? prev.formats.filter(f => f !== format)
-                : [...prev.formats, format]
-        }));
-    };
-
     return (
         <div className="admin-dashboard">
             <div className="admin-header">
                 <div>
-                    <h1><FaCube /> Gestionnaire d'Objets</h1>
-                    <p className="admin-subtitle">Gérez l'inventaire de votre marketplace 3D</p>
+                    <h1>📦 Gestionnaire de Modèles BIM</h1>
+                    <p className="admin-subtitle">Gérez l'inventaire de modèles IFC/XKT</p>
                 </div>
                 <button className="btn-add-object" onClick={() => setShowModal(true)}>
-                    <FaPlus /> Ajouter un Objet
+                    ➕ Ajouter un Modèle
                 </button>
             </div>
 
@@ -179,15 +177,13 @@ function AdminDashboard() {
                 {objectList.map((obj, index) => (
                     <div key={obj.id} className="object-card animate-fade-in-up" style={{ '--index': index }}>
                         <div className="object-card-preview">
-                            <model-viewer
-                                src={obj.model}
-                                alt={obj.name}
-                                auto-rotate
-                                camera-controls
-                                loading="lazy"
-                                interaction-prompt="none"
-                                style={{ width: '100%', height: '100%' }}
-                            ></model-viewer>
+                            {obj.xktFile ? (
+                                <XeokitViewer xktUrl={obj.xktFile} height="100%" width="100%" />
+                            ) : (
+                                <div style={{ width: '100%', height: '100%', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <p style={{ color: '#666' }}>Pas de prévisualisation</p>
+                                </div>
+                            )}
                             {obj.featured && <span className="featured-badge">En Vedette</span>}
                         </div>
                         <div className="object-card-content">
@@ -195,13 +191,12 @@ function AdminDashboard() {
                             <p className="object-category">{obj.category}</p>
                             <p className="object-description">{obj.description}</p>
                             <div className="object-meta">
-                                <span><FaCube /> {obj.fileSize}</span>
-                                <span><FaDownload /> {obj.downloads}</span>
+                                <span>📦 {obj.fileSize}</span>
+                                <span>⬇️ {obj.downloads}</span>
                             </div>
                             <div className="object-formats">
-                                {obj.formats.map(format => (
-                                    <span key={format} className="format-badge">{format}</span>
-                                ))}
+                                <span className="format-badge">XKT</span>
+                                <span className="format-badge">IFC</span>
                             </div>
                         </div>
                         <div className="object-card-actions">
@@ -215,10 +210,10 @@ function AdminDashboard() {
                             </label>
                             <div className="action-buttons">
                                 <button onClick={() => handleEdit(obj)} className="btn-edit">
-                                    <FaEdit /> Modifier
+                                    ✏️ Modifier
                                 </button>
                                 <button onClick={() => confirmDelete(obj.id)} className="btn-delete">
-                                    <FaTrash /> Supprimer
+                                    🗑️ Supprimer
                                 </button>
                             </div>
                         </div>
@@ -226,35 +221,49 @@ function AdminDashboard() {
                 ))}
             </div>
 
-            {/* Add/Edit Modal */}
             {showModal && (
                 <div className="modal-overlay" onClick={closeModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
-                            <h2>{editingId ? 'Modifier l\'Objet' : 'Ajouter un Nouvel Objet'}</h2>
+                            <h2>{editingId ? 'Modifier le Modèle' : 'Ajouter un Nouveau Modèle'}</h2>
                             <button className="modal-close" onClick={closeModal}>
-                                <FaTimes />
+                                ✕
                             </button>
                         </div>
 
                         <form onSubmit={handleSubmit} className="modal-form">
                             <div className="form-group">
-                                <label><FaUpload /> Télécharger un Modèle 3D * (GLB, GLTF, OBJ, FBX, STL)</label>
+                                <label>📤 Télécharger Fichier XKT * (pour visualisation)</label>
                                 <input
                                     type="file"
-                                    accept=".glb,.gltf,.obj,.fbx,.stl"
-                                    onChange={handleModelUpload}
+                                    accept=".xkt"
+                                    onChange={handleXKTUpload}
                                     className="file-input"
                                 />
-                                {formData.modelName && (
+                                {formData.xktFileName && (
                                     <div className="file-preview">
-                                        <FaCube /> {formData.modelName} ({formData.fileSize})
+                                        📦 {formData.xktFileName} ({formData.fileSize})
                                     </div>
                                 )}
                             </div>
 
                             <div className="form-group">
-                                <label>Nom de l'Objet *</label>
+                                <label>📤 Télécharger Fichier IFC * (pour téléchargement)</label>
+                                <input
+                                    type="file"
+                                    accept=".ifc"
+                                    onChange={handleIFCUpload}
+                                    className="file-input"
+                                />
+                                {formData.ifcFileName && (
+                                    <div className="file-preview">
+                                        📦 {formData.ifcFileName}
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="form-group">
+                                <label>Nom du Modèle *</label>
                                 <input
                                     type="text"
                                     value={formData.name}
@@ -287,28 +296,12 @@ function AdminDashboard() {
                                 />
                             </div>
 
-                            <div className="form-group">
-                                <label>Formats Supplémentaires (Optionnel)</label>
-                                <div className="format-checkboxes">
-                                    {SUPPORTED_FORMATS.map(format => (
-                                        <label key={format} className="format-checkbox">
-                                            <input
-                                                type="checkbox"
-                                                checked={formData.formats.includes(format)}
-                                                onChange={() => handleFormatToggle(format)}
-                                            />
-                                            <span>{format}</span>
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-
                             <div className="modal-actions">
                                 <button type="button" onClick={closeModal} className="btn-cancel">
-                                    <FaTimes /> Annuler
+                                    ✕ Annuler
                                 </button>
                                 <button type="submit" className="btn-submit">
-                                    <FaSave /> {editingId ? 'Mettre à Jour' : 'Créer'} l'Objet
+                                    💾 {editingId ? 'Mettre à Jour' : 'Créer'} le Modèle
                                 </button>
                             </div>
                         </form>
@@ -316,32 +309,30 @@ function AdminDashboard() {
                 </div>
             )}
 
-            {/* Confirm Delete Modal */}
             {showConfirmModal && (
                 <div className="modal-overlay" onClick={() => setShowConfirmModal(false)}>
                     <div className="modal-content modal-small" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
-                            <h2><FaExclamationTriangle /> Confirmer la Suppression</h2>
+                            <h2>⚠️ Confirmer la Suppression</h2>
                             <button className="modal-close" onClick={() => setShowConfirmModal(false)}>
-                                <FaTimes />
+                                ✕
                             </button>
                         </div>
                         <div className="modal-body">
-                            <p>Êtes-vous sûr de vouloir supprimer cet objet 3D ? Cette action ne peut pas être annulée.</p>
+                            <p>Êtes-vous sûr de vouloir supprimer ce modèle ? Cette action ne peut pas être annulée.</p>
                         </div>
                         <div className="modal-actions">
                             <button onClick={() => setShowConfirmModal(false)} className="btn-cancel">
                                 Annuler
                             </button>
                             <button onClick={handleDelete} className="btn-delete">
-                                <FaTrash /> Supprimer
+                                🗑️ Supprimer
                             </button>
                         </div>
                     </div>
                 </div>
             )}
 
-            {/* Notification */}
             {notification && (
                 <Notification
                     message={notification.message}
