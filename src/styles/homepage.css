@@ -395,10 +395,9 @@
 .featured-section {
     position: relative;
     z-index: 10;
-    padding: 80px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    background: var(--color-background-dark, #121212);
+    padding: 80px 40px;
+    width: 100%;
+    background: transparent;
 }
 
 .section-header {
@@ -426,8 +425,9 @@
 
 .featured-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    max-width: 100%;
 }
 
 .featured-card {

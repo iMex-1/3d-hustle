@@ -3,20 +3,20 @@
    ============================================ */
 
 :root {
-    /* Dark Theme Color Palette - Professional Ocean Depth */
-    --color-background-dark: #0B0B0E;
-    --color-surface: #14151C;
-    --color-surface-rgb: 20, 21, 28;
-    --color-on-background: #F0F0F0;
-    --color-on-surface-secondary: #A0A0A0;
-    --color-primary: #00A896;
-    --color-primary-hover: #00C8B3;
-    --color-primary-rgb: 0, 168, 150;
-    --color-secondary: #FFB000;
-    --color-secondary-rgb: 255, 176, 0;
-    --color-error: #CF6679;
-    --color-border: #2A2C38;
-    --color-success: #4CAF50;
+    /* Modern Light-Dark Theme - Better Contrast */
+    --color-background-dark: #1a1d29;
+    --color-surface: #242938;
+    --color-surface-rgb: 36, 41, 56;
+    --color-on-background: #FFFFFF;
+    --color-on-surface-secondary: #B8BCC8;
+    --color-primary: #6366f1;
+    --color-primary-hover: #818cf8;
+    --color-primary-rgb: 99, 102, 241;
+    --color-secondary: #f59e0b;
+    --color-secondary-rgb: 245, 158, 11;
+    --color-error: #ef4444;
+    --color-border: #3d4254;
+    --color-success: #10b981;
     
     /* Glassmorphism Variables - Multi-Layered 3D */
     --glass-blur-amount: 16px;
@@ -36,11 +36,11 @@
     --color-accent-warm-rgb: 221, 161, 94;
     
     /* Surface Variations */
-    --color-surface-elevated: #2A2A2A;
-    --color-surface-hover: #252525;
+    --color-surface-elevated: #2d3348;
+    --color-surface-hover: #2f3549;
     
     /* 3D Viewport */
-    --color-viewport-bg: #0A0A0A;
+    --color-viewport-bg: #FFFFFF;
     
     /* Shadows */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
