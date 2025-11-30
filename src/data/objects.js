@@ -3,7 +3,7 @@ export const objects = [
     {
         id: 1,
         name: "Building Architecture",
-        category: "Architecture",
+        category: "Zelige",
         description: "Modèle architectural complet d'un bâtiment avec tous les détails structurels et de conception. Comprend les murs, portes, fenêtres et éléments architecturaux.",
         xktFile: "/files/output/Building-Architecture.xkt",
         ifcFile: "/files/input/Building-Architecture.ifc",
@@ -14,7 +14,7 @@ export const objects = [
     {
         id: 2,
         name: "Building HVAC",
-        category: "MEP",
+        category: "Boiserie",
         description: "Système CVC complet pour bâtiment incluant conduits, ventilation et équipements de chauffage, ventilation et climatisation.",
         xktFile: "/files/output/Building-Hvac.xkt",
         ifcFile: "/files/input/Building-Hvac.ifc",
@@ -25,7 +25,7 @@ export const objects = [
     {
         id: 3,
         name: "Building Structural",
-        category: "Structure",
+        category: "Platre",
         description: "Éléments structurels du bâtiment incluant poutres, colonnes, dalles et fondations. Modèle complet de la structure porteuse.",
         xktFile: "/files/output/Building-Structural.xkt",
         ifcFile: "/files/input/Building-Structural.ifc",
@@ -36,7 +36,7 @@ export const objects = [
     {
         id: 4,
         name: "Building Landscaping",
-        category: "Paysage",
+        category: "Autre",
         description: "Aménagement paysager et éléments extérieurs du projet de construction. Inclut végétation, mobilier urbain et aménagements.",
         xktFile: "/files/output/Building-Landscaping.xkt",
         ifcFile: "/files/input/Building-Landscaping.ifc",
@@ -47,7 +47,7 @@ export const objects = [
     {
         id: 5,
         name: "Infrastructure Bridge",
-        category: "Infrastructure",
+        category: "Zelige",
         description: "Modèle de pont d'infrastructure avec tous les détails techniques et structurels. Comprend tablier, piles et culées.",
         xktFile: "/files/output/Infra-Bridge.xkt",
         ifcFile: "/files/input/Infra-Bridge.ifc",
@@ -58,7 +58,7 @@ export const objects = [
     {
         id: 6,
         name: "Infrastructure Road",
-        category: "Infrastructure",
+        category: "Platre",
         description: "Modèle de route d'infrastructure incluant chaussée, marquages routiers et équipements de signalisation.",
         xktFile: "/files/output/Infra-Road.xkt",
         ifcFile: "/files/input/Infra-Road.ifc",
@@ -69,7 +69,7 @@ export const objects = [
     {
         id: 7,
         name: "Infrastructure Landscaping",
-        category: "Paysage",
+        category: "Platre",
         description: "Aménagement paysager pour infrastructure routière. Inclut espaces verts, plantations et aménagements paysagers.",
         xktFile: "/files/output/Infra-Landscaping.xkt",
         ifcFile: "/files/input/Infra-Landscaping.ifc",
@@ -80,7 +80,7 @@ export const objects = [
     {
         id: 8,
         name: "Infrastructure Plumbing",
-        category: "MEP",
+        category: "Autre",
         description: "Système de plomberie et réseaux d'eau pour infrastructure. Comprend canalisations, regards et équipements hydrauliques.",
         xktFile: "/files/output/Infra-Plumbing.xkt",
         ifcFile: "/files/input/Infra-Plumbing.ifc",
@@ -91,7 +91,7 @@ export const objects = [
     {
         id: 9,
         name: "Infrastructure Rail",
-        category: "Infrastructure",
+        category: "Zelige",
         description: "Modèle d'infrastructure ferroviaire incluant voies, ballast et équipements ferroviaires.",
         xktFile: "/files/output/Infra-Rail.xkt",
         ifcFile: "/files/input/Infra-Rail.ifc",

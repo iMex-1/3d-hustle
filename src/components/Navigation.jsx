@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaHome, FaImages, FaUserShield, FaSignInAlt, FaSignOutAlt, FaInfoCircle, FaEnvelope, FaSearch, FaBars, FaTimes } from 'react-icons/fa';
+import { FaHome, FaImages, FaUserShield, FaSignInAlt, FaSignOutAlt, FaCube, FaInfoCircle, FaEnvelope, FaSearch, FaBars, FaTimes } from 'react-icons/fa';
 import '../styles/navigation.css';
 
 function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
@@ -34,7 +34,7 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                 >
-                    <img src="/logo/Logo.png" alt="OakMesh" className="brand-logo" />
+                    <img src="/logo/LogoInversed.png" alt="OakMesh" className="brand-logo" />
                     <h2 className="brand-name">OakMesh</h2>
                 </motion.div>
 
@@ -47,8 +47,9 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
                         <li className={currentPage === 'home' ? 'active' : ''}>
                             <a onClick={() => handleNavClick('home')}><FaHome /><span className="nav-text">Accueil</span></a>
                         </li>
-                        <li className={currentPage === 'gallery' ? 'active' : ''}>
-                            <a onClick={() => handleNavClick('gallery')}><FaImages /><span className="nav-text">Galerie</span></a>
+                        
+                        <li className={currentPage === 'categories' ? 'active' : ''}>
+                            <a onClick={() => handleNavClick('categories')}><FaCube /><span className="nav-text">Galerie</span></a>
                         </li>
                         <li className={currentPage === 'about' ? 'active' : ''}>
                             <a onClick={() => handleNavClick('about')}><FaInfoCircle /><span className="nav-text">À propos</span></a>

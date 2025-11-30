@@ -4,7 +4,7 @@ import XeokitViewer from './XeokitViewer';
 import { objects as initialObjects } from '../data/objects';
 import '../styles/admin.css';
 
-const CATEGORIES = ['Architecture', 'MEP', 'Structure', 'Paysage', 'Infrastructure'];
+const CATEGORIES = ['Zelige', 'Boiserie', 'Platre', 'Autre'];
 
 function AdminDashboard() {
     const [objectList, setObjectList] = useState([]);
@@ -15,7 +15,7 @@ function AdminDashboard() {
     const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
-        category: 'Architecture',
+        category: 'Zelige',
         description: '',
         xktFile: null,
         xktFileName: '',
@@ -145,7 +145,7 @@ function AdminDashboard() {
         setEditingId(null);
         setFormData({
             name: '',
-            category: 'Architecture',
+            category: 'Zelige',
             description: '',
             xktFile: null,
             xktFileName: '',

@@ -8,14 +8,7 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
     const [selectedCategory, setSelectedCategory] = useState('Tout');
     const [objects, setObjects] = useState([]);
 
-    const categories = ['Tout', 'Architecture', 'MEP', 'Structure', 'Paysage', 'Infrastructure'];
-    const categoryMap = {
-        'Architecture': 'Architecture',
-        'MEP': 'MEP',
-        'Structure': 'Structure',
-        'Paysage': 'Paysage',
-        'Infrastructure': 'Infrastructure'
-    };
+    const categories = ['Tout', 'Zelige', 'Boiserie', 'Platre', 'Autre'];
 
     useEffect(() => {
         // Always use initialObjects and save to localStorage
@@ -39,7 +32,7 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
     const filteredObjects = objects.filter(obj => {
         const matchesSearch = obj.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             obj.description.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory = selectedCategory === 'Tout' || obj.category === categoryMap[selectedCategory];
+        const matchesCategory = selectedCategory === 'Tout' || obj.category === selectedCategory;
         return matchesSearch && matchesCategory;
     });
 

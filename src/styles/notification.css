@@ -5,14 +5,25 @@
     min-width: 320px;
     max-width: 400px;
     padding: 1rem 1.5rem;
-    background: var(--color-surface, #1E1E1E);
-    border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    background-color: rgba(var(--color-surface-rgb), var(--glass-bg-opacity));
+    backdrop-filter: blur(var(--glass-blur-amount));
+    border: 1px solid var(--glass-border-color);
+    box-shadow: var(--glass-shadow);
+    border-radius: var(--radius-card);
     display: flex;
     align-items: center;
     gap: 1rem;
     z-index: 10000;
-    animation: slideInRight 0.3s ease-out;
+    animation: slideInRight 0.3s ease-out, notificationPulse 2s ease-in-out infinite;
+}
+
+@keyframes notificationPulse {
+    0%, 100% {
+        box-shadow: var(--glass-shadow);
+    }
+    50% {
+        box-shadow: var(--glass-shadow), 0 0 20px rgba(0, 255, 255, 0.4);
+    }
 }
 
 @keyframes slideInRight {
