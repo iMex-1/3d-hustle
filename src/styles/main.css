@@ -7,7 +7,7 @@
 body {
     font-family: 'Montserrat', 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     font-weight: 300;
-    background: var(--color-background-dark, #0B0B0E);
+    background: linear-gradient(135deg, #2a2f3e 0%, #363d54 50%, #424a63 100%);
     background-attachment: fixed;
     color: var(--color-on-background, #FFFFFF);
     -webkit-font-smoothing: antialiased;
