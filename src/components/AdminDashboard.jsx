@@ -161,20 +161,19 @@ function AdminDashboard() {
         ));
     };
 
-    const handleViewerMouseEnter = (e) => {
-        const preventScroll = (event) => {
-            event.preventDefault();
-            event.stopPropagation();
+    // Cleanup: Ensure scroll is re-enabled when component unmounts
+    useEffect(() => {
+        return () => {
+            document.body.style.overflow = 'auto';
         };
-        e.currentTarget.addEventListener('wheel', preventScroll, { passive: false });
-        e.currentTarget._preventScroll = preventScroll;
+    }, []);
+
+    const handleViewerMouseEnter = () => {
+        document.body.style.overflow = 'hidden';
     };
 
-    const handleViewerMouseLeave = (e) => {
-        if (e.currentTarget._preventScroll) {
-            e.currentTarget.removeEventListener('wheel', e.currentTarget._preventScroll);
-            delete e.currentTarget._preventScroll;
-        }
+    const handleViewerMouseLeave = () => {
+        document.body.style.overflow = 'auto';
     };
 
     return (
@@ -192,7 +191,7 @@ function AdminDashboard() {
             <div className="objects-grid">
                 {objectList.map((obj, index) => (
                     <div key={obj.id} className="object-card animate-fade-in-up" style={{ '--index': index }}>
-                        <div 
+                        <div
                             className="object-card-preview"
                             onMouseEnter={handleViewerMouseEnter}
                             onMouseLeave={handleViewerMouseLeave}

@@ -13,6 +13,13 @@ function ObjectDetail({ objectId, onNavigate }) {
         localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
     }, []);
 
+    // Cleanup: Ensure scroll is re-enabled when component unmounts
+    useEffect(() => {
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, []);
+
 
 
     const object = objects.find(obj => obj.id === objectId);
