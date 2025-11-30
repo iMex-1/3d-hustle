@@ -3,7 +3,7 @@
     margin: 0 auto;
     padding: 2rem;
     min-height: 100vh;
-    background: transparent;
+    background-color: var(--color-background-dark, #121212);
 }
 
 .admin-header {
