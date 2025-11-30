@@ -1,11 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaHome, FaImages, FaUserShield, FaSignInAlt, FaSignOutAlt, FaCube, FaInfoCircle, FaEnvelope, FaSearch, FaBars, FaTimes } from 'react-icons/fa';
+import { FaHome, FaImages, FaUserShield, FaSignInAlt, FaSignOutAlt, FaCube, FaInfoCircle, FaEnvelope, FaSearch, FaBars, FaTimes, FaSun, FaMoon } from 'react-icons/fa';
 import '../styles/navigation.css';
 
 function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [theme, setTheme] = useState(() => {
+        return localStorage.getItem('theme') || 'dark';
+    });
+
+    useEffect(() => {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
+    };
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -34,7 +46,11 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                 >
-                    <img src="/logo/LogoInversed.png" alt="OakMesh" className="brand-logo" />
+                    <img 
+                        src={theme === 'dark' ? '/logo/LogoInversed.png' : '/logo/Logo.png'} 
+                        alt="OakMesh" 
+                        className="brand-logo" 
+                    />
                     <h2 className="brand-name">OakMesh</h2>
                 </motion.div>
 
@@ -90,7 +106,15 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
                         </button>
                     </form>
 
-
+                    <motion.button
+                        className="theme-toggle"
+                        onClick={toggleTheme}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        aria-label="Toggle theme"
+                    >
+                        {theme === 'dark' ? <FaSun /> : <FaMoon />}
+                    </motion.button>
                 </div>
             </div>
         </motion.nav>

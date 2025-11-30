@@ -24,6 +24,10 @@ function App() {
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
+
+    // Initialize theme on app load
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
   }, []);
 
   const handleLogin = (userData) => {

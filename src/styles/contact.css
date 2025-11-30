@@ -3,9 +3,9 @@
 }
 
 .contact-hero {
-    background: linear-gradient(135deg, #001f3f 0%, var(--color-primary, #00A896) 80%, #f0f0f0 100%);
+    background: linear-gradient(135deg, var(--color-surface, #001f3f) 0%, var(--color-primary, #00A896) 80%, var(--color-background-dark, #f0f0f0) 100%);
     background-attachment: fixed;
-    color: white;
+    color: var(--color-on-background, white);
     padding: 6rem 2rem 4rem;
     text-align: center;
 }
@@ -106,7 +106,9 @@
 .contact-form textarea {
     width: 100%;
     padding: 0.65rem;
-    border: 2px solid #e0e0e0;
+    background: var(--color-background-dark, #121212);
+    color: var(--color-on-background, #E0E0E0);
+    border: 2px solid var(--color-border, #3A3A3A);
     border-radius: 6px;
     font-size: 1rem;
     font-family: inherit;
@@ -154,7 +156,7 @@
 .success-message {
     text-align: center;
     padding: 3rem 2rem;
-    color: #10b981;
+    color: var(--color-success, #10b981);
 }
 
 .success-message svg {
