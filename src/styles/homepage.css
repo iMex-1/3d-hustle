@@ -443,6 +443,8 @@
     animation-delay: calc(var(--i) * 0.08s);
     transform-style: preserve-3d;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .featured-card:hover {
@@ -515,6 +517,9 @@
 
 .card-content {
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .card-content h3 {
@@ -538,6 +543,7 @@
     color: var(--color-on-surface-secondary, #A0A0A0);
     margin-bottom: 1rem;
     line-height: 1.5;
+    flex: 1;
 }
 
 .card-stats {
@@ -546,6 +552,7 @@
     color: var(--color-on-surface-secondary, #A0A0A0);
     font-size: 0.8rem;
     flex-wrap: wrap;
+    margin-top: auto;
 }
 
 .card-stats span {
