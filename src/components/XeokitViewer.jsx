@@ -11,11 +11,8 @@ function XeokitViewer({ xktUrl, height = '100%', width = '100%', enableZoom = fa
 
     useEffect(() => {
         if (!canvasRef.current || !xktUrl) {
-            console.log('XeokitViewer: Missing canvas or xktUrl', { canvas: !!canvasRef.current, xktUrl });
             return;
         }
-
-        console.log('XeokitViewer: Loading model from', xktUrl);
 
         try {
             // Create viewer
@@ -50,8 +47,6 @@ function XeokitViewer({ xktUrl, height = '100%', width = '100%', enableZoom = fa
             });
 
             model.on('loaded', () => {
-                console.log('XeokitViewer: Model loaded successfully', xktUrl);
-
                 if (enableZoom) {
                     // Product page: Fit to view and allow user controls
                     viewer.cameraFlight.flyTo({

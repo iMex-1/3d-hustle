@@ -13,7 +13,6 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
 
     useEffect(() => {
         // Always use initialObjects and save to localStorage
-        console.log('Gallery: Loading objects', initialObjects);
         setObjects(initialObjects);
         localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
     }, []);
@@ -37,10 +36,7 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
         return matchesSearch && matchesCategory;
     });
 
-    useEffect(() => {
-        console.log('Gallery: Current objects state', objects);
-        console.log('Gallery: Filtered objects', filteredObjects);
-    }, [objects, filteredObjects]);
+
 
     return (
         <div className="gallery">
