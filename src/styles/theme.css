@@ -3,63 +3,63 @@
    ============================================ */
 
 :root {
-    /* Darker Balanced Theme */
-    --color-background-dark: #181c28;
-    --color-surface: #232837;
-    --color-surface-rgb: 35, 40, 55;
-    --color-on-background: #FFFFFF;
-    --color-on-surface-secondary: #B8BCC8;
-    --color-primary: #00A896;
-    --color-primary-hover: #00C8B3;
-    --color-primary-rgb: 0, 168, 150;
-    --color-secondary: #FFB000;
-    --color-secondary-rgb: 255, 176, 0;
-    --color-error: #CF6679;
-    --color-border: #363c4d;
+    /* Professional Monochrome Dark Theme */
+    --color-background-dark: #0a0a0a;
+    --color-surface: #1a1a1a;
+    --color-surface-rgb: 26, 26, 26;
+    --color-on-background: #ffffff;
+    --color-on-surface-secondary: #999999;
+    --color-primary: #1a1a1a;
+    --color-primary-hover: #000000;
+    --color-primary-rgb: 26, 26, 26;
+    --color-secondary: #f5f5f5;
+    --color-secondary-rgb: 245, 245, 245;
+    --color-error: #ff4444;
+    --color-border: #2a2a2a;
     --color-success: #4CAF50;
-    
-    /* Glassmorphism Variables - Multi-Layered 3D */
+
+    /* Glassmorphism Variables - Monochrome */
     --glass-blur-amount: 16px;
     --glass-bg-opacity: 0.15;
-    --glass-border-color: rgba(0, 168, 150, 0.4);
+    --glass-border-color: rgba(255, 255, 255, 0.1);
     --glass-shadow: 0 2px 4px rgba(0, 0, 0, 0.4),
-                    0 10px 25px rgba(0, 0, 0, 0.7),
-                    0 0 10px 1px rgba(0, 168, 150, 0.1);
+        0 10px 25px rgba(0, 0, 0, 0.7),
+        0 0 10px 1px rgba(255, 255, 255, 0.05);
     --glass-shadow-modal: 0 2px 4px rgba(0, 0, 0, 0.5),
-                          0 15px 40px rgba(0, 0, 0, 0.9),
-                          0 0 15px 2px rgba(0, 168, 150, 0.15);
-    --radius-card: 16px;
-    
+        0 15px 40px rgba(0, 0, 0, 0.9),
+        0 0 15px 2px rgba(255, 255, 255, 0.08);
+    --radius-card: 12px;
+
     /* Accent Colors */
-    --color-accent-warm: var(--color-primary, #BB86FC);
-    --color-accent-warm-hover: var(--color-primary-hover, #D4A5FF);
-    --color-accent-warm-rgb: 221, 161, 94;
-    
+    --color-accent-warm: #ffffff;
+    --color-accent-warm-hover: #f5f5f5;
+    --color-accent-warm-rgb: 255, 255, 255;
+
     /* Surface Variations */
-    --color-surface-elevated: #2d3348;
-    --color-surface-hover: #282e40;
-    
+    --color-surface-elevated: #2a2a2a;
+    --color-surface-hover: #333333;
+
     /* 3D Viewport */
-    --color-viewport-bg: #FFFFFF;
-    
+    --color-viewport-bg: #f5f5f5;
+
     /* Shadows */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
     --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
     --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.7);
-    
+
     /* Transitions */
     --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    
+
     /* Border Radius */
     --radius-sm: 6px;
     --radius-md: 8px;
     --radius-lg: 12px;
     --radius-xl: 16px;
     --radius-full: 9999px;
-    
+
     /* Typography */
     --font-family: 'Montserrat', 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-size-xs: 0.75rem;
@@ -76,44 +76,44 @@
    ============================================ */
 
 [data-theme="light"] {
-    /* Light Theme Color Palette */
-    --color-background-dark: #F5F7FA;
-    --color-surface: #FFFFFF;
-    --color-surface-rgb: 255, 255, 255;
-    --color-on-background: #1A1A1A;
+    /* Professional Monochrome Light Theme */
+    --color-background-dark: #ffffff;
+    --color-surface: #f5f5f5;
+    --color-surface-rgb: 245, 245, 245;
+    --color-on-background: #1a1a1a;
     --color-on-surface-secondary: #666666;
-    --color-primary: #00A896;
-    --color-primary-hover: #008C7A;
-    --color-primary-rgb: 0, 168, 150;
-    --color-secondary: #FF9500;
-    --color-secondary-rgb: 255, 149, 0;
-    --color-error: #D32F2F;
-    --color-border: #E0E0E0;
+    --color-primary: #1a1a1a;
+    --color-primary-hover: #000000;
+    --color-primary-rgb: 26, 26, 26;
+    --color-secondary: #f5f5f5;
+    --color-secondary-rgb: 245, 245, 245;
+    --color-error: #ff4444;
+    --color-border: #e5e5e5;
     --color-success: #4CAF50;
-    
+
     /* Glassmorphism Variables - Light Mode */
     --glass-blur-amount: 16px;
     --glass-bg-opacity: 0.7;
-    --glass-border-color: rgba(0, 168, 150, 0.3);
+    --glass-border-color: rgba(0, 0, 0, 0.1);
     --glass-shadow: 0 2px 4px rgba(0, 0, 0, 0.08),
-                    0 10px 25px rgba(0, 0, 0, 0.12),
-                    0 0 10px 1px rgba(0, 168, 150, 0.05);
+        0 10px 25px rgba(0, 0, 0, 0.12),
+        0 0 10px 1px rgba(0, 0, 0, 0.05);
     --glass-shadow-modal: 0 2px 4px rgba(0, 0, 0, 0.1),
-                          0 15px 40px rgba(0, 0, 0, 0.15),
-                          0 0 15px 2px rgba(0, 168, 150, 0.08);
-    
+        0 15px 40px rgba(0, 0, 0, 0.15),
+        0 0 15px 2px rgba(0, 0, 0, 0.08);
+
     /* Accent Colors */
-    --color-accent-warm: #00A896;
-    --color-accent-warm-hover: #008C7A;
-    --color-accent-warm-rgb: 0, 168, 150;
-    
+    --color-accent-warm: #1a1a1a;
+    --color-accent-warm-hover: #000000;
+    --color-accent-warm-rgb: 26, 26, 26;
+
     /* Surface Variations */
-    --color-surface-elevated: #FFFFFF;
-    --color-surface-hover: #F5F5F5;
-    
+    --color-surface-elevated: #ffffff;
+    --color-surface-hover: #f5f5f5;
+
     /* 3D Viewport */
-    --color-viewport-bg: #FAFAFA;
-    
+    --color-viewport-bg: #ffffff;
+
     /* Shadows */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
@@ -140,6 +140,7 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ============================================
@@ -153,16 +154,26 @@ body {
 
 ::-webkit-scrollbar-track {
     background: var(--color-background-dark);
+    transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb {
     background: var(--color-border);
     border-radius: var(--radius-full);
     border: 2px solid var(--color-background-dark);
+    transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--color-on-surface-secondary);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: #e5e5e5;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+    background: #666666;
 }
 
 /* ============================================
@@ -173,6 +184,7 @@ body {
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .surface-elevated {
@@ -193,18 +205,28 @@ button {
 }
 
 .btn-primary {
-    background-color: var(--color-primary);
-    color: var(--color-background-dark);
+    background-color: #1a1a1a;
+    color: #ffffff;
     padding: 0.75rem 1.5rem;
     border-radius: var(--radius-md);
     font-weight: 600;
     box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: var(--color-primary-hover);
+    background-color: #000000;
     box-shadow: var(--shadow-md);
     transform: translateY(-2px);
+}
+
+[data-theme="light"] .btn-primary {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+[data-theme="light"] .btn-primary:hover {
+    background-color: #000000;
 }
 
 .btn-primary:active {
@@ -447,4 +469,3 @@ model-viewer {
 .border-primary {
     border-color: var(--color-primary);
 }
-

@@ -70,10 +70,15 @@ function Categories({ onNavigate }) {
                         <motion.div
                             key={category.id}
                             className="category-card"
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
+                            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 0.95 }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
-                            whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                            whileHover={{
+                                scale: 1.05,
+                                y: -8,
+                                transition: { duration: 0.3, ease: "easeOut" }
+                            }}
+                            whileTap={{ scale: 0.98 }}
                             onClick={() => handleCategoryClick(category.name)}
                         >
                             <div className="category-icon-wrapper" style={{ '--category-color': category.color }}>
@@ -83,9 +88,13 @@ function Categories({ onNavigate }) {
                                 <h2>{category.name}</h2>
                                 <p>{category.description}</p>
                                 <div className="category-footer">
-                                    <button className="category-btn">
+                                    <motion.button
+                                        className="category-btn"
+                                        whileHover={{ x: 4 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
                                         Explorer <FaArrowRight />
-                                    </button>
+                                    </motion.button>
                                 </div>
                             </div>
                         </motion.div>

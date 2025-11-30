@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { objects as initialObjects } from '../data/objects';
 import XeokitViewer from './XeokitViewer';
 import '../styles/homepage.css';
@@ -165,14 +166,16 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                                         <p className="slide-description">{slide.description}</p>
                                         <div className="slide-buttons">
                                             {slide.buttons.map((button, btnIndex) => (
-                                                <button
+                                                <motion.button
                                                     key={btnIndex}
                                                     onClick={button.action}
                                                     className={`slide-btn ${button.primary ? 'slide-btn-primary' : 'slide-btn-secondary'}`}
+                                                    whileHover={{ x: 4 }}
+                                                    whileTap={{ scale: 0.95 }}
                                                 >
                                                     {button.text}
                                                     <span className="btn-arrow">→</span>
-                                                </button>
+                                                </motion.button>
                                             ))}
                                         </div>
                                     </div>
@@ -199,11 +202,13 @@ function Homepage({ onNavigate, onSelectObject, user }) {
 
                     <div className="carousel-nav">
                         {slides.map((_, index) => (
-                            <button
+                            <motion.button
                                 key={index}
                                 className={`nav-dot ${index === currentSlide ? 'active' : ''}`}
                                 onClick={() => goToSlide(index)}
                                 aria-label={`Go to slide ${index + 1}`}
+                                whileHover={{ scale: 1.3 }}
+                                whileTap={{ scale: 0.9 }}
                             />
                         ))}
                     </div>
@@ -217,11 +222,16 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                     </p>
                 </div>
                 <div className="featured-grid">
-                    {featuredObjects.map((obj) => (
-                        <div
+                    {featuredObjects.map((obj, index) => (
+                        <motion.div
                             key={obj.id}
                             className="featured-card"
                             onClick={() => onSelectObject(obj.id)}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ duration: 0.4, delay: index * 0.1 }}
+                            whileHover={{ y: -8, transition: { duration: 0.2 } }}
                         >
                             <div className="card-image">
                                 {obj.xktFile ? (
@@ -232,7 +242,13 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                                     </div>
                                 )}
                                 <div className="card-overlay-hover">
-                                    <button className="btn-view-details">Voir les Détails</button>
+                                    <motion.button
+                                        className="btn-view-details"
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        Voir les Détails
+                                    </motion.button>
                                 </div>
                             </div>
                             <div className="card-content">
@@ -244,7 +260,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                                     <span>Téléchargements: {obj.downloads}</span>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </section>

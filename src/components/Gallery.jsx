@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { objects as initialObjects } from '../data/objects';
 import XeokitViewer from './XeokitViewer';
 import '../styles/gallery.css';
@@ -71,11 +72,20 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
             </div>
 
             <div className="gallery-grid">
-                {filteredObjects.map((obj) => (
-                    <div
+                {filteredObjects.map((obj, index) => (
+                    <motion.div
                         key={obj.id}
                         className="gallery-card"
                         onClick={() => onSelectObject(obj.id)}
+                        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.4, delay: index * 0.05 }}
+                        whileHover={{
+                            y: -8,
+                            scale: 1.02,
+                            transition: { duration: 0.3 }
+                        }}
+                        whileTap={{ scale: 0.98 }}
                     >
                         <div className="card-image">
                             {obj.xktFile ? (
@@ -86,18 +96,37 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
                                 </div>
                             )}
                             <div className="card-overlay">
-                                <button className="btn-view">Voir les Détails</button>
+                                <motion.button
+                                    className="btn-view"
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    Voir les Détails
+                                </motion.button>
                             </div>
                         </div>
                         <div className="card-info">
                             <h3>{obj.name}</h3>
                             <span className="badge">{obj.category}</span>
+                            <p className="card-description">{obj.description}</p>
                             <div className="card-meta">
-                                <span>Taille: {obj.fileSize}</span>
-                                <span>Téléchargements: {obj.downloads}</span>
+                                <span className="meta-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                    </svg>
+                                    {obj.fileSize}
+                                </span>
+                                <span className="meta-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    {obj.downloads}
+                                </span>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
 

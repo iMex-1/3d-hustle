@@ -7,15 +7,26 @@
 body {
     font-family: 'Montserrat', 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     font-weight: 300;
-    background: linear-gradient(135deg, #181c28 0%, #232837 50%, #2d3348 100%);
+    background: #0a0a0a;
     background-attachment: fixed;
-    color: var(--color-on-background, #FFFFFF);
+    color: var(--color-on-background, #ffffff);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
 }
 
-button, a, input, .card, .filter-btn, .nav-item, .category-card {
+[data-theme="light"] body {
+    background: #ffffff;
+    color: #1a1a1a;
+}
+
+button,
+a,
+input,
+.card,
+.filter-btn,
+.nav-item,
+.category-card {
     transition: all 0.35s cubic-bezier(0.25, 0.8, 0.5, 1);
 }
 
@@ -48,20 +59,35 @@ img {
     display: block;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-weight: 600;
     letter-spacing: -0.02em;
 }
 
 /* Custom Text Selection */
 ::selection {
-    background-color: var(--color-primary, #00A896);
-    color: #FFFFFF;
+    background-color: #1a1a1a;
+    color: #ffffff;
 }
 
 ::-moz-selection {
-    background-color: var(--color-primary, #00A896);
-    color: #FFFFFF;
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+[data-theme="light"] ::selection {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+[data-theme="light"] ::-moz-selection {
+    background-color: #1a1a1a;
+    color: #ffffff;
 }
 
 /* Custom Scrollbar */
@@ -81,7 +107,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-primary, #00A896);
+    background: #666666;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: rgba(26, 26, 26, 0.3);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+    background: #1a1a1a;
 }
 
 /* Ripple Effect for Buttons */
@@ -125,10 +159,10 @@ button,
 a,
 input {
     transition: color 0.2s cubic-bezier(0.25, 0.8, 0.5, 1),
-                background-color 0.2s cubic-bezier(0.25, 0.8, 0.5, 1),
-                border-color 0.2s cubic-bezier(0.25, 0.8, 0.5, 1),
-                box-shadow 0.25s cubic-bezier(0.25, 0.8, 0.5, 1),
-                transform 0.35s cubic-bezier(0.25, 0.8, 0.5, 1);
+        background-color 0.2s cubic-bezier(0.25, 0.8, 0.5, 1),
+        border-color 0.2s cubic-bezier(0.25, 0.8, 0.5, 1),
+        box-shadow 0.25s cubic-bezier(0.25, 0.8, 0.5, 1),
+        transform 0.35s cubic-bezier(0.25, 0.8, 0.5, 1);
 }
 
 /* Holographic Scanline Texture */
