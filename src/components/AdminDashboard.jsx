@@ -161,22 +161,6 @@ function AdminDashboard() {
         ));
     };
 
-    const handleViewerMouseEnter = (e) => {
-        const preventScroll = (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-        };
-        e.currentTarget.addEventListener('wheel', preventScroll, { passive: false });
-        e.currentTarget._preventScroll = preventScroll;
-    };
-
-    const handleViewerMouseLeave = (e) => {
-        if (e.currentTarget._preventScroll) {
-            e.currentTarget.removeEventListener('wheel', e.currentTarget._preventScroll);
-            delete e.currentTarget._preventScroll;
-        }
-    };
-
     return (
         <div className="admin-dashboard">
             <div className="admin-header">
@@ -192,28 +176,27 @@ function AdminDashboard() {
             <div className="objects-grid">
                 {objectList.map((obj, index) => (
                     <div key={obj.id} className="object-card animate-fade-in-up" style={{ '--index': index }}>
-                        <div 
-                            className="object-card-preview"
-                            onMouseEnter={handleViewerMouseEnter}
-                            onMouseLeave={handleViewerMouseLeave}
-                        >
+                        <div className="object-card-preview">
                             {obj.xktFile ? (
                                 <XeokitViewer xktUrl={obj.xktFile} height="100%" width="100%" />
                             ) : (
-                                <div style={{ width: '100%', height: '100%', background: 'var(--color-viewport-bg, #0A0A0A)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                    <p style={{ color: 'var(--color-on-surface-secondary, #666)' }}>Pas de prévisualisation</p>
+                                <div style={{ width: '100%', height: '100%', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <p style={{ color: '#666' }}>Pas de prévisualisation</p>
                                 </div>
                             )}
-                            {obj.featured && <span className="featured-badge">⭐</span>}
+                            {obj.featured && <span className="featured-badge">En Vedette</span>}
                         </div>
                         <div className="object-card-content">
-                            <div className="card-header">
-                                <h3>{obj.name}</h3>
-                                <span className="object-category">{obj.category}</span>
-                            </div>
+                            <h3>{obj.name}</h3>
+                            <p className="object-category">{obj.category}</p>
+                            <p className="object-description">{obj.description}</p>
                             <div className="object-meta">
                                 <span>📦 {obj.fileSize}</span>
                                 <span>⬇️ {obj.downloads}</span>
+                            </div>
+                            <div className="object-formats">
+                                <span className="format-badge">XKT</span>
+                                <span className="format-badge">IFC</span>
                             </div>
                         </div>
                         <div className="object-card-actions">
@@ -223,14 +206,14 @@ function AdminDashboard() {
                                     checked={obj.featured}
                                     onChange={() => toggleFeatured(obj.id)}
                                 />
-                                Vedette
+                                En Vedette
                             </label>
                             <div className="action-buttons">
-                                <button onClick={() => handleEdit(obj)} className="btn-edit" title="Modifier">
-                                    ✏️
+                                <button onClick={() => handleEdit(obj)} className="btn-edit">
+                                    ✏️ Modifier
                                 </button>
-                                <button onClick={() => confirmDelete(obj.id)} className="btn-delete" title="Supprimer">
-                                    🗑️
+                                <button onClick={() => confirmDelete(obj.id)} className="btn-delete">
+                                    🗑️ Supprimer
                                 </button>
                             </div>
                         </div>

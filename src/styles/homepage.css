@@ -46,26 +46,12 @@
     background-position: center;
     background-repeat: no-repeat;
     transition: transform 0.8s ease-out;
-}
-
-[data-theme="dark"] .slide-background {
     filter: brightness(0.7);
-}
-
-[data-theme="light"] .slide-background {
-    filter: brightness(0.9);
 }
 
 .carousel-slide:hover .slide-background {
     transform: scale(1.05);
-}
-
-[data-theme="dark"] .carousel-slide:hover .slide-background {
     filter: brightness(0.8);
-}
-
-[data-theme="light"] .carousel-slide:hover .slide-background {
-    filter: brightness(1);
 }
 
 /* Modern Overlay */
@@ -75,21 +61,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    backdrop-filter: blur(2px);
-}
-
-[data-theme="dark"] .slide-overlay {
     background: linear-gradient(135deg,
             rgba(18, 18, 18, 0.7) 0%,
             rgba(30, 30, 30, 0.6) 50%,
             rgba(18, 18, 18, 0.8) 100%);
-}
-
-[data-theme="light"] .slide-overlay {
-    background: linear-gradient(135deg,
-            rgba(255, 255, 255, 0.3) 0%,
-            rgba(245, 247, 250, 0.4) 50%,
-            rgba(255, 255, 255, 0.5) 100%);
+    backdrop-filter: blur(2px);
 }
 
 /* Modern Content Layout */
@@ -147,42 +123,24 @@
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: 24px;
+    background: linear-gradient(135deg, var(--color-on-background, #E0E0E0) 0%, var(--color-primary-hover, #D4A5FF) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 4px 20px rgba(187, 134, 252, 0.3));
     animation: slideInUp 1s ease-out 0.4s both;
-}
-
-[data-theme="dark"] .slide-title {
-    background: linear-gradient(135deg, #FFFFFF 0%, var(--color-primary, #00A896) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 4px 20px rgba(0, 168, 150, 0.3));
-}
-
-[data-theme="light"] .slide-title {
-    background: linear-gradient(135deg, var(--color-primary, #00A896) 0%, var(--color-secondary, #FFB000) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 2px 8px rgba(0, 168, 150, 0.2));
 }
 
 .slide-description {
     font-size: clamp(1rem, 2vw, 1.25rem);
     line-height: 1.7;
     margin-bottom: 40px;
-    color: var(--color-on-background, #E0E0E0);
+    color: var(--color-on-surface-secondary, #A0A0A0);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
     animation: slideInUp 1s ease-out 0.6s both;
-}
-
-[data-theme="dark"] .slide-description {
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-}
-
-[data-theme="light"] .slide-description {
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
 }
 
 /* Modern Buttons */
@@ -316,18 +274,11 @@
     display: flex;
     gap: 12px;
     z-index: 50;
+    background: rgba(30, 30, 30, 0.5);
     backdrop-filter: blur(10px);
     padding: 12px 20px;
     border-radius: 50px;
     border: 1px solid rgba(187, 134, 252, 0.2);
-}
-
-[data-theme="dark"] .carousel-nav {
-    background: rgba(30, 30, 30, 0.5);
-}
-
-[data-theme="light"] .carousel-nav {
-    background: rgba(255, 255, 255, 0.6);
 }
 
 .nav-dot {
@@ -410,7 +361,7 @@
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 16px;
-    background: linear-gradient(135deg, var(--color-primary, #00A896), var(--color-secondary, #FFB000));
+    background: linear-gradient(135deg, var(--color-primary, #BB86FC), var(--color-primary-hover, #D4A5FF));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -475,19 +426,12 @@
 .card-overlay-hover {
     position: absolute;
     inset: 0;
+    background: rgba(0, 0, 0, 0.7);
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     transition: opacity 0.3s ease;
-}
-
-[data-theme="dark"] .card-overlay-hover {
-    background: rgba(0, 0, 0, 0.7);
-}
-
-[data-theme="light"] .card-overlay-hover {
-    background: rgba(255, 255, 255, 0.9);
 }
 
 .featured-card:hover .card-overlay-hover {
@@ -496,19 +440,17 @@
 
 .btn-view-details {
     padding: 12px 24px;
-    background: var(--color-primary, #00A896);
-    color: #FFFFFF;
+    background: var(--color-surface, #1E1E1E);
+    color: var(--color-on-background, #E0E0E0);
     border: none;
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.2s ease;
 }
 
 .btn-view-details:hover {
     transform: scale(1.05);
-    background: var(--color-primary-hover, #00C8B3);
-    box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.4);
 }
 
 .card-content {
