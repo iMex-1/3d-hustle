@@ -453,12 +453,13 @@
 
 .card-image {
     height: 200px;
-    background: var(--color-viewport-bg, #0A0A0A);
+    background: #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     position: relative;
+    border-radius: 16px 16px 0 0;
 }
 
 .card-image img {

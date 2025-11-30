@@ -120,6 +120,7 @@
     height: 200px;
     background: #FFFFFF;
     overflow: hidden;
+    border-radius: 12px 12px 0 0;
 }
 
 .gallery-card .card-image img {

@@ -114,9 +114,10 @@
 
 .object-card-preview {
     position: relative;
-    height: 200px;
-    background: var(--color-viewport-bg, #0A0A0A);
+    height: 250px;
+    background: #FFFFFF;
     overflow: hidden;
+    border-radius: 16px 16px 0 0;
 }
 
 .featured-badge {
