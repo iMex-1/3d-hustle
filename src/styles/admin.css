@@ -3,7 +3,7 @@
     margin: 0 auto;
     padding: 2rem;
     min-height: 100vh;
-    background-color: var(--color-background-dark, #121212);
+    background: transparent;
 }
 
 .admin-header {
@@ -93,10 +93,11 @@
 }
 
 .object-card {
-    background: var(--color-surface, #1E1E1E);
+    background: var(--color-surface, #242938);
+    border: 1px solid var(--color-border, #3d4254);
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transition: all 0.3s;
     display: flex;
     flex-direction: column;
@@ -104,7 +105,8 @@
 
 .object-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2), 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-color: var(--color-primary, #6366f1);
 }
 
 .object-card-preview {
