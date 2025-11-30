@@ -144,6 +144,7 @@
     justify-content: center;
     opacity: 0;
     transition: opacity 0.3s;
+    border-radius: 12px 12px 0 0;
 }
 
 .gallery-card:hover .card-overlay {
@@ -200,3 +201,11 @@
     font-size: 1.1rem;
 }
 
+
+
+/* Fix border radius for 3D viewers and overlays inside gallery cards */
+.gallery-card .card-image model-viewer,
+.gallery-card .card-image .xeokit-viewer-container,
+.gallery-card .card-overlay {
+    border-radius: 12px 12px 0 0 !important;
+}

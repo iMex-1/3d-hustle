@@ -822,3 +822,10 @@
 }
 
 
+
+
+/* Fix border radius for 3D viewers inside admin cards */
+.object-card-preview model-viewer,
+.object-card-preview .xeokit-viewer-container {
+    border-radius: 16px 16px 0 0 !important;
+}

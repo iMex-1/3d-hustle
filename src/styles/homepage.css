@@ -481,6 +481,7 @@
     justify-content: center;
     opacity: 0;
     transition: opacity 0.3s ease;
+    border-radius: 16px 16px 0 0;
 }
 
 [data-theme="dark"] .card-overlay-hover {
@@ -651,3 +652,10 @@
     }
 }
 
+
+
+/* Fix border radius for 3D viewers inside cards */
+.card-image model-viewer,
+.card-image .xeokit-viewer-container {
+    border-radius: 16px 16px 0 0 !important;
+}
