@@ -10,39 +10,74 @@ import AdminDashboard from './components/AdminDashboard';
 import About from './components/About';
 import Contact from './components/Contact';
 import Notification from './components/Notification';
+import * as authService from './services/authService';
+import * as databaseService from './services/databaseService';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedObjectId, setSelectedObjectId] = useState(null);
   const [user, setUser] = useState(null);
+  const [userRecord, setUserRecord] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [notification, setNotification] = useState(null);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-
     // Initialize theme on app load
     const savedTheme = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
+
+    // Subscribe to Firebase auth state changes
+    const unsubscribeAuth = authService.onAuthStateChanged((firebaseUser) => {
+      setUser(firebaseUser);
+    });
+
+    // Cleanup on unmount
+    return () => {
+      unsubscribeAuth();
+    };
   }, []);
 
+  // Subscribe to user record changes for permission updates
+  useEffect(() => {
+    let unsubscribeUser = null;
+
+    if (user && user.uid) {
+      // Subscribe to user record in database
+      unsubscribeUser = databaseService.listenToUser(user.uid, (userData) => {
+        setUserRecord(userData);
+      });
+    } else {
+      // Clear user record when not authenticated
+      setUserRecord(null);
+    }
+
+    // Cleanup on unmount or when user changes
+    return () => {
+      if (unsubscribeUser) {
+        unsubscribeUser();
+      }
+    };
+  }, [user]);
+
   const handleLogin = (userData) => {
+    // Login is now handled by Firebase auth state listener
+    // This function can be removed or kept for compatibility
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
   };
 
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
-    setCurrentPage('home');
+  const handleLogout = async () => {
+    try {
+      await authService.signOut();
+      setCurrentPage('home');
+    } catch (error) {
+      console.error('Logout error:', error);
+      setNotification({ message: 'Erreur lors de la déconnexion', type: 'error' });
+    }
   };
 
   const handleNavigate = (page, options = {}) => {
-    if (page === 'admin' && (!user || user.role !== 'admin')) {
+    if (page === 'admin' && (!user || !userRecord || !userRecord.isAdmin)) {
       setNotification({ message: 'Accès administrateur requis', type: 'error' });
       return;
     }
@@ -83,7 +118,7 @@ function App() {
       case 'login':
         return <Login onLogin={handleLogin} onNavigate={handleNavigate} />;
       case 'admin':
-        return <AdminDashboard />;
+        return <AdminDashboard user={user} />;
       default:
         return <Homepage onNavigate={handleNavigate} onSelectObject={handleSelectObject} user={user} />;
     }
@@ -95,6 +130,7 @@ function App() {
         currentPage={currentPage}
         onNavigate={handleNavigate}
         user={user}
+        userRecord={userRecord}
         onLogout={handleLogout}
         onSearch={handleSearch}
       />

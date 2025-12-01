@@ -1,18 +1,20 @@
 import { useState, useEffect } from 'react';
 import Notification from './Notification';
 import XeokitViewer from './XeokitViewer';
-import { objects as initialObjects } from '../data/objects';
+import * as databaseService from '../services/databaseService';
+import { migrateStaticDataToFirebase } from '../utils/migrateData';
 import '../styles/admin.css';
 
 const CATEGORIES = ['Zelige', 'Boiserie', 'Platre', 'Autre'];
 
-function AdminDashboard() {
+function AdminDashboard({ user }) {
     const [objectList, setObjectList] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [notification, setNotification] = useState(null);
     const [deleteId, setDeleteId] = useState(null);
     const [editingId, setEditingId] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({
         name: '',
         category: 'Zelige',
@@ -21,36 +23,47 @@ function AdminDashboard() {
         xktFileName: '',
         ifcFile: null,
         ifcFileName: '',
-        fileSize: ''
+        fileSize: '',
+        xktSize: 0,
+        ifcSize: 0
     });
 
+    // Subscribe to real-time model updates
     useEffect(() => {
-        // Always use initialObjects and save to localStorage
-        setObjectList(initialObjects);
-        localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
-    }, []);
+        setLoading(true);
+        
+        // Set up real-time listener
+        const unsubscribe = databaseService.listenToModels((models) => {
+            console.log('Models received from Firebase:', models);
+            setObjectList(models);
+            setLoading(false);
+        });
 
-    useEffect(() => {
-        if (objectList.length > 0) {
-            localStorage.setItem('3d_objects', JSON.stringify(objectList));
-        }
-    }, [objectList]);
+        // Cleanup listener on unmount
+        return () => {
+            if (unsubscribe) {
+                unsubscribe();
+            }
+        };
+    }, []);
 
     const showNotification = (message, type = 'success') => {
         setNotification({ message, type });
     };
 
     const handleEdit = (obj) => {
-        setEditingId(obj.id);
+        setEditingId(obj.model_id);
         setFormData({
-            name: obj.name,
-            category: obj.category,
-            description: obj.description,
-            xktFile: obj.xktFile,
-            xktFileName: obj.xktFile,
-            ifcFile: obj.ifcFile,
-            ifcFileName: obj.ifcFile,
-            fileSize: obj.fileSize
+            name: obj.model_name,
+            category: obj.model_category,
+            description: obj.model_description,
+            xktFile: obj.model_xkt_url,
+            xktFileName: obj.filename,
+            ifcFile: obj.model_ifc_url,
+            ifcFileName: obj.filename,
+            fileSize: obj.model_xkt_size ? `${(obj.model_xkt_size / (1024 * 1024)).toFixed(2)} Mo` : '',
+            xktSize: obj.model_xkt_size,
+            ifcSize: obj.model_ifc_size
         });
         setShowModal(true);
     };
@@ -60,29 +73,38 @@ function AdminDashboard() {
         setShowConfirmModal(true);
     };
 
-    const handleDelete = () => {
-        const updatedList = objectList.filter(obj => obj.id !== deleteId);
-        setObjectList(updatedList);
-        setShowConfirmModal(false);
-        setDeleteId(null);
-        showNotification('Objet supprimé avec succès', 'success');
+    const handleDelete = async () => {
+        try {
+            await databaseService.deleteModel(deleteId);
+            setShowConfirmModal(false);
+            setDeleteId(null);
+            showNotification('Objet supprimé avec succès', 'success');
+        } catch (error) {
+            console.error('Error deleting model:', error);
+            showNotification('Erreur lors de la suppression', 'error');
+        }
     };
 
     const handleXKTUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
+            // Create blob URL for preview
             const fileUrl = URL.createObjectURL(file);
             const fileName = file.name.replace(/\.[^/.]+$/, '');
             const formattedName = fileName
                 .replace(/[_-]/g, ' ')
                 .replace(/\b\w/g, l => l.toUpperCase());
 
+            // Calculate file size in bytes
+            const xktSizeBytes = file.size;
+
             setFormData(prev => ({
                 ...prev,
                 name: prev.name || formattedName,
                 xktFile: fileUrl,
                 xktFileName: file.name,
-                fileSize: (file.size / (1024 * 1024)).toFixed(2) + ' Mo'
+                fileSize: (file.size / (1024 * 1024)).toFixed(2) + ' Mo',
+                xktSize: xktSizeBytes
             }));
         }
     };
@@ -90,16 +112,22 @@ function AdminDashboard() {
     const handleIFCUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
+            // Create blob URL for preview
             const fileUrl = URL.createObjectURL(file);
+            
+            // Calculate file size in bytes
+            const ifcSizeBytes = file.size;
+
             setFormData(prev => ({
                 ...prev,
                 ifcFile: fileUrl,
-                ifcFileName: file.name
+                ifcFileName: file.name,
+                ifcSize: ifcSizeBytes
             }));
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!formData.xktFile) {
@@ -112,32 +140,50 @@ function AdminDashboard() {
             return;
         }
 
-        const objectData = {
-            name: formData.name,
-            category: formData.category,
-            description: formData.description,
-            xktFile: formData.xktFile,
-            ifcFile: formData.ifcFile,
-            fileSize: formData.fileSize
-        };
-
-        if (editingId) {
-            setObjectList(objectList.map(obj =>
-                obj.id === editingId ? { ...obj, ...objectData } : obj
-            ));
-            showNotification('Objet mis à jour avec succès', 'success');
-        } else {
-            const newObject = {
-                id: Math.max(...objectList.map(o => o.id), 0) + 1,
-                ...objectData,
-                downloads: 0,
-                featured: false
-            };
-            setObjectList([...objectList, newObject]);
-            showNotification('Objet créé avec succès', 'success');
+        if (!user || !user.uid) {
+            showNotification('Utilisateur non authentifié', 'error');
+            return;
         }
 
-        closeModal();
+        try {
+            // Construct proper file paths for storage
+            // For new uploads, store paths relative to public directory
+            // For existing models being edited, keep the existing URLs if files weren't changed
+            const ifcUrl = formData.ifcFile.startsWith('blob:') 
+                ? `/files/input/${formData.ifcFileName}`
+                : formData.ifcFile;
+            
+            const xktUrl = formData.xktFile.startsWith('blob:')
+                ? `/files/output/${formData.xktFileName}`
+                : formData.xktFile;
+
+            const modelData = {
+                filename: formData.xktFileName || formData.name,
+                model_name: formData.name,
+                model_category: formData.category,
+                model_description: formData.description,
+                model_owner: user.uid,
+                model_ifc_url: ifcUrl,
+                model_xkt_url: xktUrl,
+                model_ifc_size: formData.ifcSize || 0,
+                model_xkt_size: formData.xktSize || 0
+            };
+
+            if (editingId) {
+                // Update existing model
+                await databaseService.updateModel(editingId, modelData);
+                showNotification('Objet mis à jour avec succès', 'success');
+            } else {
+                // Create new model
+                await databaseService.createModel(modelData);
+                showNotification('Objet créé avec succès', 'success');
+            }
+
+            closeModal();
+        } catch (error) {
+            console.error('Error saving model:', error);
+            showNotification('Erreur lors de la sauvegarde', 'error');
+        }
     };
 
     const closeModal = () => {
@@ -151,14 +197,35 @@ function AdminDashboard() {
             xktFileName: '',
             ifcFile: null,
             ifcFileName: '',
-            fileSize: ''
+            fileSize: '',
+            xktSize: 0,
+            ifcSize: 0
         });
     };
 
-    const toggleFeatured = (id) => {
-        setObjectList(objectList.map(obj =>
-            obj.id === id ? { ...obj, featured: !obj.featured } : obj
-        ));
+    const toggleFeatured = async (id) => {
+        try {
+            const model = objectList.find(obj => obj.model_id === id);
+            if (model) {
+                await databaseService.updateModel(id, {
+                    featured: !model.featured
+                });
+            }
+        } catch (error) {
+            console.error('Error toggling featured:', error);
+            showNotification('Erreur lors de la mise à jour', 'error');
+        }
+    };
+
+    const handleMigrateData = async () => {
+        try {
+            showNotification('Migration en cours...', 'info');
+            const result = await migrateStaticDataToFirebase();
+            showNotification(`Migration réussie! ${result.successCount} modèles migrés.`, 'success');
+        } catch (error) {
+            console.error('Migration error:', error);
+            showNotification('Erreur lors de la migration', 'error');
+        }
     };
 
 
@@ -170,17 +237,41 @@ function AdminDashboard() {
                     <h1>Gestionnaire de Modèles BIM</h1>
                     <p className="admin-subtitle">Gérez l'inventaire de modèles IFC/XKT</p>
                 </div>
-                <button className="btn-add-object" onClick={() => setShowModal(true)}>
-                    Ajouter un Modèle
-                </button>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    {objectList.length === 0 && !loading && (
+                        <button 
+                            className="btn-add-object" 
+                            onClick={handleMigrateData}
+                            style={{ backgroundColor: '#4CAF50' }}
+                        >
+                            Migrer les Données Statiques
+                        </button>
+                    )}
+                    <button className="btn-add-object" onClick={() => setShowModal(true)}>
+                        Ajouter un Modèle
+                    </button>
+                </div>
             </div>
+
+            {loading && (
+                <div style={{ textAlign: 'center', padding: '40px', color: 'var(--color-on-surface-secondary, #666)' }}>
+                    <p>Chargement des modèles...</p>
+                </div>
+            )}
+
+            {!loading && objectList.length === 0 && (
+                <div style={{ textAlign: 'center', padding: '40px', color: 'var(--color-on-surface-secondary, #666)' }}>
+                    <p>Aucun modèle trouvé dans la base de données.</p>
+                    <p style={{ fontSize: '14px', marginTop: '10px' }}>Cliquez sur "Ajouter un Modèle" pour commencer.</p>
+                </div>
+            )}
 
             <div className="objects-grid">
                 {objectList.map((obj, index) => (
-                    <div key={obj.id} className="object-card animate-fade-in-up" style={{ '--index': index }}>
+                    <div key={obj.model_id} className="object-card animate-fade-in-up" style={{ '--index': index }}>
                         <div className="object-card-preview">
-                            {obj.xktFile ? (
-                                <XeokitViewer xktUrl={obj.xktFile} height="100%" width="100%" />
+                            {obj.model_xkt_url ? (
+                                <XeokitViewer xktUrl={obj.model_xkt_url} height="100%" width="100%" />
                             ) : (
                                 <div style={{ width: '100%', height: '100%', background: 'var(--color-viewport-bg, #0A0A0A)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <p style={{ color: 'var(--color-on-surface-secondary, #666)' }}>Pas de prévisualisation</p>
@@ -190,20 +281,20 @@ function AdminDashboard() {
                         </div>
                         <div className="object-card-content">
                             <div className="card-header">
-                                <h3>{obj.name}</h3>
-                                <span className="object-category">{obj.category}</span>
+                                <h3>{obj.model_name}</h3>
+                                <span className="object-category">{obj.model_category}</span>
                             </div>
                             <div className="object-meta">
-                                <span>Taille: {obj.fileSize}</span>
-                                <span>Téléchargements: {obj.downloads}</span>
+                                <span>Taille: {obj.model_xkt_size ? `${(obj.model_xkt_size / (1024 * 1024)).toFixed(2)} Mo` : 'N/A'}</span>
+                                <span>Téléchargements: {obj.downloads || 0}</span>
                             </div>
                         </div>
                         <div className="object-card-actions">
                             <label className="featured-toggle">
                                 <input
                                     type="checkbox"
-                                    checked={obj.featured}
-                                    onChange={() => toggleFeatured(obj.id)}
+                                    checked={obj.featured || false}
+                                    onChange={() => toggleFeatured(obj.model_id)}
                                 />
                                 Vedette
                             </label>
@@ -211,7 +302,7 @@ function AdminDashboard() {
                                 <button onClick={() => handleEdit(obj)} className="btn-edit" title="Modifier">
                                     Modifier
                                 </button>
-                                <button onClick={() => confirmDelete(obj.id)} className="btn-delete" title="Supprimer">
+                                <button onClick={() => confirmDelete(obj.model_id)} className="btn-delete" title="Supprimer">
                                     Supprimer
                                 </button>
                             </div>

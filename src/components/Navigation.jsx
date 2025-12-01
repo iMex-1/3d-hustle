@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaHome, FaImages, FaUserShield, FaSignInAlt, FaSignOutAlt, FaCube, FaInfoCircle, FaEnvelope, FaSearch, FaBars, FaTimes, FaSun, FaMoon } from 'react-icons/fa';
 import '../styles/navigation.css';
 
-function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
+function Navigation({ currentPage, onNavigate, user, userRecord, onLogout, onSearch }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [theme, setTheme] = useState(() => {
@@ -73,16 +73,31 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
                         <li className={currentPage === 'contact' ? 'active' : ''}>
                             <a onClick={() => handleNavClick('contact')}><FaEnvelope /><span className="nav-text">Contact</span></a>
                         </li>
-                        {user && user.role === 'admin' && (
+                        {user && userRecord && userRecord.isAdmin && (
                             <li className={currentPage === 'admin' ? 'active' : ''}>
                                 <a onClick={() => handleNavClick('admin')}><FaUserShield /><span className="nav-text">Admin</span></a>
                             </li>
                         )}
                         <li className="auth-item">
                             {user ? (
-                                <a onClick={() => { onLogout(); setMobileMenuOpen(false); }}>
-                                    <FaSignOutAlt /><span className="nav-text">Déconnexion</span>
-                                </a>
+                                <div className="user-profile-container">
+                                    <div className="user-profile-info">
+                                        {user.photoURL && (
+                                            <img 
+                                                src={user.photoURL} 
+                                                alt={user.displayName || 'User'} 
+                                                className="user-profile-photo"
+                                            />
+                                        )}
+                                        <span className="user-display-name">{user.displayName || user.email}</span>
+                                    </div>
+                                    <a 
+                                        className="sign-out-btn" 
+                                        onClick={() => { onLogout(); setMobileMenuOpen(false); }}
+                                    >
+                                        <FaSignOutAlt /><span className="nav-text">Déconnexion</span>
+                                    </a>
+                                </div>
                             ) : (
                                 <a onClick={() => handleNavClick('login')}>
                                     <FaSignInAlt /><span className="nav-text">Connexion</span>
@@ -93,19 +108,6 @@ function Navigation({ currentPage, onNavigate, user, onLogout, onSearch }) {
                 </AnimatePresence>
 
                 <div className="nav-right">
-                    <form className="search-form" onSubmit={handleSearch}>
-                        <input
-                            type="text"
-                            placeholder="Rechercher des modèles..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="search-input"
-                        />
-                        <button type="submit" className="search-btn">
-                            <FaSearch />
-                        </button>
-                    </form>
-
                     <motion.button
                         className="theme-toggle"
                         onClick={toggleTheme}

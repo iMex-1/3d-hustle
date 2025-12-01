@@ -22,3 +22,36 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables and sensitive data
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Kiro specs and development files
+.kiro/
+
+# Testing files
+*.test.js
+*.test.jsx
+*.spec.js
+*.spec.jsx
+src/test/
+coverage/
+
+# Documentation and notes (except main README)
+data_structure.txt
+FIREBASE_SETUP.md
+FIREBASE_INTEGRATION_COMPLETE.md
+INTEGRATION_TESTS.md
+*.md
+!README.md
+
+# Firebase files with sensitive rules
+database.rules.json
+firebase-init-data.json
+
+# Build scripts
+convert-ifc-to-xkt.ps1
