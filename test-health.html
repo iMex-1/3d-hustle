@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Worker Health Check</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #1a1f2e;
+      color: #fff;
+    }
+    h1 { color: #00A896; }
+    button {
+      background: #00A896;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin: 1rem 0;
+    }
+    button:hover { background: #00C8B3; }
+    pre {
+      background: #000;
+      padding: 1.5rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .success { color: #00A896; }
+    .error { color: #FF3B30; }
+    .warning { color: #FFD700; }
+    .info {
+      background: rgba(0, 168, 150, 0.1);
+      border: 1px solid rgba(0, 168, 150, 0.3);
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔧 Worker Health Check</h1>
+  
+  <div class="info">
+    <strong>Worker URL:</strong> https://bim-models-api.team-hustls3000.workers.dev
+  </div>
+  
+  <button onclick="testHealth()">🏥 Test Health Endpoint</button>
+  <button onclick="testFile()">📄 Test File Access</button>
+  <button onclick="testCORS()">🌐 Test CORS</button>
+  
+  <h2>Results:</h2>
+  <pre id="result">Click a button to test...</pre>
+  
+  <h2>What to Check:</h2>
+  <ul>
+    <li><strong>R2 Binding:</strong> Should be <span class="success">true</span></li>
+    <li><strong>Secret:</strong> Should be <span class="success">true</span></li>
+    <li><strong>Status:</strong> Should be <span class="success">"ok"</span></li>
+  </ul>
+  
+  <h2>If Tests Fail:</h2>
+  <ol>
+    <li>Go to Cloudflare Dashboard → Workers & Pages</li>
+    <li>Click on <strong>bim-models-api</strong></li>
+    <li>Click <strong>Logs</strong> tab</li>
+    <li>Run tests again and read the error messages</li>
+    <li>Check <code>WORKER_DEBUGGING.md</code> for solutions</li>
+  </ol>
+
+  <script>
+    const WORKER_URL = 'https://bim-models-api.team-hustls3000.workers.dev';
+    
+    function log(message, type = 'info') {
+      const result = document.getElementById('result');
+      const timestamp = new Date().toLocaleTimeString();
+      result.textContent = `[${timestamp}] ${message}`;
+      result.className = type;
+    }
+
+    async function testHealth() {
+      log('⏳ Testing health endpoint...', 'info');
+      
+      try {
+        const response = await fetch(`${WORKER_URL}/health`);
+        const data = await response.json();
+        
+        let output = `Status: ${response.status}\n\n`;
+        output += JSON.stringify(data, null, 2);
+        output += '\n\n';
+        
+        if (response.ok) {
+          if (data.bindings?.r2 && data.bindings?.secret) {
+            output += '✅ SUCCESS! All bindings configured correctly!\n';
+            output += '✅ R2 Bucket: Connected\n';
+            output += '✅ Admin Secret: Set\n';
+            output += '\nYour worker is ready to use! 🎉';
+            log(output, 'success');
+          } else {
+            output += '⚠️ WARNING: Missing bindings\n';
+            if (!data.bindings?.r2) output += '❌ R2 Bucket binding not found\n';
+            if (!data.bindings?.secret) output += '❌ Admin Secret not set\n';
+            output += '\nCheck WORKER_DEBUGGING.md for setup instructions.';
+            log(output, 'warning');
+          }
+        } else {
+          output += '❌ Health check failed\n';
+          output += 'Check Cloudflare Worker logs for details.';
+          log(output, 'error');
+        }
+      } catch (error) {
+        log(`❌ ERROR: ${error.message}\n\nPossible causes:\n- Worker not deployed\n- Network issue\n- CORS not configured\n\nCheck WORKER_DEBUGGING.md`, 'error');
+      }
+    }
+
+    async function testFile() {
+      log('⏳ Testing file access (should return 404 - file doesn\'t exist)...', 'info');
+      
+      try {
+        const response = await fetch(`${WORKER_URL}/models/test/nonexistent.txt`);
+        
+        let output = `Status: ${response.status}\n\n`;
+        
+        if (response.status === 404) {
+          const data = await response.json();
+          output += JSON.stringify(data, null, 2);
+          output += '\n\n✅ SUCCESS! Worker is responding correctly!\n';
+          output += '404 is expected for non-existent files.';
+          log(output, 'success');
+        } else if (response.status === 500) {
+          const data = await response.json();
+          output += JSON.stringify(data, null, 2);
+          output += '\n\n❌ 500 ERROR - Check Worker logs!\n';
+          output += 'Common causes:\n';
+          output += '- R2 binding not configured\n';
+          output += '- Worker code has errors\n';
+          output += '\nSee WORKER_DEBUGGING.md for solutions.';
+          log(output, 'error');
+        } else {
+          const text = await response.text();
+          output += text;
+          log(output, 'warning');
+        }
+      } catch (error) {
+        log(`❌ ERROR: ${error.message}`, 'error');
+      }
+    }
+
+    async function testCORS() {
+      log('⏳ Testing CORS configuration...', 'info');
+      
+      try {
+        const response = await fetch(`${WORKER_URL}/health`, {
+          method: 'OPTIONS',
+          headers: {
+            'Origin': 'http://localhost:5173',
+            'Access-Control-Request-Method': 'GET'
+          }
+        });
+        
+        let output = `Status: ${response.status}\n\n`;
+        output += 'CORS Headers:\n';
+        output += `- Allow-Origin: ${response.headers.get('Access-Control-Allow-Origin')}\n`;
+        output += `- Allow-Methods: ${response.headers.get('Access-Control-Allow-Methods')}\n`;
+        output += `- Allow-Headers: ${response.headers.get('Access-Control-Allow-Headers')}\n`;
+        
+        if (response.ok) {
+          output += '\n✅ CORS is configured correctly!';
+          log(output, 'success');
+        } else {
+          output += '\n⚠️ CORS might have issues';
+          log(output, 'warning');
+        }
+      } catch (error) {
+        log(`❌ CORS ERROR: ${error.message}`, 'error');
+      }
+    }
+    
+    // Auto-run health check on load
+    window.addEventListener('load', () => {
+      setTimeout(testHealth, 500);
+    });
+  </script>
+</body>
+</html>
