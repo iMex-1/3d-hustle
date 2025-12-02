@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Notification from './Notification';
 import XeokitViewer from './XeokitViewer';
 import * as databaseService from '../services/databaseService';
-import { uploadToR2, generateModelPaths, deleteModelFromR2 } from '../utils/storageHelpers';
+import { uploadToR2, generateModelPaths, deleteModelFromR2, getPublicFileUrl } from '../utils/storageHelpers';
 import '../styles/admin.css';
 
 const CATEGORIES = ['Zelige', 'Boiserie', 'Platre', 'Autre'];
@@ -281,7 +281,7 @@ function AdminDashboard({ user }) {
                     <div key={obj.model_id} className="object-card animate-fade-in-up" style={{ '--index': index }}>
                         <div className="object-card-preview">
                             {obj.model_xkt_url ? (
-                                <XeokitViewer xktUrl={obj.model_xkt_url} height="100%" width="100%" />
+                                <XeokitViewer xktUrl={getPublicFileUrl(obj.model_xkt_url)} height="100%" width="100%" />
                             ) : (
                                 <div style={{ width: '100%', height: '100%', background: 'var(--color-viewport-bg, #0A0A0A)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <p style={{ color: 'var(--color-on-surface-secondary, #666)' }}>Pas de prévisualisation</p>
