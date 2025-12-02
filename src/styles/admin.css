@@ -173,12 +173,6 @@
 .admin-dashboard .action-buttons {
   display: flex;
   gap: 0.75rem;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.admin-dashboard .object-card:hover .action-buttons {
-  opacity: 1;
 }
 
 .admin-dashboard .btn-edit,
@@ -196,6 +190,12 @@
   background: transparent;
   color: #FFFFFF;
   border: 1px solid #333;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.admin-dashboard .object-card:hover .btn-edit {
+  opacity: 1;
 }
 
 .admin-dashboard .btn-edit:hover {
