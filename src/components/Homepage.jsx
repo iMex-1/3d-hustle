@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import * as databaseService from '../services/databaseService';
 import { getPublicFileUrl } from '../utils/storageHelpers';
 import XeokitViewer from './XeokitViewer';
+import { StackedCardsInteraction } from './StackedCards';
+import { FaThLarge, FaTree, FaPaintRoller, FaCube, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import '../styles/homepage.css';
 
 function Homepage({ onNavigate, onSelectObject, user }) {
@@ -31,7 +33,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                 downloads: model.downloads || 0,
                 featured: model.featured || false
             }));
-            
+
             setObjects(transformedModels);
             setLoading(false);
         });
@@ -235,6 +237,38 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                     </div>
                 </div>
             </div>
+
+            <section className="categories-section">
+                <div className="section-header">
+                    <h2 className="section-title">Parcourir par Catégorie</h2>
+                    <p className="section-description">
+                        Explorez nos modèles organisés par type de construction
+                    </p>
+                </div>
+                <div className="categories-grid">
+                    <CategoryCard
+                        category="Zelige"
+                        description="Modèles de carreaux et revêtements traditionnels"
+                        onNavigate={onNavigate}
+                    />
+                    <CategoryCard
+                        category="Boiserie"
+                        description="Éléments en bois et menuiserie architecturale"
+                        onNavigate={onNavigate}
+                    />
+                    <CategoryCard
+                        category="Platre"
+                        description="Ornements et décorations en plâtre"
+                        onNavigate={onNavigate}
+                    />
+                    <CategoryCard
+                        category="Autre"
+                        description="Autres éléments architecturaux"
+                        onNavigate={onNavigate}
+                    />
+                </div>
+            </section>
+
             <section className="featured-section" id="featured">
                 <div className="section-header">
                     <h2 className="section-title">Modèles BIM en Vedette</h2>
@@ -285,7 +319,195 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                     ))}
                 </div>
             </section>
+
+            <CategoryShowcase
+                objects={objects}
+                onSelectObject={onSelectObject}
+                onNavigate={onNavigate}
+            />
         </div>
+    );
+}
+
+function CategoryShowcase({ objects, onSelectObject, onNavigate }) {
+    const categories = [
+        { name: 'Zelige', icon: FaThLarge, description: 'Carreaux et revêtements traditionnels' },
+        { name: 'Boiserie', icon: FaTree, description: 'Éléments en bois et menuiserie' },
+        { name: 'Platre', icon: FaPaintRoller, description: 'Ornements et décorations' },
+        { name: 'Autre', icon: FaCube, description: 'Autres éléments architecturaux' }
+    ];
+
+    return (
+        <section className="category-showcase">
+            {categories.map((category) => {
+                const categoryObjects = objects.filter(obj => obj.category === category.name);
+                const Icon = category.icon;
+
+                return (
+                    <div key={category.name} className="category-section">
+                        <div className="category-header">
+                            <div className="category-header-content">
+                                <Icon className="category-icon" />
+                                <div className="category-title-group">
+                                    <h2 className="category-title">{category.name}</h2>
+                                    <p className="category-subtitle">{category.description}</p>
+                                </div>
+                            </div>
+                            <motion.button
+                                className="btn-view-category"
+                                onClick={() => onNavigate('gallery', { category: category.name })}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                Voir tout
+                            </motion.button>
+                        </div>
+
+                        {categoryObjects.length > 0 ? (
+                            <CategoryCarousel
+                                objects={categoryObjects}
+                                onSelectObject={onSelectObject}
+                            />
+                        ) : (
+                            <div className="no-models-inline">
+                                <p>Aucun modèle disponible</p>
+                            </div>
+                        )}
+                    </div>
+                );
+            })}
+        </section>
+    );
+}
+
+function CategoryCarousel({ objects, onSelectObject }) {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const cardsToShow = 3;
+
+    const nextSlide = () => {
+        if (currentIndex < objects.length - cardsToShow) {
+            setCurrentIndex(prev => prev + 1);
+        }
+    };
+
+    const prevSlide = () => {
+        if (currentIndex > 0) {
+            setCurrentIndex(prev => prev - 1);
+        }
+    };
+
+    return (
+        <div className="carousel-wrapper">
+            <button
+                className="carousel-btn carousel-btn-prev"
+                onClick={prevSlide}
+                disabled={currentIndex === 0}
+            >
+                <FaChevronLeft />
+            </button>
+
+            <div className="carousel-track-container">
+                <motion.div
+                    className="carousel-track"
+                    animate={{ x: -currentIndex * (100 / cardsToShow) + '%' }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                >
+                    {objects.map((obj, index) => (
+                        <div key={obj.id} className="carousel-card">
+                            <motion.div
+                                className="showcase-card"
+                                onClick={() => onSelectObject(obj.id)}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.3, delay: index * 0.05 }}
+                                whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                            >
+                                <div className="showcase-card-image">
+                                    {obj.xktFile ? (
+                                        <XeokitViewer xktUrl={obj.xktFile} height="100%" width="100%" />
+                                    ) : (
+                                        <div style={{ width: '100%', height: '100%', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                            <p style={{ color: '#666' }}>Pas de prévisualisation</p>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="showcase-card-content">
+                                    <h3>{obj.name}</h3>
+                                    <p className="showcase-description">{obj.description}</p>
+                                    <div className="showcase-stats">
+                                        <span>{obj.fileSize}</span>
+                                        <span>{obj.downloads} téléchargements</span>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    ))}
+                </motion.div>
+            </div>
+
+            <button
+                className="carousel-btn carousel-btn-next"
+                onClick={nextSlide}
+                disabled={currentIndex >= objects.length - cardsToShow}
+            >
+                <FaChevronRight />
+            </button>
+        </div>
+    );
+}
+
+function CategoryCard({ category, description, onNavigate }) {
+    // Icon mapping for each category
+    const categoryIcons = {
+        'Zelige': FaThLarge,
+        'Boiserie': FaTree,
+        'Platre': FaPaintRoller,
+        'Autre': FaCube
+    };
+
+    const Icon = categoryIcons[category] || FaCube;
+
+    const cards = [
+        {
+            icon: Icon,
+            title: category,
+            description: description
+        },
+        {
+            icon: Icon,
+            title: category,
+            description: description
+        },
+        {
+            icon: Icon,
+            title: category,
+            description: description
+        }
+    ];
+
+    const handleClick = () => {
+        onNavigate('gallery', { category });
+    };
+
+    return (
+        <motion.div
+            className="category-card-wrapper"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{
+                duration: 0.3,
+                ease: [0.25, 0.1, 0.25, 1]
+            }}
+        >
+            <StackedCardsInteraction
+                cards={cards}
+                spreadDistance={25}
+                rotationAngle={4}
+                animationDelay={0.06}
+                onClick={handleClick}
+            />
+        </motion.div>
     );
 }
 

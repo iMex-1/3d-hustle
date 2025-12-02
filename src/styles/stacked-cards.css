@@ -1,0 +1,214 @@
+/* Stacked Cards Styles */
+
+.stacked-cards-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stacked-cards-wrapper {
+    position: relative;
+    width: 220px;
+    height: 260px;
+}
+
+.stacked-card-motion {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.stacked-card-motion.z-top {
+    z-index: 10;
+}
+
+.stacked-card-motion.z-bottom {
+    z-index: 0;
+}
+
+.stacked-card {
+    width: 220px;
+    height: 260px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 2px solid #e5e5e5;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+[data-theme="dark"] .stacked-card {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+    border-color: #2a2a2a;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.stacked-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+[data-theme="dark"] .stacked-card::before {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+}
+
+.stacked-card.cursor-pointer {
+    cursor: pointer;
+}
+
+@media (hover: hover) {
+    .stacked-card.cursor-pointer:hover {
+        border-color: #1a1a1a;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px) translateZ(0);
+    }
+
+    .stacked-card.cursor-pointer:hover::before {
+        opacity: 1;
+    }
+
+    [data-theme="dark"] .stacked-card.cursor-pointer:hover {
+        border-color: #3a3a3a;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.9), 0 4px 12px rgba(255, 255, 255, 0.05);
+    }
+}
+
+.stacked-card-image {
+    position: relative;
+    height: 180px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    width: calc(100% - 1rem);
+    margin: 0.5rem;
+}
+
+.stacked-card-image img {
+    object-fit: cover;
+    margin-top: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.stacked-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 2rem 0 1rem 0;
+    font-size: 4rem;
+    color: #2a2a2a;
+    transition: color 0.2s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    will-change: transform;
+}
+
+[data-theme="dark"] .stacked-card-icon {
+    color: #e5e5e5;
+    filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.1));
+}
+
+@media (hover: hover) {
+    .stacked-card.cursor-pointer:hover .stacked-card-icon {
+        color: #000000;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+    }
+
+    [data-theme="dark"] .stacked-card.cursor-pointer:hover .stacked-card-icon {
+        color: #ffffff;
+        filter: drop-shadow(0 4px 8px rgba(255, 255, 255, 0.2));
+    }
+}
+
+.stacked-card-content {
+    padding: 0.5rem 1.25rem 1.5rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    text-align: center;
+}
+
+.stacked-card-content h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+    color: #1a1a1a;
+    transition: color 0.2s ease;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .stacked-card-content h3 {
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+@media (hover: hover) {
+    .stacked-card.cursor-pointer:hover .stacked-card-content h3 {
+        color: #000000;
+    }
+
+    [data-theme="dark"] .stacked-card.cursor-pointer:hover .stacked-card-content h3 {
+        color: #ffffff;
+    }
+}
+
+.stacked-card-content p {
+    font-size: 0.8rem;
+    color: #666666;
+    margin: 0;
+    line-height: 1.3;
+    transition: color 0.2s ease;
+}
+
+[data-theme="dark"] .stacked-card-content p {
+    color: #aaaaaa;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .stacked-cards-wrapper {
+        width: 200px;
+        height: 240px;
+    }
+
+    .stacked-card {
+        width: 200px;
+        height: 240px;
+    }
+
+    .stacked-card-icon {
+        font-size: 3.5rem;
+        padding: 1.5rem 0 0.75rem 0;
+    }
+
+    .stacked-card-content {
+        padding: 0.5rem 1rem 1.25rem 1rem;
+    }
+
+    .stacked-card-content h3 {
+        font-size: 1rem;
+    }
+
+    .stacked-card-content p {
+        font-size: 0.75rem;
+    }
+}
