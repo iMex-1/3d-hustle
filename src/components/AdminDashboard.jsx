@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Notification from './Notification';
 import XeokitViewer from './XeokitViewer';
 import * as databaseService from '../services/databaseService';
-import { migrateStaticDataToFirebase } from '../utils/migrateData';
 import { uploadToR2, generateModelPaths, deleteModelFromR2 } from '../utils/storageHelpers';
 import '../styles/admin.css';
 
@@ -250,19 +249,6 @@ function AdminDashboard({ user }) {
         }
     };
 
-    const handleMigrateData = async () => {
-        try {
-            showNotification('Migration en cours...', 'info');
-            const result = await migrateStaticDataToFirebase();
-            showNotification(`Migration réussie! ${result.successCount} modèles migrés.`, 'success');
-        } catch (error) {
-            console.error('Migration error:', error);
-            showNotification('Erreur lors de la migration', 'error');
-        }
-    };
-
-
-
     return (
         <div className="admin-dashboard">
             <div className="admin-header">
@@ -271,15 +257,6 @@ function AdminDashboard({ user }) {
                     <p className="admin-subtitle">Gérez l'inventaire de modèles IFC/XKT</p>
                 </div>
                 <div style={{ display: 'flex', gap: '10px' }}>
-                    {objectList.length === 0 && !loading && (
-                        <button 
-                            className="btn-add-object" 
-                            onClick={handleMigrateData}
-                            style={{ backgroundColor: '#4CAF50' }}
-                        >
-                            Migrer les Données Statiques
-                        </button>
-                    )}
                     <button className="btn-add-object" onClick={() => setShowModal(true)}>
                         Ajouter un Modèle
                     </button>

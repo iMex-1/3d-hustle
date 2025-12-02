@@ -35,6 +35,16 @@ export const generateModelPaths = (modelName) => {
  * Get public URL for a file
  */
 export const getPublicFileUrl = (path) => {
+  if (!WORKER_URL) {
+    console.error('VITE_R2_WORKER_URL is not defined in .env');
+    return path; // Return path as-is if Worker URL not configured
+  }
+  
+  // If path already includes the worker URL, return as-is
+  if (path.startsWith('http')) {
+    return path;
+  }
+  
   return `${WORKER_URL}${path}`;
 };
 

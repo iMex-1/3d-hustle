@@ -4,7 +4,6 @@ import Navigation from './components/Navigation';
 import Homepage from './components/Homepage';
 import Gallery from './components/Gallery';
 import Categories from './components/Categories';
-import ObjectDetail from './components/ObjectDetail';
 import Login from './components/Login';
 import AdminDashboard from './components/AdminDashboard';
 import About from './components/About';
@@ -98,7 +97,7 @@ function App() {
 
   const handleSelectObject = (objectId) => {
     setSelectedObjectId(objectId);
-    setCurrentPage('detail');
+    setCurrentPage('gallery');
   };
 
   const renderPage = () => {
@@ -109,8 +108,6 @@ function App() {
         return <Gallery onSelectObject={handleSelectObject} searchQuery={searchQuery} selectedCategory={selectedCategory} />;
       case 'categories':
         return <Categories onNavigate={handleNavigate} />;
-      case 'detail':
-        return <ObjectDetail objectId={selectedObjectId} onNavigate={handleNavigate} />;
       case 'about':
         return <About />;
       case 'contact':
