@@ -43,9 +43,6 @@ coverage/
 
 # Documentation and notes (except main README)
 data_structure.txt
-FIREBASE_SETUP.md
-FIREBASE_INTEGRATION_COMPLETE.md
-INTEGRATION_TESTS.md
 *.md
 !README.md
 

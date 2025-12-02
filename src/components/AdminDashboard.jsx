@@ -3,6 +3,7 @@ import Notification from './Notification';
 import XeokitViewer from './XeokitViewer';
 import * as databaseService from '../services/databaseService';
 import { migrateStaticDataToFirebase } from '../utils/migrateData';
+import { uploadToR2, generateModelPaths, deleteModelFromR2 } from '../utils/storageHelpers';
 import '../styles/admin.css';
 
 const CATEGORIES = ['Zelige', 'Boiserie', 'Platre', 'Autre'];
@@ -27,6 +28,8 @@ function AdminDashboard({ user }) {
         xktSize: 0,
         ifcSize: 0
     });
+    const [uploading, setUploading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState('');
 
     // Subscribe to real-time model updates
     useEffect(() => {
@@ -75,7 +78,22 @@ function AdminDashboard({ user }) {
 
     const handleDelete = async () => {
         try {
+            // Find the model to get its name for R2 deletion
+            const model = objectList.find(obj => obj.model_id === deleteId);
+            
+            if (model) {
+                // Delete from R2 storage first
+                try {
+                    await deleteModelFromR2(model.model_name);
+                } catch (r2Error) {
+                    console.warn('R2 deletion failed (files may not exist):', r2Error);
+                    // Continue with database deletion even if R2 fails
+                }
+            }
+            
+            // Delete from Firebase database
             await databaseService.deleteModel(deleteId);
+            
             setShowConfirmModal(false);
             setDeleteId(null);
             showNotification('Objet supprimé avec succès', 'success');
@@ -88,23 +106,19 @@ function AdminDashboard({ user }) {
     const handleXKTUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            // Create blob URL for preview
-            const fileUrl = URL.createObjectURL(file);
+            // Store the actual File object, not blob URL
             const fileName = file.name.replace(/\.[^/.]+$/, '');
             const formattedName = fileName
                 .replace(/[_-]/g, ' ')
                 .replace(/\b\w/g, l => l.toUpperCase());
 
-            // Calculate file size in bytes
-            const xktSizeBytes = file.size;
-
             setFormData(prev => ({
                 ...prev,
                 name: prev.name || formattedName,
-                xktFile: fileUrl,
+                xktFile: file, // Store actual file
                 xktFileName: file.name,
                 fileSize: (file.size / (1024 * 1024)).toFixed(2) + ' Mo',
-                xktSize: xktSizeBytes
+                xktSize: file.size
             }));
         }
     };
@@ -112,17 +126,12 @@ function AdminDashboard({ user }) {
     const handleIFCUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            // Create blob URL for preview
-            const fileUrl = URL.createObjectURL(file);
-            
-            // Calculate file size in bytes
-            const ifcSizeBytes = file.size;
-
+            // Store the actual File object, not blob URL
             setFormData(prev => ({
                 ...prev,
-                ifcFile: fileUrl,
+                ifcFile: file, // Store actual file
                 ifcFileName: file.name,
-                ifcSize: ifcSizeBytes
+                ifcSize: file.size
             }));
         }
     };
@@ -145,21 +154,42 @@ function AdminDashboard({ user }) {
             return;
         }
 
-        try {
-            // Construct proper file paths for storage
-            // For new uploads, store paths relative to public directory
-            // For existing models being edited, keep the existing URLs if files weren't changed
-            const ifcUrl = formData.ifcFile.startsWith('blob:') 
-                ? `/files/input/${formData.ifcFileName}`
-                : formData.ifcFile;
-            
-            const xktUrl = formData.xktFile.startsWith('blob:')
-                ? `/files/output/${formData.xktFileName}`
-                : formData.xktFile;
+        setUploading(true);
+        setUploadProgress('Préparation...');
 
+        try {
+            // Generate organized paths
+            const paths = generateModelPaths(formData.name);
+            
+            let ifcUrl, xktUrl;
+            
+            // Check if files are new uploads (File objects) or existing URLs (strings)
+            if (formData.ifcFile instanceof File) {
+                // Upload IFC to R2
+                setUploadProgress('Upload du fichier IFC...');
+                const ifcResult = await uploadToR2(formData.ifcFile, formData.name, 'ifc');
+                ifcUrl = ifcResult.path;
+            } else {
+                // Keep existing URL
+                ifcUrl = formData.ifcFile;
+            }
+            
+            if (formData.xktFile instanceof File) {
+                // Upload XKT to R2
+                setUploadProgress('Upload du fichier XKT...');
+                const xktResult = await uploadToR2(formData.xktFile, formData.name, 'xkt');
+                xktUrl = xktResult.path;
+            } else {
+                // Keep existing URL
+                xktUrl = formData.xktFile;
+            }
+
+            // Save to Firebase
+            setUploadProgress('Enregistrement dans la base de données...');
             const modelData = {
                 filename: formData.xktFileName || formData.name,
                 model_name: formData.name,
+                model_folder: paths.folder,
                 model_category: formData.category,
                 model_description: formData.description,
                 model_owner: user.uid,
@@ -182,7 +212,10 @@ function AdminDashboard({ user }) {
             closeModal();
         } catch (error) {
             console.error('Error saving model:', error);
-            showNotification('Erreur lors de la sauvegarde', 'error');
+            showNotification(`Erreur: ${error.message}`, 'error');
+        } finally {
+            setUploading(false);
+            setUploadProgress('');
         }
     };
 
@@ -386,12 +419,25 @@ function AdminDashboard({ user }) {
                                 />
                             </div>
 
+                            {uploadProgress && (
+                                <div style={{ 
+                                    padding: '1rem', 
+                                    background: 'rgba(0, 168, 150, 0.1)', 
+                                    border: '1px solid rgba(0, 168, 150, 0.3)',
+                                    borderRadius: '8px',
+                                    color: '#00A896',
+                                    textAlign: 'center'
+                                }}>
+                                    ⏳ {uploadProgress}
+                                </div>
+                            )}
+
                             <div className="modal-actions">
-                                <button type="button" onClick={closeModal} className="btn-cancel">
+                                <button type="button" onClick={closeModal} className="btn-cancel" disabled={uploading}>
                                     Annuler
                                 </button>
-                                <button type="submit" className="btn-submit">
-                                    {editingId ? 'Mettre à Jour' : 'Créer'} le Modèle
+                                <button type="submit" className="btn-submit" disabled={uploading}>
+                                    {uploading ? 'Upload en cours...' : editingId ? 'Mettre à Jour' : 'Créer'} {!uploading && 'le Modèle'}
                                 </button>
                             </div>
                         </form>
