@@ -92,7 +92,7 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
                     <div className="detail-container">
                         <div className="detail-viewer">
                             {selectedObject.xktFile ? (
-                                <XeokitViewer xktUrl={selectedObject.xktFile} height="600px" width="100%" />
+                                <XeokitViewer xktUrl={selectedObject.xktFile} height="600px" width="100%" enableZoom={true} />
                             ) : (
                                 <div style={{ width: '100%', height: '600px', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <p style={{ color: '#666' }}>Pas de prévisualisation disponible</p>

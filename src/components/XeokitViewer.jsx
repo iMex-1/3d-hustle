@@ -122,6 +122,24 @@ function XeokitViewer({ xktUrl, height = '100%', width = '100%', enableZoom = fa
         }
     }, [isHovered, enableZoom]);
 
+    // Prevent page scroll when zooming on 3D model
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container || !enableZoom) return;
+
+        const handleWheel = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        };
+
+        // Add event listener with passive: false to allow preventDefault
+        container.addEventListener('wheel', handleWheel, { passive: false });
+
+        return () => {
+            container.removeEventListener('wheel', handleWheel);
+        };
+    }, [enableZoom]);
+
     return (
         <div
             ref={containerRef}
