@@ -45,7 +45,8 @@ function Homepage({ user }) {
         };
     }, []);
 
-    const featuredObjects = objects.filter(obj => obj.featured);
+    // Limit featured objects to reduce initial load
+    const featuredObjects = objects.filter(obj => obj.featured).slice(0, 6);
 
     const slides = [
         {
@@ -280,10 +281,10 @@ function Homepage({ user }) {
                             key={obj.id}
                             className="featured-card"
                             onClick={() => navigate('/gallery', { state: { selectedObjectId: obj.id } })}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-50px" }}
-                            transition={{ duration: 0.4, delay: index * 0.1 }}
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{ duration: 0.3 }}
                             whileHover={{ y: -8, transition: { duration: 0.2 } }}
                         >
                             <div className="card-image">
@@ -381,8 +382,11 @@ function CategoryCarousel({ objects }) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const cardsToShow = 3;
 
+    // Limit to first 9 items for performance
+    const limitedObjects = objects.slice(0, 9);
+
     const nextSlide = () => {
-        if (currentIndex < objects.length - cardsToShow) {
+        if (currentIndex < limitedObjects.length - cardsToShow) {
             setCurrentIndex(prev => prev + 1);
         }
     };
@@ -409,14 +413,14 @@ function CategoryCarousel({ objects }) {
                     animate={{ x: -currentIndex * (100 / cardsToShow) + '%' }}
                     transition={{ duration: 0.3, ease: 'easeOut' }}
                 >
-                    {objects.map((obj, index) => (
+                    {limitedObjects.map((obj, index) => (
                         <div key={obj.id} className="carousel-card">
                             <motion.div
                                 className="showcase-card"
                                 onClick={() => navigate('/gallery', { state: { selectedObjectId: obj.id } })}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.3, delay: index * 0.05 }}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.2 }}
                                 whileHover={{ y: -8, transition: { duration: 0.2 } }}
                             >
                                 <div className="showcase-card-image">

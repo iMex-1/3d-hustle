@@ -186,3 +186,11 @@ input {
 .btn-add-object:hover {
     transform: scale(1.01) translateZ(10px);
 }
+
+/* 
+Loading spinner animation */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
