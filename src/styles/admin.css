@@ -59,13 +59,16 @@
   background: #0A0A0A;
   border-radius: 16px;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid #1a1a1a;
   position: relative;
+  transform: translateY(0);
 }
 
 .admin-dashboard .object-card:hover {
   border-color: #333;
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
 }
 
 .admin-dashboard .object-card-preview {
