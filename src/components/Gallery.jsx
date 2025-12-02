@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import * as databaseService from '../services/databaseService';
 import { getPublicFileUrl } from '../utils/storageHelpers';
 import XeokitViewer from './XeokitViewer';
 import '../styles/gallery.css';
 
-function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCategory = null, selectedObjectId = null }) {
+function Gallery() {
+    const { category: urlCategory } = useParams();
+    const location = useLocation();
+    const selectedObjectId = location.state?.selectedObjectId || null;
+    const searchQuery = location.state?.searchQuery || '';
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Tout');
     const [objects, setObjects] = useState([]);
@@ -46,10 +51,10 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
     }, [searchQuery]);
 
     useEffect(() => {
-        if (propCategory) {
-            setSelectedCategory(propCategory);
+        if (urlCategory) {
+            setSelectedCategory(urlCategory);
         }
-    }, [propCategory]);
+    }, [urlCategory]);
 
     useEffect(() => {
         if (selectedObjectId && objects.length > 0) {

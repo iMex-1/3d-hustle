@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import * as databaseService from '../services/databaseService';
 import { getPublicFileUrl } from '../utils/storageHelpers';
@@ -7,7 +8,8 @@ import { StackedCardsInteraction } from './StackedCards';
 import { FaThLarge, FaTree, FaPaintRoller, FaCube, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import '../styles/homepage.css';
 
-function Homepage({ onNavigate, onSelectObject, user }) {
+function Homepage({ user }) {
+    const navigate = useNavigate();
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);
     const [isDragging, setIsDragging] = useState(false);
@@ -54,7 +56,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
             subtitle: 'Plateforme de Modèles BIM',
             description: 'Explorez des modèles IFC/XKT de haute qualité pour vos projets.',
             buttons: [
-                { text: 'Parcourir la Galerie', action: () => onNavigate('gallery'), primary: true },
+                { text: 'Parcourir la Galerie', action: () => navigate('/gallery'), primary: true },
                 { text: 'Voir les Vedettes', action: () => document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' }) }
             ]
         },
@@ -66,7 +68,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
             subtitle: 'Ressources de Haute Qualité',
             description: 'Découvrez des modèles organisés par catégorie. Architecture, MEP, Structure et Infrastructure.',
             buttons: [
-                { text: 'Voir Tous les Modèles', action: () => onNavigate('gallery'), primary: true }
+                { text: 'Voir Tous les Modèles', action: () => navigate('/gallery'), primary: true }
             ]
         },
         {
@@ -77,7 +79,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
             subtitle: 'Visualisation • Téléchargement',
             description: 'Visualisez en XKT et téléchargez en IFC. Compatible avec tous les logiciels BIM.',
             buttons: [
-                { text: 'En Savoir Plus', action: () => onNavigate('gallery'), primary: true }
+                { text: 'En Savoir Plus', action: () => navigate('/gallery'), primary: true }
             ]
         }
     ];
@@ -249,22 +251,18 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                     <CategoryCard
                         category="Zelige"
                         description="Modèles de carreaux et revêtements traditionnels"
-                        onNavigate={onNavigate}
                     />
                     <CategoryCard
                         category="Boiserie"
                         description="Éléments en bois et menuiserie architecturale"
-                        onNavigate={onNavigate}
                     />
                     <CategoryCard
                         category="Platre"
                         description="Ornements et décorations en plâtre"
-                        onNavigate={onNavigate}
                     />
                     <CategoryCard
                         category="Autre"
                         description="Autres éléments architecturaux"
-                        onNavigate={onNavigate}
                     />
                 </div>
             </section>
@@ -281,7 +279,7 @@ function Homepage({ onNavigate, onSelectObject, user }) {
                         <motion.div
                             key={obj.id}
                             className="featured-card"
-                            onClick={() => onSelectObject(obj.id)}
+                            onClick={() => navigate('/gallery', { state: { selectedObjectId: obj.id } })}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-50px" }}
@@ -322,14 +320,13 @@ function Homepage({ onNavigate, onSelectObject, user }) {
 
             <CategoryShowcase
                 objects={objects}
-                onSelectObject={onSelectObject}
-                onNavigate={onNavigate}
             />
         </div>
     );
 }
 
-function CategoryShowcase({ objects, onSelectObject, onNavigate }) {
+function CategoryShowcase({ objects }) {
+    const navigate = useNavigate();
     const categories = [
         { name: 'Zelige', icon: FaThLarge, description: 'Carreaux et revêtements traditionnels' },
         { name: 'Boiserie', icon: FaTree, description: 'Éléments en bois et menuiserie' },
@@ -355,7 +352,7 @@ function CategoryShowcase({ objects, onSelectObject, onNavigate }) {
                             </div>
                             <motion.button
                                 className="btn-view-category"
-                                onClick={() => onNavigate('gallery', { category: category.name })}
+                                onClick={() => navigate(`/gallery/${category.name}`)}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
@@ -366,7 +363,6 @@ function CategoryShowcase({ objects, onSelectObject, onNavigate }) {
                         {categoryObjects.length > 0 ? (
                             <CategoryCarousel
                                 objects={categoryObjects}
-                                onSelectObject={onSelectObject}
                             />
                         ) : (
                             <div className="no-models-inline">
@@ -380,7 +376,8 @@ function CategoryShowcase({ objects, onSelectObject, onNavigate }) {
     );
 }
 
-function CategoryCarousel({ objects, onSelectObject }) {
+function CategoryCarousel({ objects }) {
+    const navigate = useNavigate();
     const [currentIndex, setCurrentIndex] = useState(0);
     const cardsToShow = 3;
 
@@ -416,7 +413,7 @@ function CategoryCarousel({ objects, onSelectObject }) {
                         <div key={obj.id} className="carousel-card">
                             <motion.div
                                 className="showcase-card"
-                                onClick={() => onSelectObject(obj.id)}
+                                onClick={() => navigate('/gallery', { state: { selectedObjectId: obj.id } })}
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -456,7 +453,8 @@ function CategoryCarousel({ objects, onSelectObject }) {
     );
 }
 
-function CategoryCard({ category, description, onNavigate }) {
+function CategoryCard({ category, description }) {
+    const navigate = useNavigate();
     // Icon mapping for each category
     const categoryIcons = {
         'Zelige': FaThLarge,
@@ -486,7 +484,7 @@ function CategoryCard({ category, description, onNavigate }) {
     ];
 
     const handleClick = () => {
-        onNavigate('gallery', { category });
+        navigate(`/gallery/${category}`);
     };
 
     return (

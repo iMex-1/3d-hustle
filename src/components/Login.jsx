@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaGoogle } from 'react-icons/fa';
 import { signInWithGoogle } from '../services/authService';
 import { syncUserData } from '../services/databaseService';
 import '../styles/auth.css';
 
-function Login({ onLogin, onNavigate }) {
+function Login() {
+    const navigate = useNavigate();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -25,16 +27,8 @@ function Login({ onLogin, onNavigate }) {
                 // Continue even if sync fails - user is still authenticated
             }
 
-            // Call onLogin with user data
-            onLogin({
-                uid: user.uid,
-                displayName: user.displayName,
-                email: user.email,
-                photoURL: user.photoURL
-            });
-
             // Navigate to home page (admin link will appear in nav if user has admin permissions)
-            onNavigate('home');
+            navigate('/');
         } catch (error) {
             console.error('Sign-in error:', error);
             setError(error.message || 'Échec de la connexion avec Google');
@@ -51,8 +45,8 @@ function Login({ onLogin, onNavigate }) {
 
                 {error && <p className="error-message">{error}</p>}
 
-                <button 
-                    onClick={handleGoogleSignIn} 
+                <button
+                    onClick={handleGoogleSignIn}
                     className="btn-submit"
                     disabled={loading}
                 >
