@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { objects as initialObjects } from '../data/objects';
+import * as databaseService from '../services/databaseService';
+import { getPublicFileUrl } from '../utils/storageHelpers';
 import XeokitViewer from './XeokitViewer';
 import '../styles/gallery.css';
 
@@ -8,13 +9,33 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Tout');
     const [objects, setObjects] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const categories = ['Tout', 'Zelige', 'Boiserie', 'Platre', 'Autre'];
 
     useEffect(() => {
-        // Always use initialObjects and save to localStorage
-        setObjects(initialObjects);
-        localStorage.setItem('3d_objects', JSON.stringify(initialObjects));
+        // Load models from Firebase in real-time
+        const unsubscribe = databaseService.listenToModels((models) => {
+            // Transform Firebase models to match expected format
+            const transformedModels = models.map(model => ({
+                id: model.model_id,
+                name: model.model_name,
+                category: model.model_category,
+                description: model.model_description,
+                xktFile: getPublicFileUrl(model.model_xkt_url),
+                ifcFile: getPublicFileUrl(model.model_ifc_url),
+                fileSize: model.model_xkt_size ? `${(model.model_xkt_size / (1024 * 1024)).toFixed(1)} Mo` : 'N/A',
+                downloads: model.downloads || 0,
+                featured: model.featured || false
+            }));
+            
+            setObjects(transformedModels);
+            setLoading(false);
+        });
+
+        return () => {
+            if (unsubscribe) unsubscribe();
+        };
     }, []);
 
     useEffect(() => {
