@@ -105,7 +105,7 @@ function App() {
       case 'home':
         return <Homepage onNavigate={handleNavigate} onSelectObject={handleSelectObject} user={user} />;
       case 'gallery':
-        return <Gallery onSelectObject={handleSelectObject} searchQuery={searchQuery} selectedCategory={selectedCategory} />;
+        return <Gallery onSelectObject={handleSelectObject} searchQuery={searchQuery} selectedCategory={selectedCategory} selectedObjectId={selectedObjectId} />;
       case 'categories':
         return <Categories onNavigate={handleNavigate} />;
       case 'about':

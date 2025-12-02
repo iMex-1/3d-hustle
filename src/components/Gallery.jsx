@@ -5,11 +5,12 @@ import { getPublicFileUrl } from '../utils/storageHelpers';
 import XeokitViewer from './XeokitViewer';
 import '../styles/gallery.css';
 
-function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCategory = null }) {
+function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCategory = null, selectedObjectId = null }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Tout');
     const [objects, setObjects] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [selectedObject, setSelectedObject] = useState(null);
 
     const categories = ['Tout', 'Zelige', 'Boiserie', 'Platre', 'Autre'];
 
@@ -28,7 +29,7 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
                 downloads: model.downloads || 0,
                 featured: model.featured || false
             }));
-            
+
             setObjects(transformedModels);
             setLoading(false);
         });
@@ -50,6 +51,15 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
         }
     }, [propCategory]);
 
+    useEffect(() => {
+        if (selectedObjectId && objects.length > 0) {
+            const obj = objects.find(o => o.id === selectedObjectId);
+            setSelectedObject(obj || null);
+        } else {
+            setSelectedObject(null);
+        }
+    }, [selectedObjectId, objects]);
+
     const filteredObjects = objects.filter(obj => {
         const matchesSearch = obj.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             obj.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -57,7 +67,85 @@ function Gallery({ onSelectObject, searchQuery = '', selectedCategory: propCateg
         return matchesSearch && matchesCategory;
     });
 
+    const handleDownload = async (obj) => {
+        if (obj.ifcFile) {
+            try {
+                await databaseService.incrementDownloadCount(obj.id);
+                window.open(obj.ifcFile, '_blank');
+            } catch (error) {
+                console.error('Error downloading file:', error);
+            }
+        }
+    };
 
+    if (selectedObject) {
+        return (
+            <div className="gallery">
+                <div className="product-detail">
+                    <button
+                        className="back-button"
+                        onClick={() => onSelectObject(null)}
+                    >
+                        ← Retour à la galerie
+                    </button>
+
+                    <div className="detail-container">
+                        <div className="detail-viewer">
+                            {selectedObject.xktFile ? (
+                                <XeokitViewer xktUrl={selectedObject.xktFile} height="600px" width="100%" />
+                            ) : (
+                                <div style={{ width: '100%', height: '600px', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <p style={{ color: '#666' }}>Pas de prévisualisation disponible</p>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="detail-info">
+                            <h1>{selectedObject.name}</h1>
+                            <span className="badge">{selectedObject.category}</span>
+
+                            <div className="detail-description">
+                                <h3>Description</h3>
+                                <p>{selectedObject.description}</p>
+                            </div>
+
+                            <div className="detail-meta">
+                                <div className="meta-row">
+                                    <span className="meta-label">Taille du fichier:</span>
+                                    <span className="meta-value">{selectedObject.fileSize}</span>
+                                </div>
+                                <div className="meta-row">
+                                    <span className="meta-label">Téléchargements:</span>
+                                    <span className="meta-value">{selectedObject.downloads}</span>
+                                </div>
+                                <div className="meta-row">
+                                    <span className="meta-label">Catégorie:</span>
+                                    <span className="meta-value">{selectedObject.category}</span>
+                                </div>
+                            </div>
+
+                            <div className="detail-actions">
+                                <motion.button
+                                    className="btn-download"
+                                    onClick={() => handleDownload(selectedObject)}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    disabled={!selectedObject.ifcFile}
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    Télécharger le modèle IFC
+                                </motion.button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="gallery">

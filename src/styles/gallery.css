@@ -470,3 +470,239 @@ xurious Card Info Section */
         height: 220px;
     }
 }
+
+/* Product Detail Page Styles */
+.product-detail {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+}
+
+[data-theme="light"] .back-button {
+    color: #1a1a1a;
+    border-color: #e5e5e5;
+}
+
+.back-button:hover {
+    background: #1a1a1a;
+    border-color: #ffffff;
+    transform: translateX(-4px);
+}
+
+[data-theme="light"] .back-button:hover {
+    background: #f5f5f5;
+    border-color: #1a1a1a;
+}
+
+.detail-container {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.detail-viewer {
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] .detail-viewer {
+    background: #f5f5f5;
+    border-color: #e5e5e5;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.detail-info {
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] .detail-info {
+    background: #ffffff;
+    border-color: #e5e5e5;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.detail-info h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+[data-theme="light"] .detail-info h1 {
+    color: #1a1a1a;
+}
+
+.detail-info .badge {
+    margin-bottom: 1.5rem;
+}
+
+.detail-description {
+    margin-bottom: 2rem;
+}
+
+.detail-description h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: #ffffff;
+}
+
+[data-theme="light"] .detail-description h3 {
+    color: #1a1a1a;
+}
+
+.detail-description p {
+    color: #999999;
+    line-height: 1.6;
+}
+
+[data-theme="light"] .detail-description p {
+    color: #666666;
+}
+
+.detail-meta {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+[data-theme="light"] .detail-meta {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.05);
+}
+
+.meta-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="light"] .meta-row {
+    border-bottom-color: rgba(0, 0, 0, 0.05);
+}
+
+.meta-row:last-child {
+    border-bottom: none;
+}
+
+.meta-label {
+    color: #999999;
+    font-size: 0.9rem;
+}
+
+[data-theme="light"] .meta-label {
+    color: #666666;
+}
+
+.meta-value {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+[data-theme="light"] .meta-value {
+    color: #1a1a1a;
+}
+
+.detail-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.btn-download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+[data-theme="light"] .btn-download {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+}
+
+.btn-download:hover {
+    background: #ffffff;
+    color: #1a1a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="light"] .btn-download:hover {
+    background: #2a2a2a;
+    color: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-download:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-download:disabled:hover {
+    transform: none;
+    background: #1a1a1a;
+    color: #ffffff;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .detail-container {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-viewer {
+        height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .product-detail {
+        padding: 1rem;
+    }
+
+    .detail-info {
+        padding: 1.5rem;
+    }
+
+    .detail-info h1 {
+        font-size: 1.5rem;
+    }
+
+    .detail-viewer {
+        height: 400px;
+    }
+}

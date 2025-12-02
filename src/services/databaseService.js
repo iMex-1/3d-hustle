@@ -35,10 +35,10 @@ export async function syncUserData(user) {
     }
 
     const userRef = ref(db, `users/${user.uid}`);
-    
+
     // Check if user exists
     const snapshot = await get(userRef);
-    
+
     if (snapshot.exists()) {
       // Update existing user - preserve isAdmin field
       const existingData = snapshot.val();
@@ -78,11 +78,11 @@ export async function getUserData(uid) {
 
     const userRef = ref(db, `users/${uid}`);
     const snapshot = await get(userRef);
-    
+
     if (snapshot.exists()) {
       return snapshot.val();
     }
-    
+
     return null;
   } catch (error) {
     console.error('Error getting user data:', error);
@@ -107,7 +107,7 @@ export async function updateUserAdmin(uid, isAdmin) {
     }
 
     const userRef = ref(db, `users/${uid}`);
-    
+
     // Check if user exists
     const snapshot = await get(userRef);
     if (!snapshot.exists()) {
@@ -134,7 +134,7 @@ export async function getAllModels() {
   try {
     const modelsRef = ref(db, 'models');
     const snapshot = await get(modelsRef);
-    
+
     if (snapshot.exists()) {
       const modelsData = snapshot.val();
       // Convert object to array with model_id included
@@ -143,7 +143,7 @@ export async function getAllModels() {
         ...data
       }));
     }
-    
+
     return [];
   } catch (error) {
     console.error('Error getting all models:', error);
@@ -164,14 +164,14 @@ export async function getModelById(modelId) {
 
     const modelRef = ref(db, `models/${modelId}`);
     const snapshot = await get(modelRef);
-    
+
     if (snapshot.exists()) {
       return {
         model_id: modelId,
         ...snapshot.val()
       };
     }
-    
+
     return null;
   } catch (error) {
     console.error('Error getting model by ID:', error);
@@ -207,7 +207,7 @@ export async function createModel(modelData) {
 
     await set(newModelRef, modelRecord);
     console.log(`Created new model: ${modelId}`);
-    
+
     return modelId;
   } catch (error) {
     console.error('Error creating model:', error);
@@ -232,7 +232,7 @@ export async function updateModel(modelId, updates) {
     }
 
     const modelRef = ref(db, `models/${modelId}`);
-    
+
     // Check if model exists
     const snapshot = await get(modelRef);
     if (!snapshot.exists()) {
@@ -265,7 +265,7 @@ export async function deleteModel(modelId) {
     }
 
     const modelRef = ref(db, `models/${modelId}`);
-    
+
     // Check if model exists
     const snapshot = await get(modelRef);
     if (!snapshot.exists()) {
@@ -296,7 +296,7 @@ export function listenToModels(callback) {
     }
 
     const modelsRef = ref(db, 'models');
-    
+
     const unsubscribe = onValue(modelsRef, (snapshot) => {
       try {
         if (snapshot.exists()) {
@@ -346,7 +346,7 @@ export function listenToUser(uid, callback) {
     }
 
     const userRef = ref(db, `users/${uid}`);
-    
+
     const unsubscribe = onValue(userRef, (snapshot) => {
       try {
         if (snapshot.exists()) {
@@ -370,5 +370,40 @@ export function listenToUser(uid, callback) {
   } catch (error) {
     console.error('Error setting up user listener:', error);
     throw new Error(`Failed to set up user listener: ${error.message}`);
+  }
+}
+
+/**
+ * Increment download count for a model
+ * @param {string} modelId - Model ID
+ * @returns {Promise<void>}
+ */
+export async function incrementDownloadCount(modelId) {
+  try {
+    if (!modelId) {
+      throw new Error('Model ID is required');
+    }
+
+    const modelRef = ref(db, `models/${modelId}`);
+
+    // Get current model data
+    const snapshot = await get(modelRef);
+    if (!snapshot.exists()) {
+      throw new Error(`Model ${modelId} does not exist`);
+    }
+
+    const currentData = snapshot.val();
+    const currentDownloads = currentData.downloads || 0;
+
+    // Increment download count
+    await update(modelRef, {
+      downloads: currentDownloads + 1,
+      model_updated_at: Date.now()
+    });
+
+    console.log(`Incremented download count for model ${modelId}: ${currentDownloads} -> ${currentDownloads + 1}`);
+  } catch (error) {
+    console.error('Error incrementing download count:', error);
+    throw new Error(`Failed to increment download count: ${error.message}`);
   }
 }
