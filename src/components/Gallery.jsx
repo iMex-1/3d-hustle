@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import * as databaseService from '../services/databaseService';
 import { getPublicFileUrl } from '../utils/storageHelpers';
 import XeokitViewer from './XeokitViewer';
@@ -94,7 +93,7 @@ function Gallery() {
                 <div className="product-detail">
                     <button
                         className="back-button"
-                        onClick={() => onSelectObject(null)}
+                        onClick={handleBackToGallery}
                     >
                         ← Retour à la galerie
                     </button>
@@ -199,19 +198,10 @@ function Gallery() {
 
             <div className="gallery-grid">
                 {filteredObjects.map((obj, index) => (
-                    <motion.div
+                    <div
                         key={obj.id}
                         className="gallery-card"
-                        onClick={() => onSelectObject(obj.id)}
-                        initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        transition={{ duration: 0.4, delay: index * 0.05 }}
-                        whileHover={{
-                            y: -8,
-                            scale: 1.02,
-                            transition: { duration: 0.3 }
-                        }}
-                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setSelectedObject(obj)}
                     >
                         <div className="card-image">
                             {obj.xktFile ? (
@@ -222,13 +212,9 @@ function Gallery() {
                                 </div>
                             )}
                             <div className="card-overlay">
-                                <motion.button
-                                    className="btn-view"
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                >
+                                <button className="btn-view">
                                     Voir les Détails
-                                </motion.button>
+                                </button>
                             </div>
                         </div>
                         <div className="card-info">
@@ -252,7 +238,7 @@ function Gallery() {
                                 </span>
                             </div>
                         </div>
-                    </motion.div>
+                    </div>
                 ))}
             </div>
 
