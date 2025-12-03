@@ -289,7 +289,7 @@ function Homepage({ user }) {
                         <div
                             key={obj.id}
                             className="featured-card"
-                            onClick={() => navigate('/gallery', { state: { selectedObjectId: obj.id } })}
+                            onClick={() => navigate(`/gallery/product/${obj.id}`)}
                         >
                             <div className="card-image">
                                 {obj.xktFile ? (
@@ -310,13 +310,26 @@ function Homepage({ user }) {
                                 </div>
                             </div>
                             <div className="card-content">
-                                <h3>{obj.name}</h3>
-                                <p className="category">{obj.category}</p>
-                                <p className="description">{obj.description}</p>
-                                <div className="card-stats">
-                                    <span>Taille: {obj.fileSize}</span>
-                                    <span>Téléchargements: {obj.downloads}</span>
+                                <div className="card-header">
+                                    <span className="card-category">{obj.category}</span>
+                                    <h3>{obj.name}</h3>
+                                    <p className="card-description">{obj.description}</p>
                                 </div>
+                                <div className="card-divider"></div>
+                                <motion.button
+                                    className="btn-card-details"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        navigate(`/gallery/product/${obj.id}`);
+                                    }}
+                                    whileHover={{ x: 4 }}
+                                    whileTap={{ scale: 0.98 }}
+                                >
+                                    <span>Voir Détails</span>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </motion.button>
                             </div>
                         </div>
                     ))}
@@ -357,7 +370,7 @@ function CategoryShowcase({ objects }) {
                             </div>
                             <motion.button
                                 className="btn-view-category"
-                                onClick={() => navigate(`/gallery/${category.name}`)}
+                                onClick={() => navigate(`/gallery/category/${category.name}`)}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
@@ -421,7 +434,7 @@ function CategoryCarousel({ objects }) {
                         <div key={obj.id} className="carousel-card">
                             <div
                                 className="showcase-card"
-                                onClick={() => navigate('/gallery', { state: { selectedObjectId: obj.id } })}
+                                onClick={() => navigate(`/gallery/product/${obj.id}`)}
                             >
                                 <div className="showcase-card-image">
                                     {obj.xktFile ? (
@@ -433,12 +446,26 @@ function CategoryCarousel({ objects }) {
                                     )}
                                 </div>
                                 <div className="showcase-card-content">
-                                    <h3>{obj.name}</h3>
-                                    <p className="showcase-description">{obj.description}</p>
-                                    <div className="showcase-stats">
-                                        <span>{obj.fileSize}</span>
-                                        <span>{obj.downloads} téléchargements</span>
+                                    <div className="card-header">
+                                        <span className="card-category">{obj.category}</span>
+                                        <h3>{obj.name}</h3>
+                                        <p className="showcase-description">{obj.description}</p>
                                     </div>
+                                    <div className="card-divider"></div>
+                                    <motion.button
+                                        className="btn-card-details"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            navigate(`/gallery/product/${obj.id}`);
+                                        }}
+                                        whileHover={{ x: 4 }}
+                                        whileTap={{ scale: 0.98 }}
+                                    >
+                                        <span>Voir Détails</span>
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                            <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </motion.button>
                                 </div>
                             </div>
                         </div>
@@ -463,7 +490,7 @@ function SimpleCategoryCard({ category, icon: Icon, description }) {
     return (
         <motion.div
             className="simple-category-card"
-            onClick={() => navigate(`/gallery/${category}`)}
+            onClick={() => navigate(`/gallery/category/${category}`)}
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.3 }}

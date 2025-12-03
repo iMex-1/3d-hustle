@@ -6,9 +6,8 @@ import XeokitViewer from './XeokitViewer';
 import '../styles/gallery.css';
 
 function Gallery() {
-    const { category: urlCategory } = useParams();
+    const { category: urlCategory, productId } = useParams();
     const location = useLocation();
-    const selectedObjectId = location.state?.selectedObjectId || null;
     const searchQuery = location.state?.searchQuery || '';
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Tout');
@@ -56,13 +55,13 @@ function Gallery() {
     }, [urlCategory]);
 
     useEffect(() => {
-        if (selectedObjectId && objects.length > 0) {
-            const obj = objects.find(o => o.id === selectedObjectId);
+        if (productId && objects.length > 0) {
+            const obj = objects.find(o => o.id === productId);
             if (obj) {
                 setSelectedObject(obj);
             }
         }
-    }, [selectedObjectId, objects]);
+    }, [productId, objects]);
 
     const handleBackToGallery = () => {
         setSelectedObject(null);
@@ -86,6 +85,18 @@ function Gallery() {
             }
         }
     };
+
+    // Show loading when we have a productId but haven't loaded the object yet
+    if (productId && !selectedObject && loading) {
+        return (
+            <div className="gallery">
+                <div className="loading-container">
+                    <div className="loading-spinner"></div>
+                    <p>Chargement du produit...</p>
+                </div>
+            </div>
+        );
+    }
 
     if (selectedObject) {
         return (
