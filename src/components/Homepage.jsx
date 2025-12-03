@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import * as databaseService from '../services/databaseService';
 import { getPublicFileUrl } from '../utils/storageHelpers';
 import XeokitViewer from './XeokitViewer';
-import { StackedCardsInteraction } from './StackedCards';
 import { FaThLarge, FaTree, FaPaintRoller, FaCube, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import '../styles/homepage.css';
 
@@ -248,22 +247,26 @@ function Homepage({ user }) {
                         Explorez nos modèles organisés par type de construction
                     </p>
                 </div>
-                <div className="categories-grid">
-                    <CategoryCard
+                <div className="categories-grid-simple">
+                    <SimpleCategoryCard
                         category="Zelige"
-                        description="Modèles de carreaux et revêtements traditionnels"
+                        icon={FaThLarge}
+                        description="Carreaux et revêtements"
                     />
-                    <CategoryCard
+                    <SimpleCategoryCard
                         category="Boiserie"
-                        description="Éléments en bois et menuiserie architecturale"
+                        icon={FaTree}
+                        description="Bois et menuiserie"
                     />
-                    <CategoryCard
+                    <SimpleCategoryCard
                         category="Platre"
-                        description="Ornements et décorations en plâtre"
+                        icon={FaPaintRoller}
+                        description="Ornements en plâtre"
                     />
-                    <CategoryCard
+                    <SimpleCategoryCard
                         category="Autre"
-                        description="Autres éléments architecturaux"
+                        icon={FaCube}
+                        description="Autres éléments"
                     />
                 </div>
             </section>
@@ -277,15 +280,10 @@ function Homepage({ user }) {
                 </div>
                 <div className="featured-grid">
                     {featuredObjects.map((obj, index) => (
-                        <motion.div
+                        <div
                             key={obj.id}
                             className="featured-card"
                             onClick={() => navigate('/gallery', { state: { selectedObjectId: obj.id } })}
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true, margin: "-100px" }}
-                            transition={{ duration: 0.3 }}
-                            whileHover={{ y: -8, transition: { duration: 0.2 } }}
                         >
                             <div className="card-image">
                                 {obj.xktFile ? (
@@ -314,7 +312,7 @@ function Homepage({ user }) {
                                     <span>Téléchargements: {obj.downloads}</span>
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
             </section>
@@ -415,13 +413,9 @@ function CategoryCarousel({ objects }) {
                 >
                     {limitedObjects.map((obj, index) => (
                         <div key={obj.id} className="carousel-card">
-                            <motion.div
+                            <div
                                 className="showcase-card"
                                 onClick={() => navigate('/gallery', { state: { selectedObjectId: obj.id } })}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ duration: 0.2 }}
-                                whileHover={{ y: -8, transition: { duration: 0.2 } }}
                             >
                                 <div className="showcase-card-image">
                                     {obj.xktFile ? (
@@ -440,7 +434,7 @@ function CategoryCarousel({ objects }) {
                                         <span>{obj.downloads} téléchargements</span>
                                     </div>
                                 </div>
-                            </motion.div>
+                            </div>
                         </div>
                     ))}
                 </motion.div>
@@ -457,58 +451,24 @@ function CategoryCarousel({ objects }) {
     );
 }
 
-function CategoryCard({ category, description }) {
+function SimpleCategoryCard({ category, icon: Icon, description }) {
     const navigate = useNavigate();
-    // Icon mapping for each category
-    const categoryIcons = {
-        'Zelige': FaThLarge,
-        'Boiserie': FaTree,
-        'Platre': FaPaintRoller,
-        'Autre': FaCube
-    };
-
-    const Icon = categoryIcons[category] || FaCube;
-
-    const cards = [
-        {
-            icon: Icon,
-            title: category,
-            description: description
-        },
-        {
-            icon: Icon,
-            title: category,
-            description: description
-        },
-        {
-            icon: Icon,
-            title: category,
-            description: description
-        }
-    ];
-
-    const handleClick = () => {
-        navigate(`/gallery/${category}`);
-    };
 
     return (
         <motion.div
-            className="category-card-wrapper"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{
-                duration: 0.3,
-                ease: [0.25, 0.1, 0.25, 1]
-            }}
+            className="simple-category-card"
+            onClick={() => navigate(`/gallery/${category}`)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
+            whileHover={{ y: -4 }}
+            whileTap={{ scale: 0.98 }}
         >
-            <StackedCardsInteraction
-                cards={cards}
-                spreadDistance={25}
-                rotationAngle={4}
-                animationDelay={0.06}
-                onClick={handleClick}
-            />
+            <div className="category-icon-wrapper">
+                <Icon />
+            </div>
+            <h3>{category}</h3>
+            <p>{description}</p>
         </motion.div>
     );
 }

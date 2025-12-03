@@ -59,11 +59,16 @@ function Gallery() {
     useEffect(() => {
         if (selectedObjectId && objects.length > 0) {
             const obj = objects.find(o => o.id === selectedObjectId);
-            setSelectedObject(obj || null);
-        } else {
-            setSelectedObject(null);
+            if (obj) {
+                setSelectedObject(obj);
+            }
         }
     }, [selectedObjectId, objects]);
+
+    const handleBackToGallery = () => {
+        setSelectedObject(null);
+        window.history.replaceState({}, '', '/gallery');
+    };
 
     const filteredObjects = objects.filter(obj => {
         const matchesSearch = obj.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -97,9 +102,22 @@ function Gallery() {
                     <div className="detail-container">
                         <div className="detail-viewer">
                             {selectedObject.xktFile ? (
-                                <XeokitViewer xktUrl={selectedObject.xktFile} height="600px" width="100%" enableZoom={true} />
+                                <XeokitViewer
+                                    xktUrl={selectedObject.xktFile}
+                                    height="600px"
+                                    width="100%"
+                                    enableZoom={true}
+                                />
                             ) : (
-                                <div style={{ width: '100%', height: '600px', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <div style={{
+                                    width: '100%',
+                                    height: '600px',
+                                    background: '#0A0A0A',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    borderRadius: '12px'
+                                }}>
                                     <p style={{ color: '#666' }}>Pas de prévisualisation disponible</p>
                                 </div>
                             )}
@@ -130,11 +148,9 @@ function Gallery() {
                             </div>
 
                             <div className="detail-actions">
-                                <motion.button
+                                <button
                                     className="btn-download"
                                     onClick={() => handleDownload(selectedObject)}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
                                     disabled={!selectedObject.ifcFile}
                                 >
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -143,7 +159,7 @@ function Gallery() {
                                         <line x1="12" y1="15" x2="12" y2="3"></line>
                                     </svg>
                                     Télécharger le modèle IFC
-                                </motion.button>
+                                </button>
                             </div>
                         </div>
                     </div>
