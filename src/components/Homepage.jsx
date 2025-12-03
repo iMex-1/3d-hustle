@@ -1,51 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import * as databaseService from '../services/databaseService';
-import { getPublicFileUrl } from '../utils/storageHelpers';
+import { useModels } from '../context/ModelsContext';
 import XeokitViewer from './XeokitViewer';
-import { FaThLarge, FaTree, FaPaintRoller, FaCube, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaThLarge, FaTree, FaPaintRoller, FaCube, FaChevronLeft, FaChevronRight, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import '../styles/homepage.css';
 
 function Homepage({ user }) {
     const navigate = useNavigate();
+    const { models: objects, loading } = useModels();
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);
     const [isDragging, setIsDragging] = useState(false);
     const [touchStartX, setTouchStartX] = useState(0);
     const [touchDeltaX, setTouchDeltaX] = useState(0);
-    const [objects, setObjects] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [showAllCategories, setShowAllCategories] = useState(false);
     const containerRef = useRef(null);
     const autoPlayInterval = 5000;
 
-    useEffect(() => {
-        // Load models from Firebase in real-time
-        const unsubscribe = databaseService.listenToModels((models) => {
-            // Transform Firebase models to match expected format
-            const transformedModels = models.map(model => ({
-                id: model.model_id,
-                name: model.model_name,
-                category: model.model_category,
-                description: model.model_description,
-                xktFile: getPublicFileUrl(model.model_xkt_url),
-                ifcFile: getPublicFileUrl(model.model_ifc_url),
-                fileSize: model.model_xkt_size ? `${(model.model_xkt_size / (1024 * 1024)).toFixed(1)} Mo` : 'N/A',
-                downloads: model.downloads || 0,
-                featured: model.featured || false
-            }));
-
-            setObjects(transformedModels);
-            setLoading(false);
-        });
-
-        return () => {
-            if (unsubscribe) unsubscribe();
-        };
-    }, []);
-
     // Limit featured objects to reduce initial load
-    const featuredObjects = objects.filter(obj => obj.featured).slice(0, 6);
+    const featuredObjects = objects.filter(obj => obj.featured).slice(0, 3);
 
     const slides = [
         {
@@ -338,12 +312,14 @@ function Homepage({ user }) {
 
             <CategoryShowcase
                 objects={objects}
+                showAllCategories={showAllCategories}
+                setShowAllCategories={setShowAllCategories}
             />
         </div>
     );
 }
 
-function CategoryShowcase({ objects }) {
+function CategoryShowcase({ objects, showAllCategories, setShowAllCategories }) {
     const navigate = useNavigate();
     const categories = [
         { name: 'Zelige', icon: FaThLarge, description: 'Carreaux et revêtements traditionnels' },
@@ -352,9 +328,12 @@ function CategoryShowcase({ objects }) {
         { name: 'Autre', icon: FaCube, description: 'Autres éléments architecturaux' }
     ];
 
+    // Show only first category by default
+    const displayedCategories = showAllCategories ? categories : categories.slice(0, 1);
+
     return (
         <section className="category-showcase">
-            {categories.map((category) => {
+            {displayedCategories.map((category) => {
                 const categoryObjects = objects.filter(obj => obj.category === category.name);
                 const Icon = category.icon;
 
@@ -390,6 +369,23 @@ function CategoryShowcase({ objects }) {
                     </div>
                 );
             })}
+
+            <div className="category-toggle-container">
+                <button
+                    className="category-toggle-btn"
+                    onClick={() => setShowAllCategories(!showAllCategories)}
+                >
+                    {showAllCategories ? (
+                        <>
+                            <FaChevronUp /> Voir Moins de Catégories
+                        </>
+                    ) : (
+                        <>
+                            <FaChevronDown /> Voir Toutes les Catégories
+                        </>
+                    )}
+                </button>
+            </div>
         </section>
     );
 }
@@ -399,8 +395,8 @@ function CategoryCarousel({ objects }) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const cardsToShow = 3;
 
-    // Limit to first 9 items for performance
-    const limitedObjects = objects.slice(0, 9);
+    // Limit to first 6 items for performance
+    const limitedObjects = objects.slice(0, 6);
 
     const nextSlide = () => {
         if (currentIndex < limitedObjects.length - cardsToShow) {

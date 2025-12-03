@@ -1,44 +1,18 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ModelsProvider } from './context/ModelsContext';
 import Navigation from './components/Navigation';
 import Notification from './components/Notification';
+import Homepage from './components/Homepage';
+import Gallery from './components/Gallery';
+import Categories from './components/Categories';
+import Login from './components/Login';
+import AdminDashboard from './components/AdminDashboard';
+import About from './components/About';
+import Contact from './components/Contact';
 import * as authService from './services/authService';
 import * as databaseService from './services/databaseService';
-
-// Lazy load components
-const Homepage = lazy(() => import('./components/Homepage'));
-const Gallery = lazy(() => import('./components/Gallery'));
-const Categories = lazy(() => import('./components/Categories'));
-const Login = lazy(() => import('./components/Login'));
-const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
-const About = lazy(() => import('./components/About'));
-const Contact = lazy(() => import('./components/Contact'));
-
-// Loading component
-const LoadingFallback = () => (
-  <div style={{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: '60vh',
-    color: 'var(--color-text, #999)',
-    fontSize: '1.1rem'
-  }}>
-    <div style={{ textAlign: 'center' }}>
-      <div style={{
-        width: '48px',
-        height: '48px',
-        border: '3px solid rgba(255, 255, 255, 0.1)',
-        borderTopColor: '#ffffff',
-        borderRadius: '50%',
-        animation: 'spin 1s linear infinite',
-        margin: '0 auto 1rem'
-      }}></div>
-      <p>Chargement...</p>
-    </div>
-  </div>
-);
 
 function AppContent() {
   const navigate = useNavigate();
@@ -126,32 +100,30 @@ function AppContent() {
         <motion.main
           key={location.pathname}
           className="main-content"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
         >
-          <Suspense fallback={<LoadingFallback />}>
-            <Routes>
-              <Route path="/" element={<Homepage user={user} />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/gallery/category/:category" element={<Gallery />} />
-              <Route path="/gallery/product/:productId" element={<Gallery />} />
-              <Route path="/categories" element={<Categories />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/login" element={<Login />} />
-              <Route
-                path="/admin"
-                element={
-                  <ProtectedRoute>
-                    <AdminDashboard user={user} />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </Suspense>
+          <Routes>
+            <Route path="/" element={<Homepage user={user} />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/gallery/category/:category" element={<Gallery />} />
+            <Route path="/gallery/product/:productId" element={<Gallery />} />
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard user={user} />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </motion.main>
       </AnimatePresence>
       {notification && (
@@ -168,7 +140,9 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <AppContent />
+      <ModelsProvider>
+        <AppContent />
+      </ModelsProvider>
     </Router>
   );
 }
