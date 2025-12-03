@@ -107,7 +107,7 @@ function AppContent() {
         >
           <Routes>
             <Route path="/" element={<Homepage user={user} />} />
-            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/gallery" element={<Categories />} />
             <Route path="/gallery/category/:category" element={<Gallery />} />
             <Route path="/gallery/product/:productId" element={<Gallery />} />
             <Route path="/categories" element={<Categories />} />
