@@ -247,7 +247,13 @@ function Homepage({ user }) {
                         Explorez nos modèles organisés par type de construction
                     </p>
                 </div>
-                <div className="categories-grid-simple">
+                <motion.div
+                    className="categories-grid-simple"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3 }}
+                >
                     <SimpleCategoryCard
                         category="Zelige"
                         icon={FaThLarge}
@@ -268,7 +274,7 @@ function Homepage({ user }) {
                         icon={FaCube}
                         description="Autres éléments"
                     />
-                </div>
+                </motion.div>
             </section>
 
             <section className="featured-section" id="featured">
@@ -458,15 +464,30 @@ function SimpleCategoryCard({ category, icon: Icon, description }) {
         <motion.div
             className="simple-category-card"
             onClick={() => navigate(`/gallery/${category}`)}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.2 }}
-            whileHover={{ y: -4 }}
-            whileTap={{ scale: 0.98 }}
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{
+                duration: 0.5,
+                ease: "easeOut"
+            }}
+            whileHover={{
+                y: -8,
+                scale: 1.05,
+                transition: { duration: 0.2 }
+            }}
+            whileTap={{ scale: 0.95 }}
         >
-            <div className="category-icon-wrapper">
+            <motion.div
+                className="category-icon-wrapper"
+                whileHover={{
+                    rotate: [0, -10, 10, -10, 0],
+                    scale: 1.2
+                }}
+                transition={{ duration: 0.5 }}
+            >
                 <Icon />
-            </div>
+            </motion.div>
             <h3>{category}</h3>
             <p>{description}</p>
         </motion.div>

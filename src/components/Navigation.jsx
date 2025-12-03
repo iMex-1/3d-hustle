@@ -62,54 +62,117 @@ function Navigation({ user, userRecord, onLogout, onSearch }) {
                     {mobileMenuOpen ? <FaTimes /> : <FaBars />}
                 </button>
 
-                <AnimatePresence>
-                    <ul className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
-                        <li className={currentPage === '' || currentPage === 'home' ? 'active' : ''}>
-                            <Link to="/" onClick={handleNavClick}><FaHome /><span className="nav-text">Accueil</span></Link>
-                        </li>
+                <ul className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+                    <motion.li
+                        className={currentPage === '' || currentPage === 'home' ? 'active' : ''}
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                    >
+                        <Link to="/" onClick={handleNavClick}>
+                            <motion.span whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                                <FaHome />
+                            </motion.span>
+                            <span className="nav-text">Accueil</span>
+                        </Link>
+                    </motion.li>
 
-                        <li className={currentPage === 'gallery' ? 'active' : ''}>
-                            <Link to="/gallery" onClick={handleNavClick}><FaCube /><span className="nav-text">Galerie</span></Link>
-                        </li>
-                        <li className={currentPage === 'about' ? 'active' : ''}>
-                            <Link to="/about" onClick={handleNavClick}><FaInfoCircle /><span className="nav-text">À propos</span></Link>
-                        </li>
-                        <li className={currentPage === 'contact' ? 'active' : ''}>
-                            <Link to="/contact" onClick={handleNavClick}><FaEnvelope /><span className="nav-text">Contact</span></Link>
-                        </li>
-                        {user && userRecord && userRecord.isAdmin && (
-                            <li className={currentPage === 'admin' ? 'active' : ''}>
-                                <Link to="/admin" onClick={handleNavClick}><FaUserShield /><span className="nav-text">Admin</span></Link>
-                            </li>
-                        )}
-                        <li className="auth-item">
-                            {user ? (
-                                <div className="user-profile-container">
-                                    <div className="user-profile-info">
-                                        {user.photoURL && (
-                                            <img
-                                                src={user.photoURL}
-                                                alt={user.displayName || 'User'}
-                                                className="user-profile-photo"
-                                            />
-                                        )}
-                                        <span className="user-display-name">{user.displayName || user.email}</span>
-                                    </div>
-                                    <button
-                                        className="sign-out-btn"
-                                        onClick={() => { onLogout(); setMobileMenuOpen(false); }}
-                                    >
-                                        <FaSignOutAlt /><span className="nav-text">Déconnexion</span>
-                                    </button>
+                    <motion.li
+                        className={currentPage === 'gallery' ? 'active' : ''}
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                    >
+                        <Link to="/gallery" onClick={handleNavClick}>
+                            <motion.span whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                                <FaCube />
+                            </motion.span>
+                            <span className="nav-text">Galerie</span>
+                        </Link>
+                    </motion.li>
+
+                    <motion.li
+                        className={currentPage === 'about' ? 'active' : ''}
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                    >
+                        <Link to="/about" onClick={handleNavClick}>
+                            <motion.span whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                                <FaInfoCircle />
+                            </motion.span>
+                            <span className="nav-text">À propos</span>
+                        </Link>
+                    </motion.li>
+
+                    <motion.li
+                        className={currentPage === 'contact' ? 'active' : ''}
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                    >
+                        <Link to="/contact" onClick={handleNavClick}>
+                            <motion.span whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                                <FaEnvelope />
+                            </motion.span>
+                            <span className="nav-text">Contact</span>
+                        </Link>
+                    </motion.li>
+
+                    {user && userRecord && userRecord.isAdmin && (
+                        <motion.li
+                            className={currentPage === 'admin' ? 'active' : ''}
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.5 }}
+                        >
+                            <Link to="/admin" onClick={handleNavClick}>
+                                <motion.span whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                                    <FaUserShield />
+                                </motion.span>
+                                <span className="nav-text">Admin</span>
+                            </Link>
+                        </motion.li>
+                    )}
+
+                    <motion.li
+                        className="auth-item"
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6 }}
+                    >
+                        {user ? (
+                            <div className="user-profile-container">
+                                <div className="user-profile-info">
+                                    {user.photoURL && (
+                                        <motion.img
+                                            src={user.photoURL}
+                                            alt={user.displayName || 'User'}
+                                            className="user-profile-photo"
+                                            whileHover={{ scale: 1.1 }}
+                                        />
+                                    )}
+                                    <span className="user-display-name">{user.displayName || user.email}</span>
                                 </div>
-                            ) : (
-                                <Link to="/login" onClick={handleNavClick}>
-                                    <FaSignInAlt /><span className="nav-text">Connexion</span>
-                                </Link>
-                            )}
-                        </li>
-                    </ul>
-                </AnimatePresence>
+                                <motion.button
+                                    className="sign-out-btn"
+                                    onClick={() => { onLogout(); setMobileMenuOpen(false); }}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    <FaSignOutAlt /><span className="nav-text">Déconnexion</span>
+                                </motion.button>
+                            </div>
+                        ) : (
+                            <Link to="/login" onClick={handleNavClick}>
+                                <motion.span whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                                    <FaSignInAlt />
+                                </motion.span>
+                                <span className="nav-text">Connexion</span>
+                            </Link>
+                        )}
+                    </motion.li>
+                </ul>
 
                 <div className="nav-right">
                     <motion.button
