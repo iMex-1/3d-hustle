@@ -36,7 +36,6 @@ function AdminDashboard({ user }) {
         
         // Set up real-time listener
         const unsubscribe = databaseService.listenToModels((models) => {
-            console.log('Models received from Firebase:', models);
             setObjectList(models);
             setLoading(false);
         });

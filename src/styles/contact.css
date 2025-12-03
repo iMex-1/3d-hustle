@@ -3,9 +3,9 @@
 }
 
 .contact-hero {
-    background: linear-gradient(135deg, var(--color-surface, #001f3f) 0%, var(--color-primary, #00A896) 80%, var(--color-background-dark, #f0f0f0) 100%);
+    background: linear-gradient(135deg, var(--color-surface) 0%, rgba(42, 48, 71, 0.8) 50%, var(--color-background-dark) 100%);
     background-attachment: fixed;
-    color: var(--color-on-background, white);
+    color: var(--color-on-background);
     padding: 6rem 2rem 4rem;
     text-align: center;
     position: relative;
@@ -32,13 +32,13 @@
 .contact-hero-content h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
-    color: #2d3436;
+    color: var(--color-on-background);
     font-weight: 700;
 }
 
 .contact-hero-content p {
     font-size: 1.25rem;
-    color: #4a5759;
+    color: var(--color-on-surface-secondary);
     opacity: 0.95;
 }
 
@@ -69,27 +69,32 @@
 
 .info-card {
     padding: 1.5rem;
-    background-color: rgba(var(--color-surface-rgb), var(--glass-bg-opacity));
+    background: rgba(var(--color-surface-rgb), var(--glass-bg-opacity));
     backdrop-filter: blur(var(--glass-blur-amount));
+    -webkit-backdrop-filter: blur(var(--glass-blur-amount));
     border: 1px solid var(--glass-border-color);
     box-shadow: var(--glass-shadow);
     border-radius: var(--radius-card);
-    transition: transform 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .info-card:hover {
     transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 15px 2px rgba(255, 255, 255, 0.08);
 }
 
 .info-icon {
     font-size: 2rem;
-    color: #8B9D83;
+    color: var(--color-on-background);
     margin-bottom: 1rem;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease;
+    opacity: 0.9;
 }
 
 .info-card:hover .info-icon {
-    color: #6B7D63;
+    color: var(--color-on-background);
+    opacity: 1;
+    transform: scale(1.05);
 }
 
 .info-card h3 {
@@ -104,8 +109,9 @@
 }
 
 .contact-form-container {
-    background-color: rgba(var(--color-surface-rgb), var(--glass-bg-opacity));
+    background: rgba(var(--color-surface-rgb), var(--glass-bg-opacity));
     backdrop-filter: blur(var(--glass-blur-amount));
+    -webkit-backdrop-filter: blur(var(--glass-blur-amount));
     border: 1px solid var(--glass-border-color);
     box-shadow: var(--glass-shadow);
     border-radius: var(--radius-card);
@@ -133,24 +139,24 @@
 .contact-form textarea {
     width: 100%;
     padding: 0.65rem;
-    background: var(--color-background-dark, #121212);
-    color: var(--color-on-background, #E0E0E0);
-    border: 2px solid var(--color-border, #3A3A3A);
+    background: var(--color-background-dark);
+    color: var(--color-on-background);
+    border: 2px solid var(--color-border);
     border-radius: 6px;
     font-size: 1rem;
     font-family: inherit;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .contact-form input:focus,
 .contact-form textarea:focus {
     outline: none;
-    border-color: #8B9D83;
-    box-shadow: 0 0 0 3px rgba(139, 157, 131, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
 }
 
 .contact-form .form-group:focus-within label {
-    color: #8B9D83;
+    color: var(--color-on-background);
     transition: color 0.2s cubic-bezier(0.25, 0.8, 0.5, 1);
 }
 
@@ -161,9 +167,9 @@
 .contact-form .btn-submit {
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(135deg, #8B9D83 0%, #A8B5A1 100%);
-    color: #FFFFFF;
-    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-on-background);
+    border: 1px solid var(--glass-border-color);
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 700;
@@ -173,13 +179,16 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    box-shadow: 0 4px 12px rgba(139, 157, 131, 0.3);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(var(--glass-blur-amount));
+    -webkit-backdrop-filter: blur(var(--glass-blur-amount));
 }
 
 .contact-form .btn-submit:hover {
-    background: linear-gradient(135deg, #6B7D63 0%, #8B9D83 100%);
-    box-shadow: 0 6px 20px rgba(139, 157, 131, 0.4);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 15px 2px rgba(255, 255, 255, 0.08);
     transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .success-message {
@@ -212,5 +221,6 @@
         gap: 2rem;
     }
 }
+
 
 

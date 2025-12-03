@@ -7,6 +7,7 @@
     padding: 1rem 1.5rem;
     background-color: rgba(var(--color-surface-rgb), var(--glass-bg-opacity));
     backdrop-filter: blur(var(--glass-blur-amount));
+    -webkit-backdrop-filter: blur(var(--glass-blur-amount));
     border: 1px solid var(--glass-border-color);
     box-shadow: var(--glass-shadow);
     border-radius: var(--radius-card);
@@ -43,7 +44,7 @@
 }
 
 .notification-error {
-    border-left: 4px solid #ef4444;
+    border-left: 4px solid #ff5555;
 }
 
 .notification-icon {
@@ -56,7 +57,7 @@
 }
 
 .notification-error .notification-icon {
-    color: #ef4444;
+    color: #ff5555;
 }
 
 .notification-message {
@@ -68,7 +69,7 @@
 .notification-close {
     background: none;
     border: none;
-    color: #999;
+    color: #aaaaaa;
     cursor: pointer;
     padding: 0.25rem;
     display: flex;
@@ -88,4 +89,5 @@
         min-width: auto;
     }
 }
+
 

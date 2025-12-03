@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light Theme Isolation Test</title>
+    <link rel="stylesheet" href="src/styles/theme.css">
+    <style>
+        body {
+            font-family: var(--font-family);
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .test-section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            background: var(--color-surface);
+        }
+
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .theme-toggle-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .theme-toggle-btn:hover {
+            background: var(--color-primary-hover);
+        }
+
+        .current-theme {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--color-on-background);
+        }
+
+        .variable-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .variable-item {
+            padding: 1rem;
+            background: var(--color-background-dark);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+        }
+
+        .variable-name {
+            font-weight: 600;
+            color: var(--color-on-background);
+            margin-bottom: 0.5rem;
+        }
+
+        .variable-value {
+            font-family: monospace;
+            color: var(--color-on-surface-secondary);
+            word-break: break-all;
+        }
+
+        .expected-values {
+            background: rgba(76, 175, 80, 0.1);
+            border: 2px solid #4CAF50;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 2rem;
+        }
+
+        .expected-values h3 {
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+
+        .expected-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .expected-list li {
+            padding: 0.5rem 0;
+            font-family: monospace;
+            color: var(--color-on-background);
+        }
+
+        .test-card {
+            background: rgba(var(--color-surface-rgb), var(--glass-bg-opacity));
+            backdrop-filter: blur(var(--glass-blur-amount));
+            border: 1px solid var(--glass-border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .test-card h4 {
+            color: var(--color-on-background);
+            margin-bottom: 0.5rem;
+        }
+
+        .test-card p {
+            color: var(--color-on-surface-secondary);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 1rem;
+        }
+
+        .status-pass {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 1px solid #4CAF50;
+        }
+
+        .status-fail {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .instructions {
+            background: rgba(33, 150, 243, 0.1);
+            border: 2px solid #2196F3;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 2rem;
+        }
+
+        .instructions h3 {
+            color: #2196F3;
+            margin-bottom: 1rem;
+        }
+
+        .instructions ol {
+            margin-left: 1.5rem;
+            color: var(--color-on-background);
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-header">
+        <h1 style="color: var(--color-on-background);">Light Theme Isolation Test</h1>
+        <div>
+            <span class="current-theme" id="currentTheme">Dark Theme</span>
+            <button class="theme-toggle-btn" onclick="toggleTheme()">Toggle Theme</button>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <h3>Test Instructions</h3>
+        <ol>
+            <li>Click "Toggle Theme" to switch to Light Theme</li>
+            <li>Verify all CSS variable values match the expected values below</li>
+            <li>Check that glassmorphism effects are visible on test cards</li>
+            <li>Toggle back to Dark Theme and verify it changed</li>
+            <li>Toggle to Light Theme again and verify values remain consistent</li>
+            <li>Refresh the page - theme should persist</li>
+        </ol>
+    </div>
+
+    <div class="expected-values">
+        <h3>Expected Light Theme Values</h3>
+        <ul class="expected-list">
+            <li>--color-background-dark: <strong>#ffffff</strong></li>
+            <li>--color-surface: <strong>#f5f5f5</strong></li>
+            <li>--color-on-background: <strong>#1a1a1a</strong></li>
+            <li>--color-on-surface-secondary: <strong>#666666</strong></li>
+            <li>--color-border: <strong>#e5e5e5</strong></li>
+            <li>--glass-blur-amount: <strong>16px</strong></li>
+            <li>--glass-bg-opacity: <strong>0.7</strong></li>
+            <li>--glass-border-color: <strong>rgba(0, 0, 0, 0.1)</strong></li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2 style="color: var(--color-on-background);">Current CSS Variables</h2>
+        <div class="variable-grid" id="variableGrid"></div>
+    </div>
+
+    <div class="test-section">
+        <h2 style="color: var(--color-on-background);">Visual Test Cards</h2>
+        <p style="color: var(--color-on-surface-secondary); margin-bottom: 1rem;">
+            These cards should display glassmorphism effects with the current theme's styling.
+        </p>
+        
+        <div class="test-card">
+            <h4>Test Card 1</h4>
+            <p>This card uses glassmorphism variables. Check for translucent background, blur effect, and subtle border.</p>
+        </div>
+
+        <div class="test-card">
+            <h4>Test Card 2</h4>
+            <p>Verify that text is readable and contrast is appropriate for the current theme.</p>
+        </div>
+
+        <div class="test-card">
+            <h4>Test Card 3</h4>
+            <p>All cards should have consistent styling within the same theme.</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2 style="color: var(--color-on-background);">Validation Results <span class="status-indicator" id="validationStatus">Checking...</span></h2>
+        <div id="validationResults"></div>
+    </div>
+
+    <script>
+        // Initialize theme from localStorage or default to dark
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateThemeDisplay();
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            localStorage.setItem('theme', currentTheme);
+            updateThemeDisplay();
+            updateVariableDisplay();
+            validateLightTheme();
+        }
+
+        function updateThemeDisplay() {
+            const themeText = currentTheme === 'dark' ? 'Dark Theme' : 'Light Theme';
+            document.getElementById('currentTheme').textContent = themeText;
+        }
+
+        function updateVariableDisplay() {
+            const variables = [
+                '--color-background-dark',
+                '--color-surface',
+                '--color-surface-rgb',
+                '--color-on-background',
+                '--color-on-surface-secondary',
+                '--color-border',
+                '--glass-blur-amount',
+                '--glass-bg-opacity',
+                '--glass-border-color',
+                '--color-primary',
+                '--color-accent-warm',
+                '--shadow-sm'
+            ];
+
+            const styles = getComputedStyle(document.documentElement);
+            const grid = document.getElementById('variableGrid');
+            grid.innerHTML = '';
+
+            variables.forEach(varName => {
+                const value = styles.getPropertyValue(varName).trim();
+                const item = document.createElement('div');
+                item.className = 'variable-item';
+                item.innerHTML = `
+                    <div class="variable-name">${varName}</div>
+                    <div class="variable-value">${value || '(not set)'}</div>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        function validateLightTheme() {
+            if (currentTheme !== 'light') {
+                document.getElementById('validationStatus').textContent = 'N/A (Dark Theme Active)';
+                document.getElementById('validationStatus').className = 'status-indicator';
+                document.getElementById('validationResults').innerHTML = '<p style="color: var(--color-on-surface-secondary);">Switch to Light Theme to run validation.</p>';
+                return;
+            }
+
+            const styles = getComputedStyle(document.documentElement);
+            const expectedValues = {
+                '--color-background-dark': '#ffffff',
+                '--color-surface': '#f5f5f5',
+                '--color-on-background': '#1a1a1a',
+                '--color-on-surface-secondary': '#666666',
+                '--color-border': '#e5e5e5',
+                '--glass-blur-amount': '16px',
+                '--glass-bg-opacity': '0.7',
+                '--glass-border-color': 'rgba(0, 0, 0, 0.1)'
+            };
+
+            let allPassed = true;
+            let resultsHTML = '<div style="margin-top: 1rem;">';
+
+            for (const [varName, expectedValue] of Object.entries(expectedValues)) {
+                const actualValue = styles.getPropertyValue(varName).trim();
+                const passed = actualValue === expectedValue;
+                allPassed = allPassed && passed;
+
+                resultsHTML += `
+                    <div style="padding: 0.75rem; margin: 0.5rem 0; background: ${passed ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 68, 68, 0.1)'}; border-radius: 8px; border: 1px solid ${passed ? '#4CAF50' : '#ff4444'};">
+                        <strong style="color: var(--color-on-background);">${varName}</strong><br>
+                        <span style="color: var(--color-on-surface-secondary);">Expected: ${expectedValue}</span><br>
+                        <span style="color: var(--color-on-surface-secondary);">Actual: ${actualValue || '(not set)'}</span>
+                        <span class="status-indicator ${passed ? 'status-pass' : 'status-fail'}" style="float: right;">${passed ? 'PASS' : 'FAIL'}</span>
+                    </div>
+                `;
+            }
+
+            resultsHTML += '</div>';
+            document.getElementById('validationResults').innerHTML = resultsHTML;
+            
+            const statusEl = document.getElementById('validationStatus');
+            statusEl.textContent = allPassed ? 'All Tests Passed' : 'Some Tests Failed';
+            statusEl.className = `status-indicator ${allPassed ? 'status-pass' : 'status-fail'}`;
+        }
+
+        // Initial display
+        updateVariableDisplay();
+        validateLightTheme();
+    </script>
+</body>
+</html>

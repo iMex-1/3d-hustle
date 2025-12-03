@@ -1,9 +1,12 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
 import { GiBrickWall, GiWoodBeam, GiStoneWall, GiCube } from 'react-icons/gi';
 import '../styles/categories.css';
 
-function Categories({ onNavigate }) {
+function Categories() {
+    const navigate = useNavigate();
+    
     const categories = [
         {
             id: 'zelige',
@@ -40,7 +43,7 @@ function Categories({ onNavigate }) {
     ];
 
     const handleCategoryClick = (categoryName) => {
-        onNavigate('gallery', { category: categoryName });
+        navigate(`/gallery/category/${categoryName}`, { state: { category: categoryName } });
     };
 
     return (

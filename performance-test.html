@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Testing - Glassmorphism Theme</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #e5e5e5;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 4px;
+        }
+        .metric.good { border-left: 3px solid #10b981; }
+        .metric.warning { border-left: 3px solid #f59e0b; }
+        .metric.bad { border-left: 3px solid #ef4444; }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        #scrollTest {
+            height: 300px;
+            overflow-y: scroll;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .scroll-item {
+            background: rgba(28, 28, 44, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        h1, h2 {
+            color: #e5e7eb;
+        }
+        .status {
+            font-weight: bold;
+        }
+        .instructions {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 Performance Testing Dashboard</h1>
+    
+    <div class="instructions">
+        <h3>Instructions:</h3>
+        <ol>
+            <li>Open Chrome DevTools (F12) and go to the Performance tab</li>
+            <li>Click "Run All Tests" to measure performance metrics</li>
+            <li>For scroll test, manually scroll the test area while recording in DevTools</li>
+            <li>Check the results below for any performance issues</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 Performance Metrics</h2>
+        <button onclick="runAllTests()">Run All Tests</button>
+        <button onclick="clearResults()">Clear Results</button>
+        <div id="results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>📜 Scroll Performance Test</h2>
+        <p>Scroll this area to test glassmorphism performance (target: 60fps)</p>
+        <button onclick="startScrollTest()">Start Scroll Test</button>
+        <button onclick="stopScrollTest()">Stop Scroll Test</button>
+        <div id="scrollTest">
+            <!-- Will be populated with glassmorphism elements -->
+        </div>
+        <div id="scrollResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎨 Paint & Composite Analysis</h2>
+        <p>Open DevTools > Performance > Record to see paint and composite times</p>
+        <button onclick="triggerRepaint()">Trigger Repaint Test</button>
+        <div id="paintResults"></div>
+    </div>
+
+    <script>
+        let scrollFrames = [];
+        let scrollTestActive = false;
+        let animationFrameId = null;
+
+        function runAllTests() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>Running tests...</p>';
+            
+            setTimeout(() => {
+                const metrics = {
+                    navigation: performance.getEntriesByType('navigation')[0],
+                    paint: performance.getEntriesByType('paint'),
+                    memory: performance.memory
+                };
+
+                let html = '<h3>Test Results:</h3>';
+
+                // Navigation timing
+                if (metrics.navigation) {
+                    const loadTime = metrics.navigation.loadEventEnd - metrics.navigation.fetchStart;
+                    const domContentLoaded = metrics.navigation.domContentLoadedEventEnd - metrics.navigation.fetchStart;
+                    const domInteractive = metrics.navigation.domInteractive - metrics.navigation.fetchStart;
+
+                    html += createMetric('Page Load Time', `${loadTime.toFixed(2)}ms`, 
+                        loadTime < 1000 ? 'good' : loadTime < 2000 ? 'warning' : 'bad');
+                    html += createMetric('DOM Content Loaded', `${domContentLoaded.toFixed(2)}ms`,
+                        domContentLoaded < 800 ? 'good' : domContentLoaded < 1500 ? 'warning' : 'bad');
+                    html += createMetric('DOM Interactive', `${domInteractive.toFixed(2)}ms`,
+                        domInteractive < 500 ? 'good' : domInteractive < 1000 ? 'warning' : 'bad');
+                }
+
+                // Paint timing
+                if (metrics.paint && metrics.paint.length > 0) {
+                    metrics.paint.forEach(entry => {
+                        html += createMetric(entry.name, `${entry.startTime.toFixed(2)}ms`,
+                            entry.startTime < 100 ? 'good' : entry.startTime < 300 ? 'warning' : 'bad');
+                    });
+                }
+
+                // Memory (if available)
+                if (metrics.memory) {
+                    const usedMemoryMB = (metrics.memory.usedJSHeapSize / 1048576).toFixed(2);
+                    const totalMemoryMB = (metrics.memory.totalJSHeapSize / 1048576).toFixed(2);
+                    html += createMetric('JS Heap Used', `${usedMemoryMB} MB / ${totalMemoryMB} MB`,
+                        usedMemoryMB < 50 ? 'good' : usedMemoryMB < 100 ? 'warning' : 'bad');
+                }
+
+                // Recommendations
+                html += '<h3>Recommendations:</h3>';
+                html += '<ul>';
+                if (metrics.navigation && (metrics.navigation.loadEventEnd - metrics.navigation.fetchStart) > 2000) {
+                    html += '<li>⚠️ Page load time is high. Consider optimizing blur effects.</li>';
+                }
+                html += '<li>✅ Use Chrome DevTools Performance tab for detailed analysis</li>';
+                html += '<li>✅ Test scroll performance manually in the scroll test section</li>';
+                html += '<li>✅ Check for layout shifts and repaints during interactions</li>';
+                html += '</ul>';
+
+                resultsDiv.innerHTML = html;
+            }, 100);
+        }
+
+        function createMetric(label, value, status) {
+            return `<div class="metric ${status}">
+                <span>${label}:</span>
+                <span class="status">${value}</span>
+            </div>`;
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('scrollResults').innerHTML = '';
+            document.getElementById('paintResults').innerHTML = '';
+        }
+
+        function startScrollTest() {
+            const scrollDiv = document.getElementById('scrollTest');
+            
+            // Populate with glassmorphism elements
+            scrollDiv.innerHTML = '';
+            for (let i = 0; i < 50; i++) {
+                const item = document.createElement('div');
+                item.className = 'scroll-item';
+                item.innerHTML = `
+                    <h4>Glassmorphism Card ${i + 1}</h4>
+                    <p>Testing backdrop-filter: blur(10px) performance during scroll</p>
+                `;
+                scrollDiv.appendChild(item);
+            }
+
+            scrollFrames = [];
+            scrollTestActive = true;
+            
+            let lastTime = performance.now();
+            let frameCount = 0;
+
+            function measureFrame() {
+                if (!scrollTestActive) return;
+                
+                const currentTime = performance.now();
+                const delta = currentTime - lastTime;
+                const fps = 1000 / delta;
+                
+                scrollFrames.push(fps);
+                frameCount++;
+                
+                lastTime = currentTime;
+                animationFrameId = requestAnimationFrame(measureFrame);
+            }
+
+            animationFrameId = requestAnimationFrame(measureFrame);
+            
+            document.getElementById('scrollResults').innerHTML = 
+                '<p style="color: #10b981;">✅ Scroll test active. Scroll the area above and then click "Stop Scroll Test"</p>';
+        }
+
+        function stopScrollTest() {
+            scrollTestActive = false;
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+
+            if (scrollFrames.length > 0) {
+                const avgFps = scrollFrames.reduce((a, b) => a + b, 0) / scrollFrames.length;
+                const minFps = Math.min(...scrollFrames);
+                const maxFps = Math.max(...scrollFrames);
+
+                let html = '<h3>Scroll Performance Results:</h3>';
+                html += createMetric('Average FPS', avgFps.toFixed(2), 
+                    avgFps >= 55 ? 'good' : avgFps >= 45 ? 'warning' : 'bad');
+                html += createMetric('Minimum FPS', minFps.toFixed(2),
+                    minFps >= 50 ? 'good' : minFps >= 40 ? 'warning' : 'bad');
+                html += createMetric('Maximum FPS', maxFps.toFixed(2), 'good');
+                html += createMetric('Total Frames Measured', scrollFrames.length, 'good');
+
+                if (avgFps < 55) {
+                    html += '<p style="color: #f59e0b;">⚠️ Scroll performance below 60fps target. Consider optimizing blur effects.</p>';
+                } else {
+                    html += '<p style="color: #10b981;">✅ Scroll performance meets 60fps target!</p>';
+                }
+
+                document.getElementById('scrollResults').innerHTML = html;
+            } else {
+                document.getElementById('scrollResults').innerHTML = 
+                    '<p style="color: #ef4444;">No scroll activity detected. Please scroll the test area.</p>';
+            }
+        }
+
+        function triggerRepaint() {
+            const paintDiv = document.getElementById('paintResults');
+            paintDiv.innerHTML = '<p>Triggering repaints... Check DevTools Performance tab</p>';
+
+            // Create elements that will trigger paint
+            const container = document.createElement('div');
+            container.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(28, 28, 44, 0.5);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 40px;
+                border-radius: 12px;
+                z-index: 1000;
+            `;
+            container.innerHTML = '<h3>Paint Test Active</h3><p>Recording paint operations...</p>';
+            document.body.appendChild(container);
+
+            // Animate to trigger multiple paints
+            let opacity = 0.5;
+            let direction = 1;
+            let count = 0;
+
+            const interval = setInterval(() => {
+                opacity += direction * 0.05;
+                if (opacity >= 1 || opacity <= 0.3) direction *= -1;
+                container.style.opacity = opacity;
+                count++;
+
+                if (count > 60) {
+                    clearInterval(interval);
+                    document.body.removeChild(container);
+                    paintDiv.innerHTML = `
+                        <p style="color: #10b981;">✅ Paint test complete (60 frames)</p>
+                        <p>Check DevTools Performance recording for:</p>
+                        <ul>
+                            <li>Paint operations (should be < 16ms per frame for 60fps)</li>
+                            <li>Composite layers (backdrop-filter creates new layers)</li>
+                            <li>GPU usage (blur effects use GPU acceleration)</li>
+                        </ul>
+                    `;
+                }
+            }, 16); // ~60fps
+        }
+
+        // Auto-run tests on load
+        window.addEventListener('load', () => {
+            setTimeout(runAllTests, 500);
+        });
+    </script>
+</body>
+</html>

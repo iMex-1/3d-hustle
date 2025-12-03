@@ -3,17 +3,28 @@
     top: 0;
     left: 0;
     right: 0;
-    background-color: rgba(var(--color-surface-rgb), var(--glass-bg-opacity));
-    backdrop-filter: blur(var(--glass-blur-amount));
-    border: 1px solid var(--glass-border-color);
-    box-shadow: var(--glass-shadow);
+    background: rgba(28, 28, 44, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     border-radius: 0;
     border-top: none;
     border-left: none;
     border-right: none;
     z-index: 1000;
     animation: slideDown 0.3s ease-out;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
+    /* Performance: GPU acceleration for fixed positioning */
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+[data-theme="light"] .navigation {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 @keyframes slideDown {
@@ -113,7 +124,9 @@
 
 .nav-links li a:hover {
     color: #ffffff;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     transform: translateY(-2px);
 }
 
@@ -128,7 +141,9 @@
 
 .nav-links li.active a {
     color: #ffffff;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     font-weight: 600;
     position: relative;
 }
@@ -182,7 +197,9 @@
     padding: 0.5rem 0.75rem;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.05);
-    transition: background 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: background 0.3s ease, backdrop-filter 0.3s ease;
 }
 
 [data-theme="light"] .user-profile-container {
@@ -190,7 +207,9 @@
 }
 
 .user-profile-container:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 [data-theme="light"] .user-profile-container:hover {
@@ -244,6 +263,8 @@
     gap: 0.4rem;
     padding: 0.4rem 0.75rem;
     background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 6px;
     color: #ffffff !important;
@@ -262,6 +283,8 @@
 
 .sign-out-btn:hover {
     background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-color: rgba(255, 255, 255, 0.4);
     transform: translateY(-1px);
 }
@@ -286,8 +309,10 @@
     /* MODIFIED: Changed from 'center' to 'stretch' to force child to fill 100% height */
     justify-content: center;
     gap: 0.5rem;
-    background: var(--color-background-dark, #121212);
-    border: 2px solid var(--color-border, #3A3A3A);
+    background: rgba(28, 28, 44, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     overflow: hidden;
     transition: all 0.3s;
@@ -295,9 +320,16 @@
     align-self: center;
 }
 
+[data-theme="light"] .search-form {
+    background: rgba(245, 245, 245, 0.9);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
 .search-form:focus-within {
-    border-color: #ffffff;
-    background: var(--color-surface, #1a1a1a);
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(28, 28, 44, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
 }
 
@@ -352,7 +384,9 @@
 
 .search-btn {
     padding: 0 1rem;
-    background: #1a1a1a;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: #ffffff;
     border: none;
     cursor: pointer;
@@ -370,7 +404,9 @@
 }
 
 .search-btn:hover {
-    background: #000000;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     transform: scale(1.05);
 }
 
@@ -394,8 +430,10 @@
     justify-content: center;
     width: 38px;
     height: 38px;
-    background: var(--color-surface, #1a1a1a);
-    border: 2px solid var(--color-border, #2a2a2a);
+    background: rgba(28, 28, 44, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     color: #ffffff;
     cursor: pointer;
@@ -405,16 +443,18 @@
 }
 
 [data-theme="light"] .theme-toggle {
-    background: #f5f5f5;
-    border-color: #e5e5e5;
+    background: rgba(245, 245, 245, 0.9);
+    border-color: rgba(0, 0, 0, 0.1);
     color: #1a1a1a;
 }
 
 .theme-toggle:hover {
-    background: #1a1a1a;
+    background: rgba(28, 28, 44, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     color: #ffffff;
-    border-color: #1a1a1a;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="light"] .theme-toggle:hover {
@@ -445,7 +485,7 @@
 }
 
 .username {
-    color: #999999;
+    color: #aaaaaa;
     font-weight: 500;
     font-size: 0.9rem;
     white-space: nowrap;
@@ -603,16 +643,24 @@
         top: 70px;
         left: 0;
         right: 0;
-        background: var(--color-surface, #1E1E1E);
+        background: rgba(28, 28, 44, 0.5);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         flex-direction: column;
         padding: 2rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-        border-top: 1px solid var(--color-border, #3A3A3A);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
         max-height: 0;
         overflow: hidden;
         opacity: 0;
         transition: all 0.3s ease;
         z-index: 1000;
+    }
+
+    [data-theme="light"] .nav-links {
+        background: rgba(255, 255, 255, 0.95);
+        border-top-color: rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     .nav-links.mobile-open {

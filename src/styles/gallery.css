@@ -21,7 +21,7 @@
 }
 
 .gallery-header p {
-    color: #999999;
+    color: #aaaaaa;
     font-size: 1.1rem;
     transition: color 0.3s ease;
 }
@@ -38,9 +38,11 @@
     width: 100%;
     padding: 1rem;
     font-size: 1rem;
-    background: #1a1a1a;
+    background: rgba(28, 28, 44, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: #ffffff;
-    border: 2px solid #2a2a2a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     margin-bottom: 1rem;
     transition: all 0.3s ease;
@@ -48,17 +50,22 @@
 
 [data-theme="light"] .search-input {
     background: #f5f5f5;
+    backdrop-filter: none;
     color: #1a1a1a;
     border-color: #e5e5e5;
 }
 
 .search-input:focus {
     outline: none;
-    border-color: #ffffff;
+    background: rgba(28, 28, 44, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-color: rgba(255, 255, 255, 0.2);
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
 }
 
 [data-theme="light"] .search-input:focus {
+    background: #f5f5f5;
     border-color: #1a1a1a;
     box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.1);
 }
@@ -71,11 +78,13 @@
 
 .filter-btn {
     padding: 0.75rem 1.5rem;
-    background: transparent;
-    border: 1px solid #2a2a2a;
+    background: rgba(28, 28, 44, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 4px;
     transition: all 0.3s ease;
-    color: #999999;
+    color: #aaaaaa;
     text-transform: uppercase;
     font-size: 0.85rem;
     letter-spacing: 0.5px;
@@ -84,13 +93,17 @@
 }
 
 [data-theme="light"] .filter-btn {
+    background: #f5f5f5;
+    backdrop-filter: none;
     border-color: #e5e5e5;
     color: #666666;
 }
 
 .filter-btn:hover {
-    background: #2a2a2a;
-    border-color: #2a2a2a;
+    background: rgba(28, 28, 44, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-color: rgba(255, 255, 255, 0.2);
     color: #ffffff;
 }
 
@@ -101,9 +114,11 @@
 }
 
 .filter-btn.active {
-    background: #1a1a1a;
+    background: rgba(28, 28, 44, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     color: #ffffff;
-    border-color: #1a1a1a;
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 [data-theme="light"] .filter-btn.active {
@@ -120,9 +135,11 @@
 }
 
 .gallery-card {
-    background: #0a0a0a;
-    border: 1px solid #1a1a1a;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    background: rgba(28, 28, 44, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     border-radius: 12px;
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.5, 1);
@@ -134,6 +151,7 @@
 
 [data-theme="light"] .gallery-card {
     background: #ffffff;
+    backdrop-filter: none;
     border-color: #e5e5e5;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
@@ -142,11 +160,15 @@
 
 .gallery-card:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 255, 255, 0.1);
-    border-color: #2a2a2a;
+    background: rgba(28, 28, 44, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 [data-theme="light"] .gallery-card:hover {
+    background: #ffffff;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 30px rgba(0, 0, 0, 0.05);
     border-color: #1a1a1a;
 }
@@ -154,7 +176,7 @@
 .gallery-card .card-image {
     position: relative;
     height: 240px;
-    background: #0a0a0a;
+    background: var(--color-background-dark);
     overflow: hidden;
     border-radius: 12px 12px 0 0;
 }
@@ -178,7 +200,9 @@
 .card-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(28, 28, 44, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -190,6 +214,8 @@
 
 [data-theme="light"] .card-overlay {
     background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .gallery-card:hover .card-overlay {
@@ -311,7 +337,7 @@ xurious Card Info Section */
 
 .card-description {
     font-size: 0.85rem;
-    color: #999999;
+    color: #aaaaaa;
     line-height: 1.5;
     margin-bottom: 1rem;
     display: -webkit-box;
@@ -374,13 +400,13 @@ xurious Card Info Section */
     align-items: center;
     gap: 0.4rem;
     font-size: 0.75rem;
-    color: #666666;
+    color: #9CA3AF;
     font-weight: 500;
     transition: color 0.3s ease;
 }
 
 [data-theme="light"] .meta-item {
-    color: #999999;
+    color: #666666;
 }
 
 .meta-item svg {
@@ -389,7 +415,7 @@ xurious Card Info Section */
 }
 
 .gallery-card:hover .meta-item {
-    color: #999999;
+    color: #E5E7EB;
 }
 
 [data-theme="light"] .gallery-card:hover .meta-item {
@@ -404,7 +430,7 @@ xurious Card Info Section */
 .no-results {
     text-align: center;
     padding: 4rem 2rem;
-    color: #999999;
+    color: #aaaaaa;
 }
 
 [data-theme="light"] .no-results {
@@ -454,9 +480,11 @@ xurious Card Info Section */
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
-    background: transparent;
+    background: rgba(28, 28, 44, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: #ffffff;
-    border: 1px solid #2a2a2a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
@@ -465,13 +493,17 @@ xurious Card Info Section */
 }
 
 [data-theme="light"] .back-button {
+    background: #f5f5f5;
+    backdrop-filter: none;
     color: #1a1a1a;
     border-color: #e5e5e5;
 }
 
 .back-button:hover {
-    background: #1a1a1a;
-    border-color: #ffffff;
+    background: rgba(28, 28, 44, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-color: rgba(255, 255, 255, 0.2);
     transform: translateX(-4px);
 }
 
@@ -488,17 +520,20 @@ xurious Card Info Section */
 }
 
 .detail-viewer {
-    background: #0a0a0a;
-    border: 1px solid #1a1a1a;
+    background: rgba(28, 28, 44, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     position: relative;
     isolation: isolate;
 }
 
 [data-theme="light"] .detail-viewer {
     background: #f5f5f5;
+    backdrop-filter: none;
     border-color: #e5e5e5;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
@@ -509,15 +544,18 @@ xurious Card Info Section */
 }
 
 .detail-info {
-    background: #0a0a0a;
-    border: 1px solid #1a1a1a;
+    background: rgba(28, 28, 44, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     padding: 2rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="light"] .detail-info {
     background: #ffffff;
+    backdrop-filter: none;
     border-color: #e5e5e5;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
@@ -551,7 +589,7 @@ xurious Card Info Section */
 }
 
 .detail-description p {
-    color: #999999;
+    color: #aaaaaa;
     line-height: 1.6;
 }
 
@@ -560,8 +598,10 @@ xurious Card Info Section */
 }
 
 .detail-meta {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(28, 28, 44, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     padding: 1.5rem;
     margin-bottom: 2rem;
@@ -569,6 +609,7 @@ xurious Card Info Section */
 
 [data-theme="light"] .detail-meta {
     background: rgba(0, 0, 0, 0.02);
+    backdrop-filter: none;
     border-color: rgba(0, 0, 0, 0.05);
 }
 
@@ -588,7 +629,7 @@ xurious Card Info Section */
 }
 
 .meta-label {
-    color: #999999;
+    color: #aaaaaa;
     font-size: 0.9rem;
 }
 
@@ -694,9 +735,11 @@ xurious Card Info Section */
 /* 
 Gallery Card Optimized */
 .gallery-card {
-    background: #0a0a0a;
-    border: 1px solid #1a1a1a;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    background: rgba(28, 28, 44, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     border-radius: 12px;
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -706,17 +749,20 @@ Gallery Card Optimized */
 
 [data-theme="light"] .gallery-card {
     background: #ffffff;
+    backdrop-filter: none;
     border-color: #e5e5e5;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .gallery-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
-    border-color: #2a2a2a;
+    background: rgba(28, 28, 44, 0.6);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 [data-theme="light"] .gallery-card:hover {
+    background: #ffffff;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     border-color: #1a1a1a;
 }
@@ -747,7 +793,7 @@ Loading State */
 }
 
 .loading-container p {
-    color: #999999;
+    color: #aaaaaa;
     font-size: 1.1rem;
 }
 
