@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
-import { GiBrickWall, GiWoodBeam, GiStoneWall, GiCube } from 'react-icons/gi';
+import { GiBrickWall, GiWoodBeam, GiCube } from 'react-icons/gi';
+import { BsFillGrid3X3GapFill } from 'react-icons/bs';
 import '../styles/categories.css';
 
 function Categories() {
@@ -28,7 +29,7 @@ function Categories() {
             id: 'platre',
             name: 'Plâtre',
             description: 'Décorations et moulures en plâtre',
-            icon: GiStoneWall,
+            icon: BsFillGrid3X3GapFill,
             color: '#D4A5FF',
             count: 0
         },

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useModels } from '../context/ModelsContext';
 import XeokitViewer from './XeokitViewer';
-import { FaThLarge, FaTree, FaPaintRoller, FaCube, FaChevronLeft, FaChevronRight, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaThLarge, FaTree, FaPaintRoller, FaCube, FaChevronLeft, FaChevronRight, FaChevronDown, FaChevronUp,  } from 'react-icons/fa';
 import '../styles/homepage.css';
 
 function Homepage({ user }) {
@@ -214,6 +214,7 @@ function Homepage({ user }) {
                 </div>
             </div>
 
+            {/*
             <section className="categories-section">
                 <div className="section-header">
                     <h2 className="section-title">Parcourir par Catégorie</h2>
@@ -250,6 +251,7 @@ function Homepage({ user }) {
                     />
                 </motion.div>
             </section>
+            */}
 
             <section className="featured-section" id="featured">
                 <div className="section-header">
