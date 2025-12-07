@@ -386,33 +386,37 @@ function Homepage({ user }) {
 function FeaturedProductsCarousel({ objects, navigate }) {
     const [isPaused, setIsPaused] = useState(false);
     const scrollRef = useRef(null);
+    const animationRef = useRef(null);
 
     useEffect(() => {
-        if (!scrollRef.current || isPaused) return;
+        if (!scrollRef.current) return;
 
         const scrollContainer = scrollRef.current;
-        let scrollAmount = 0;
         const scrollSpeed = 0.5; // Slow, smooth scroll
 
         const scroll = () => {
             if (!isPaused && scrollContainer) {
-                scrollAmount += scrollSpeed;
-                scrollContainer.scrollLeft = scrollAmount;
+                scrollContainer.scrollLeft += scrollSpeed;
 
-                // Reset when reaching end
-                if (scrollAmount >= scrollContainer.scrollWidth / 2) {
-                    scrollAmount = 0;
+                // Reset when reaching halfway (seamless loop)
+                if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
+                    scrollContainer.scrollLeft = 0;
                 }
             }
-            requestAnimationFrame(scroll);
+            animationRef.current = requestAnimationFrame(scroll);
         };
 
-        const animationId = requestAnimationFrame(scroll);
-        return () => cancelAnimationFrame(animationId);
+        animationRef.current = requestAnimationFrame(scroll);
+
+        return () => {
+            if (animationRef.current) {
+                cancelAnimationFrame(animationRef.current);
+            }
+        };
     }, [isPaused]);
 
     // Duplicate objects for infinite scroll effect
-    const duplicatedObjects = [...objects, ...objects];
+    const duplicatedObjects = [...objects, ...objects, ...objects];
 
     return (
         <section className="featured-carousel-section">
