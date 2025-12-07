@@ -2216,3 +2216,255 @@ ve for Simple Category Cards */
 .category-toggle-btn svg {
     font-size: 1.2rem;
 }
+/* N
+ew Homepage Sections - Minimal & Elegant */
+
+/* Section 1 - About Teaser */
+.about-teaser-section {
+    max-width: 900px;
+    margin: 120px auto;
+    padding: 0 40px;
+    text-align: center;
+}
+
+.about-teaser-section h2 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+}
+
+.teaser-subtitle {
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    margin-bottom: 32px;
+    font-style: italic;
+}
+
+.teaser-description {
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Section 2 - Specialties */
+.specialties-section {
+    max-width: 1200px;
+    margin: 120px auto;
+    padding: 0 40px;
+}
+
+.specialties-section h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 80px;
+    color: var(--color-text);
+}
+
+.specialties-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 60px;
+}
+
+.specialty-card {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.specialty-icon {
+    font-size: 3rem;
+    color: var(--color-text);
+    margin-bottom: 24px;
+    opacity: 0.9;
+}
+
+.specialty-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--color-text);
+}
+
+.specialty-card p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+}
+
+/* Section 3 - Team */
+.team-section {
+    max-width: 800px;
+    margin: 120px auto;
+    padding: 0 40px;
+    text-align: center;
+}
+
+.team-section h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 32px;
+    color: var(--color-text);
+}
+
+.team-section p {
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+}
+
+/* Section 4 - Formation */
+.formation-section {
+    max-width: 800px;
+    margin: 120px auto;
+    padding: 0 40px;
+    text-align: center;
+}
+
+.formation-section h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 32px;
+    color: var(--color-text);
+}
+
+.formation-section p {
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+}
+
+/* Section 5 - Auto-Scroll Featured Products */
+.featured-carousel-section {
+    margin: 120px 0;
+    padding: 60px 0;
+    background: var(--color-background-alt);
+    overflow: hidden;
+}
+
+.section-header-center {
+    text-align: center;
+    margin-bottom: 60px;
+    padding: 0 40px;
+}
+
+.section-header-center h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--color-text);
+}
+
+.section-header-center p {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+}
+
+.auto-scroll-container {
+    overflow-x: hidden;
+    cursor: grab;
+}
+
+.auto-scroll-container:active {
+    cursor: grabbing;
+}
+
+.auto-scroll-track {
+    display: flex;
+    gap: 32px;
+    padding: 0 40px;
+}
+
+.auto-scroll-card {
+    flex: 0 0 350px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auto-scroll-card:hover {
+    border-color: var(--color-text);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] .auto-scroll-card {
+    background: rgba(28, 28, 44, 0.5);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .auto-scroll-card:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.auto-card-image {
+    height: 250px;
+    background: var(--color-background-alt);
+    overflow: hidden;
+}
+
+.no-preview {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+}
+
+.auto-card-content {
+    padding: 24px;
+}
+
+.auto-card-category {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-text-secondary);
+    margin-bottom: 12px;
+}
+
+.auto-card-content h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-teaser-section,
+    .team-section,
+    .formation-section {
+        margin: 80px auto;
+        padding: 0 24px;
+    }
+
+    .specialties-section {
+        margin: 80px auto;
+        padding: 0 24px;
+    }
+
+    .specialties-grid {
+        gap: 40px;
+    }
+
+    .auto-scroll-card {
+        flex: 0 0 280px;
+    }
+
+    .auto-scroll-track {
+        gap: 20px;
+        padding: 0 24px;
+    }
+}

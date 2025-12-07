@@ -284,179 +284,173 @@ function Homepage({ user }) {
             </div>
             </div>
 
-            {/*
-            <section className="categories-section">
-                <div className="section-header">
-                    <h2 className="section-title">Parcourir par Catégorie</h2>
-                    <p className="section-description">
-                        Explorez nos modèles organisés par type de construction
-                    </p>
-                </div>
-                <motion.div
-                    className="categories-grid-simple"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3 }}
-                >
-                    <SimpleCategoryCard
-                        category="Zelige"
-                        icon={FaThLarge}
-                        description="Carreaux et revêtements"
-                    />
-                    <SimpleCategoryCard
-                        category="Boiserie"
-                        icon={FaTree}
-                        description="Bois et menuiserie"
-                    />
-                    <SimpleCategoryCard
-                        category="Platre"
-                        icon={FaPaintRoller}
-                        description="Ornements en plâtre"
-                    />
-                    <SimpleCategoryCard
-                        category="Autre"
-                        icon={FaCube}
-                        description="Autres éléments"
-                    />
-                </motion.div>
-            </section>
-            */}
+            {/* Section 1 - Mini About Teaser */}
+            <motion.section 
+                className="about-teaser-section"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+            >
+                <h2>Lina Azhari Studio</h2>
+                <p className="teaser-subtitle">Créatrice de matières traditionnelles et modèles BIM d'exception.</p>
+                <p className="teaser-description">
+                    Nous transformons le savoir-faire artisanal — Zellige, Boiserie, Plâtre — en fichiers BIM et IFC prêts à intégrer vos projets architecturaux. 
+                    Entre héritage marocain et précision numérique, nos modèles apportent une touche authentique à vos rendus.
+                </p>
+            </motion.section>
 
-            <section className="featured-section" id="featured">
-                <div className="section-header">
-                    <h2 className="section-title">Modèles BIM en Vedette</h2>
-                    <p className="section-description">
-                        Modèles premium sélectionnés pour votre prochain projet
-                    </p>
+            {/* Section 2 - What We Do */}
+            <motion.section 
+                className="specialties-section"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+            >
+                <h2>Nos Spécialités</h2>
+                <div className="specialties-grid">
+                    <motion.div 
+                        className="specialty-card"
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.1 }}
+                    >
+                        <FaThLarge className="specialty-icon" />
+                        <h3>Zellige Numérique</h3>
+                        <p>Motifs traditionnels capturés en modèles 3D fidèles et optimisés.</p>
+                    </motion.div>
+                    <motion.div 
+                        className="specialty-card"
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                        <FaTree className="specialty-icon" />
+                        <h3>Boiserie & Plâtre</h3>
+                        <p>Sculptés à la main, digitalisés pour vos scènes BIM.</p>
+                    </motion.div>
+                    <motion.div 
+                        className="specialty-card"
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                    >
+                        <FaCube className="specialty-icon" />
+                        <h3>Fichiers BIM / IFC</h3>
+                        <p>Modèles professionnels prêts pour vos workflows architecturaux.</p>
+                    </motion.div>
                 </div>
-                <div className="featured-grid">
-                    {featuredObjects.map((obj, index) => (
-                        <div
-                            key={obj.id}
-                            className="featured-card"
-                            onClick={() => navigate(`/gallery/product/${obj.id}`)}
-                        >
-                            <div className="card-image">
-                                {obj.xktFile ? (
-                                    <XeokitViewer xktUrl={obj.xktFile} height="100%" width="100%" />
-                                ) : (
-                                    <div style={{ width: '100%', height: '100%', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <p style={{ color: '#666' }}>Pas de prévisualisation</p>
-                                    </div>
-                                )}
-                                <div className="card-overlay-hover">
-                                    <motion.button
-                                        className="btn-view-details"
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                    >
-                                        Voir les Détails
-                                    </motion.button>
-                                </div>
-                            </div>
-                            <div className="card-content">
-                                <div className="card-header">
-                                    <span className="card-category">{obj.category}</span>
-                                    <h3>{obj.name}</h3>
-                                    <p className="card-description">{obj.description}</p>
-                                </div>
-                                <div className="card-divider"></div>
-                                <motion.button
-                                    className="btn-card-details"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        navigate(`/gallery/product/${obj.id}`);
-                                    }}
-                                    whileHover={{ x: 4 }}
-                                    whileTap={{ scale: 0.98 }}
-                                >
-                                    <span>Voir Détails</span>
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                        <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </motion.button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section>
+            </motion.section>
 
-            <CategoryShowcase
-                objects={objects}
-                showAllCategories={showAllCategories}
-                setShowAllCategories={setShowAllCategories}
-            />
+            {/* Section 3 - The Team */}
+            <motion.section 
+                className="team-section"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+            >
+                <h2>Une Équipe au Cœur du Détail</h2>
+                <p>
+                    Derrière chaque modèle, une équipe de designers, artisans et spécialistes BIM travaillant ensemble 
+                    pour allier tradition et technologie.
+                </p>
+            </motion.section>
+
+            {/* Section 4 - Formation */}
+            <motion.section 
+                className="formation-section"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+            >
+                <h2>Un Parcours Entre Art et Technologie</h2>
+                <p>
+                    Formée à la modélisation 3D et passionnée par les métiers du patrimoine, Lina unit techniques artisanales 
+                    et outils numériques pour créer des modèles authentiques et fiables.
+                </p>
+            </motion.section>
+
+            {/* Section 5 - Featured Products Auto-Scroll */}
+            <FeaturedProductsCarousel objects={featuredObjects} navigate={navigate} />
         </div>
     );
 }
 
-function CategoryShowcase({ objects, showAllCategories, setShowAllCategories }) {
-    const navigate = useNavigate();
-    const categories = [
-        { name: 'Zelige', icon: FaThLarge, description: 'Carreaux et revêtements traditionnels' },
-        { name: 'Boiserie', icon: FaTree, description: 'Éléments en bois et menuiserie' },
-        { name: 'Platre', icon: FaPaintRoller, description: 'Ornements et décorations' },
-        { name: 'Autre', icon: FaCube, description: 'Autres éléments architecturaux' }
-    ];
+// Auto-scrolling featured products carousel
+function FeaturedProductsCarousel({ objects, navigate }) {
+    const [isPaused, setIsPaused] = useState(false);
+    const scrollRef = useRef(null);
 
-    // Show only first category by default
-    const displayedCategories = showAllCategories ? categories : categories.slice(0, 1);
+    useEffect(() => {
+        if (!scrollRef.current || isPaused) return;
+
+        const scrollContainer = scrollRef.current;
+        let scrollAmount = 0;
+        const scrollSpeed = 0.5; // Slow, smooth scroll
+
+        const scroll = () => {
+            if (!isPaused && scrollContainer) {
+                scrollAmount += scrollSpeed;
+                scrollContainer.scrollLeft = scrollAmount;
+
+                // Reset when reaching end
+                if (scrollAmount >= scrollContainer.scrollWidth / 2) {
+                    scrollAmount = 0;
+                }
+            }
+            requestAnimationFrame(scroll);
+        };
+
+        const animationId = requestAnimationFrame(scroll);
+        return () => cancelAnimationFrame(animationId);
+    }, [isPaused]);
+
+    // Duplicate objects for infinite scroll effect
+    const duplicatedObjects = [...objects, ...objects];
 
     return (
-        <section className="category-showcase">
-            {displayedCategories.map((category) => {
-                const categoryObjects = objects.filter(obj => obj.category === category.name);
-                const Icon = category.icon;
-
-                return (
-                    <div key={category.name} className="category-section">
-                        <div className="category-header">
-                            <div className="category-header-content">
-                                <Icon className="category-icon" />
-                                <div className="category-title-group">
-                                    <h2 className="category-title">{category.name}</h2>
-                                    <p className="category-subtitle">{category.description}</p>
-                                </div>
+        <section className="featured-carousel-section">
+            <div className="section-header-center">
+                <h2>Modèles BIM en Vedette</h2>
+                <p>Modèles premium sélectionnés pour votre prochain projet</p>
+            </div>
+            <div 
+                ref={scrollRef}
+                className="auto-scroll-container"
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+            >
+                <div className="auto-scroll-track">
+                    {duplicatedObjects.map((obj, index) => (
+                        <motion.div
+                            key={`${obj.id}-${index}`}
+                            className="auto-scroll-card"
+                            onClick={() => navigate(`/gallery/product/${obj.id}`)}
+                            whileHover={{ y: -8, scale: 1.02 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <div className="auto-card-image">
+                                {obj.xktFile ? (
+                                    <XeokitViewer xktUrl={obj.xktFile} height="100%" width="100%" />
+                                ) : (
+                                    <div className="no-preview">
+                                        <p>Pas de prévisualisation</p>
+                                    </div>
+                                )}
                             </div>
-                            <motion.button
-                                className="btn-view-category"
-                                onClick={() => navigate(`/gallery/category/${category.name}`)}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                Voir tout
-                            </motion.button>
-                        </div>
-
-                        {categoryObjects.length > 0 ? (
-                            <CategoryCarousel
-                                objects={categoryObjects}
-                            />
-                        ) : (
-                            <div className="no-models-inline">
-                                <p>Aucun modèle disponible</p>
+                            <div className="auto-card-content">
+                                <span className="auto-card-category">{obj.category}</span>
+                                <h3>{obj.name}</h3>
                             </div>
-                        )}
-                    </div>
-                );
-            })}
-
-            <div className="category-toggle-container">
-                <button
-                    className="category-toggle-btn"
-                    onClick={() => setShowAllCategories(!showAllCategories)}
-                >
-                    {showAllCategories ? (
-                        <>
-                            <FaChevronUp /> Voir Moins de Catégories
-                        </>
-                    ) : (
-                        <>
-                            <FaChevronDown /> Voir Toutes les Catégories
-                        </>
-                    )}
-                </button>
+                        </motion.div>
+                    ))}
+                </div>
             </div>
         </section>
     );
