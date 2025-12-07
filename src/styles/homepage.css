@@ -18,6 +18,25 @@
     backface-visibility: hidden;
 }
 
+/* Scroll-based fade effect */
+.hero-carousel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, 
+        transparent 0%, 
+        rgba(10, 10, 10, calc(var(--scroll-progress, 0) * 0.3)) 30%,
+        rgba(10, 10, 10, calc(var(--scroll-progress, 0) * 0.6)) 60%,
+        rgba(10, 10, 10, calc(var(--scroll-progress, 0) * 0.9)) 100%
+    );
+    pointer-events: none;
+    z-index: 5;
+    transition: opacity 0.1s ease-out;
+}
+
 .carousel-container {
     position: relative;
     width: 100%;
@@ -54,13 +73,14 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    transition: transform 12s ease-out, filter 0.6s ease;
+    transition: transform 12s ease-out, filter 0.6s ease, opacity 0.1s ease-out;
     filter: brightness(0.4) contrast(1.1);
     /* GPU acceleration for 60fps */
-    will-change: transform;
+    will-change: transform, opacity;
     transform: translateZ(0) scale(1.02);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    opacity: calc(1 - var(--scroll-progress, 0) * 0.7);
 }
 
 .carousel-slide:hover .slide-background {
@@ -89,6 +109,8 @@
     will-change: opacity;
     transform: translateZ(0);
     animation: overlayPulse 8s ease-in-out infinite;
+    opacity: calc(1 - var(--scroll-progress, 0) * 0.5);
+    transition: opacity 0.1s ease-out;
 }
 
 @keyframes overlayPulse {
@@ -152,6 +174,7 @@
     text-transform: uppercase;
     animation: slideInUp 1s ease-out 0.2s both, fadeGlow 3s ease-in-out 1.5s infinite;
     will-change: transform, opacity;
+    transition: transform 0.1s ease-out, opacity 0.1s ease-out;
 }
 
 @keyframes fadeGlow {
@@ -179,6 +202,7 @@
     letter-spacing: -0.02em;
     will-change: transform, opacity;
     transform: translateZ(0);
+    transition: transform 0.1s ease-out, opacity 0.1s ease-out;
 }
 
 @keyframes titleGlow {
@@ -206,6 +230,7 @@
     letter-spacing: 0.3px;
     will-change: transform, opacity;
     transform: translateZ(0);
+    transition: transform 0.1s ease-out, opacity 0.1s ease-out;
 }
 
 /* Minimal Buttons */
@@ -215,6 +240,7 @@
     justify-content: flex-start;
     flex-wrap: wrap;
     animation: slideInUp 1s ease-out 0.8s both;
+    transition: transform 0.1s ease-out, opacity 0.1s ease-out;
 }
 
 .slide-btn {
@@ -384,6 +410,75 @@
 
     50% {
         box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+    }
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    z-index: 50;
+    transition: opacity 0.3s ease-out;
+    pointer-events: none;
+}
+
+.scroll-indicator-text {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    animation: scrollTextPulse 2s ease-in-out infinite;
+}
+
+.scroll-indicator-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), transparent);
+    position: relative;
+    overflow: hidden;
+}
+
+.scroll-indicator-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), transparent);
+    animation: scrollLineMove 2s ease-in-out infinite;
+}
+
+@keyframes scrollTextPulse {
+    0%, 100% {
+        opacity: 0.6;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(3px);
+    }
+}
+
+@keyframes scrollLineMove {
+    0% {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(40px);
+        opacity: 0;
     }
 }
 
@@ -712,6 +807,19 @@
     .featured-grid {
         grid-template-columns: 1fr;
     }
+
+    .scroll-indicator {
+        bottom: 40px;
+    }
+
+    .scroll-indicator-text {
+        font-size: 10px;
+        letter-spacing: 2.5px;
+    }
+
+    .scroll-indicator-line {
+        height: 30px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -767,6 +875,19 @@
 
     .section-title {
         font-size: 2rem;
+    }
+
+    .scroll-indicator {
+        bottom: 30px;
+    }
+
+    .scroll-indicator-text {
+        font-size: 9px;
+        letter-spacing: 2px;
+    }
+
+    .scroll-indicator-line {
+        height: 25px;
     }
 }
 

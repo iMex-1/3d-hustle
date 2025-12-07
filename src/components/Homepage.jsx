@@ -15,7 +15,9 @@ function Homepage({ user }) {
     const [touchStartX, setTouchStartX] = useState(0);
     const [touchDeltaX, setTouchDeltaX] = useState(0);
     const [showAllCategories, setShowAllCategories] = useState(false);
+    const [scrollProgress, setScrollProgress] = useState(0);
     const containerRef = useRef(null);
+    const heroRef = useRef(null);
     const autoPlayInterval = 5000;
 
     // Limit featured objects to reduce initial load
@@ -70,6 +72,25 @@ function Homepage({ user }) {
         };
     }, [isAutoPlaying, slides.length]);
 
+    // Scroll-based reveal effect
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!heroRef.current) return;
+            
+            const heroHeight = heroRef.current.offsetHeight;
+            const scrollY = window.scrollY;
+            
+            // Calculate scroll progress (0 to 1)
+            const progress = Math.min(scrollY / heroHeight, 1);
+            setScrollProgress(progress);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll(); // Initial call
+        
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     const goToSlide = (index) => {
         setCurrentSlide(index);
     };
@@ -122,9 +143,13 @@ function Homepage({ user }) {
     return (
         <div className="homepage">
             <div
+                ref={heroRef}
                 className="hero-carousel"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
+                style={{
+                    '--scroll-progress': scrollProgress
+                }}
             >
                 <div
                     className="carousel-container"
@@ -149,7 +174,7 @@ function Homepage({ user }) {
                             transition: isDragging ? 'none' : undefined,
                         }}
                     >
-                        {slides.map((slide) => (
+                        {slides.map((slide, slideIndex) => (
                             <div key={slide.id} className={`carousel-slide slide-${slide.type}`}>
                                 <div
                                     className="slide-background"
@@ -160,10 +185,40 @@ function Homepage({ user }) {
                                 <div className="slide-overlay" />
                                 <div className="slide-content">
                                     <div className="slide-text-content">
-                                        <div className="slide-badge">{slide.subtitle}</div>
-                                        <h1 className="slide-title">{slide.title}</h1>
-                                        <p className="slide-description">{slide.description}</p>
-                                        <div className="slide-buttons">
+                                        <div 
+                                            className="slide-badge"
+                                            style={{
+                                                opacity: currentSlide === slideIndex ? 1 - scrollProgress * 0.5 : 1,
+                                                transform: `translateY(${currentSlide === slideIndex ? scrollProgress * -30 : 0}px)`
+                                            }}
+                                        >
+                                            {slide.subtitle}
+                                        </div>
+                                        <h1 
+                                            className="slide-title"
+                                            style={{
+                                                opacity: currentSlide === slideIndex ? 1 - scrollProgress * 0.3 : 1,
+                                                transform: `translateY(${currentSlide === slideIndex ? scrollProgress * -50 : 0}px)`
+                                            }}
+                                        >
+                                            {slide.title}
+                                        </h1>
+                                        <p 
+                                            className="slide-description"
+                                            style={{
+                                                opacity: currentSlide === slideIndex ? 1 - scrollProgress * 0.4 : 1,
+                                                transform: `translateY(${currentSlide === slideIndex ? scrollProgress * -40 : 0}px)`
+                                            }}
+                                        >
+                                            {slide.description}
+                                        </p>
+                                        <div 
+                                            className="slide-buttons"
+                                            style={{
+                                                opacity: currentSlide === slideIndex ? 1 - scrollProgress * 0.6 : 1,
+                                                transform: `translateY(${currentSlide === slideIndex ? scrollProgress * -35 : 0}px)`
+                                            }}
+                                        >
                                             {slide.buttons.map((button, btnIndex) => (
                                                 <motion.button
                                                     key={btnIndex}
@@ -210,6 +265,17 @@ function Homepage({ user }) {
                                 whileTap={{ scale: 0.9 }}
                             />
                         ))}
+                    </div>
+
+                    {/* Scroll Indicator */}
+                    <div 
+                        className="scroll-indicator"
+                        style={{
+                            opacity: 1 - scrollProgress * 2
+                        }}
+                    >
+                        <div className="scroll-indicator-text">Scroll</div>
+                        <div className="scroll-indicator-line"></div>
                     </div>
                 </div>
             </div>
