@@ -602,64 +602,33 @@
 }
 
 /* Responsive */
-@media (max-width: 992px) {
+@media (max-width: 768px) {
   .admin-dashboard {
     padding: 1rem;
-    padding-top: 5rem;
   }
 
   .admin-dashboard .admin-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .admin-dashboard .admin-header>div:first-child {
-    width: 100%;
-  }
-
-  .admin-dashboard .admin-header>div:last-child {
-    width: 100%;
-  }
-
-  .admin-dashboard .btn-add-object {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1rem;
   }
 
   .admin-dashboard .objects-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
-    padding: 0.5rem;
   }
 
   .admin-dashboard .object-card-actions {
     flex-direction: column;
     align-items: stretch;
-    gap: 0.75rem;
-  }
-
-  .admin-dashboard .featured-toggle {
-    justify-content: center;
-    padding: 0.5rem 0;
   }
 
   .admin-dashboard .action-buttons {
     width: 100%;
-    flex-direction: column;
   }
 
   .admin-dashboard .btn-edit,
   .admin-dashboard .btn-delete {
-    width: 100%;
-    padding: 0.75rem;
-    opacity: 1;
-  }
-
-  .admin-dashboard .modal-content {
-    margin: 1rem;
-    max-height: calc(100vh - 2rem);
+    flex: 1;
   }
 
   .admin-dashboard .modal-actions {
@@ -669,16 +638,6 @@
   .admin-dashboard .btn-cancel,
   .admin-dashboard .btn-submit {
     width: 100%;
-  }
-}
-
-@media (max-width: 768px) {
-  .admin-dashboard .admin-header h1 {
-    font-size: 1.5rem;
-  }
-
-  .admin-dashboard .object-card-preview {
-    height: 200px;
   }
 }
 

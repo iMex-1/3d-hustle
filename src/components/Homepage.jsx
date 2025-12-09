@@ -30,7 +30,7 @@ function Homepage({ user }) {
             image: '/heroslides/Slide1.png',
             title: 'Bienvenue sur OakMesh',
             subtitle: 'Plateforme de Modèles BIM',
-            description: 'Explorez des modèles IFC/XKT de haute qualité pour vos projets.',
+            description: 'Explorez des modèles IFC de haute qualité pour vos projets.',
             buttons: [
                 { text: 'Parcourir la Galerie', action: () => navigate('/gallery'), primary: true },
                 { text: 'Voir les Vedettes', action: () => document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' }) }
@@ -51,9 +51,9 @@ function Homepage({ user }) {
             id: 'formats',
             type: 'formats',
             image: '/heroslides/Slide3.png',
-            title: 'Formats IFC & XKT',
-            subtitle: 'Visualisation • Téléchargement',
-            description: 'Visualisez en XKT et téléchargez en IFC. Compatible avec tous les logiciels BIM.',
+            title: 'Format IFC',
+            subtitle: 'Téléchargement',
+            description: 'Téléchargez en format IFC. Compatible avec tous les logiciels BIM.',
             buttons: [
                 { text: 'En Savoir Plus', action: () => navigate('/gallery'), primary: true }
             ]

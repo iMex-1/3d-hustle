@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FaHome, FaUserShield, FaSignInAlt, FaSignOutAlt, FaCube, FaInfoCircle, FaBars, FaTimes, FaSun, FaMoon } from 'react-icons/fa';
+import { FaHome, FaUserShield, FaSignInAlt, FaSignOutAlt, FaCube, FaInfoCircle, FaEnvelope, FaBars, FaTimes, FaSun, FaMoon } from 'react-icons/fa';
 import '../styles/navigation.css';
 
 function Navigation({ user, userRecord, onLogout, onSearch }) {
@@ -17,19 +17,6 @@ function Navigation({ user, userRecord, onLogout, onSearch }) {
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
     }, [theme]);
-
-    // Lock body scroll when mobile menu is open
-    useEffect(() => {
-        if (mobileMenuOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'unset';
-        }
-
-        return () => {
-            document.body.style.overflow = 'unset';
-        };
-    }, [mobileMenuOpen]);
 
     const toggleTheme = () => {
         setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
@@ -61,11 +48,7 @@ function Navigation({ user, userRecord, onLogout, onSearch }) {
                     </div>
                 </Link>
 
-                <button
-                    className={`mobile-menu-toggle ${mobileMenuOpen ? 'menu-open' : ''}`}
-                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
-                >
+                <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                     {mobileMenuOpen ? <FaTimes /> : <FaBars />}
                 </button>
 
@@ -87,7 +70,14 @@ function Navigation({ user, userRecord, onLogout, onSearch }) {
                     <li className={currentPage === 'about' ? 'active' : ''}>
                         <Link to="/about" onClick={handleNavClick}>
                             <span><FaInfoCircle /></span>
-                            <span className="nav-text">À propos & Contact</span>
+                            <span className="nav-text">À propos</span>
+                        </Link>
+                    </li>
+
+                    <li className={currentPage === 'contact' ? 'active' : ''}>
+                        <Link to="/contact" onClick={handleNavClick}>
+                            <span><FaEnvelope /></span>
+                            <span className="nav-text">Contact</span>
                         </Link>
                     </li>
 
