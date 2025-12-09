@@ -72,14 +72,16 @@ function Homepage({ user }) {
         };
     }, [isAutoPlaying, slides.length]);
 
-    // Scroll progress calculation - hero stays stuck during first 100vh of scroll
+    // Scroll progress calculation - hero stays stuck during FULL wrapper scroll (200vh)
     useEffect(() => {
         const onScroll = () => {
-            const scrollY = window.scrollY;
+            if (!heroRef.current) return;
+            
+            const rect = heroRef.current.getBoundingClientRect();
             const windowHeight = window.innerHeight;
             
-            // Progress from 0 to 1 during first viewport height of scrolling
-            const progress = Math.min(scrollY / windowHeight, 1);
+            // Calculate progress: 0 when hero is fully visible, 1 when hero bottom reaches top
+            const progress = Math.min(Math.max(1 - rect.bottom / windowHeight, 0), 1);
             
             setScrollProgress(progress);
         };
