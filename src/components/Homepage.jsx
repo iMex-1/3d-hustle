@@ -15,7 +15,9 @@ function Homepage({ user }) {
     const [touchStartX, setTouchStartX] = useState(0);
     const [touchDeltaX, setTouchDeltaX] = useState(0);
     const [showAllCategories, setShowAllCategories] = useState(false);
+    const [scrollProgress, setScrollProgress] = useState(0);
     const containerRef = useRef(null);
+    const heroRef = useRef(null);
     const autoPlayInterval = 5000;
 
     // Limit featured objects to reduce initial load
@@ -70,6 +72,24 @@ function Homepage({ user }) {
         };
     }, [isAutoPlaying, slides.length]);
 
+    // Scroll progress calculation - hero stays stuck during first 100vh of scroll
+    useEffect(() => {
+        const onScroll = () => {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            
+            // Progress from 0 to 1 during first viewport height of scrolling
+            const progress = Math.min(scrollY / windowHeight, 1);
+            
+            setScrollProgress(progress);
+        };
+        
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll(); // Initial call
+        
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
     const goToSlide = (index) => {
         setCurrentSlide(index);
     };
@@ -121,11 +141,19 @@ function Homepage({ user }) {
 
     return (
         <div className="homepage">
-            <div
-                className="hero-carousel"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-            >
+            {/* Wrapper creates scroll space for sticky effect */}
+            <div style={{ minHeight: '200vh', position: 'relative' }}>
+                <div
+                    ref={heroRef}
+                    className="hero-carousel"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    style={{
+                        position: 'sticky',
+                        top: 0,
+                        '--scroll-progress': scrollProgress
+                    }}
+                >
                 <div
                     className="carousel-container"
                     ref={containerRef}
@@ -149,7 +177,7 @@ function Homepage({ user }) {
                             transition: isDragging ? 'none' : undefined,
                         }}
                     >
-                        {slides.map((slide) => (
+                        {slides.map((slide, slideIndex) => (
                             <div key={slide.id} className={`carousel-slide slide-${slide.type}`}>
                                 <div
                                     className="slide-background"
@@ -160,10 +188,40 @@ function Homepage({ user }) {
                                 <div className="slide-overlay" />
                                 <div className="slide-content">
                                     <div className="slide-text-content">
-                                        <div className="slide-badge">{slide.subtitle}</div>
-                                        <h1 className="slide-title">{slide.title}</h1>
-                                        <p className="slide-description">{slide.description}</p>
-                                        <div className="slide-buttons">
+                                        <div 
+                                            className="slide-badge"
+                                            style={{
+                                                transform: `translateY(${(1 - scrollProgress) * 80}px)`,
+                                                opacity: scrollProgress
+                                            }}
+                                        >
+                                            {slide.subtitle}
+                                        </div>
+                                        <h1 
+                                            className="slide-title"
+                                            style={{
+                                                transform: `translateY(${(1 - scrollProgress) * 100}px)`,
+                                                opacity: scrollProgress
+                                            }}
+                                        >
+                                            {slide.title}
+                                        </h1>
+                                        <p 
+                                            className="slide-description"
+                                            style={{
+                                                transform: `translateY(${(1 - scrollProgress) * 80}px)`,
+                                                opacity: scrollProgress
+                                            }}
+                                        >
+                                            {slide.description}
+                                        </p>
+                                        <div 
+                                            className="slide-buttons"
+                                            style={{
+                                                transform: `translateY(${(1 - scrollProgress) * 60}px)`,
+                                                opacity: scrollProgress
+                                            }}
+                                        >
                                             {slide.buttons.map((button, btnIndex) => (
                                                 <motion.button
                                                     key={btnIndex}
@@ -211,7 +269,19 @@ function Homepage({ user }) {
                             />
                         ))}
                     </div>
+
+                    {/* Scroll Indicator */}
+                    <div 
+                        className="scroll-indicator"
+                        style={{
+                            opacity: 1 - scrollProgress * 2
+                        }}
+                    >
+                        <div className="scroll-indicator-text">Scroll</div>
+                        <div className="scroll-indicator-line"></div>
+                    </div>
                 </div>
+            </div>
             </div>
 
             {/*
