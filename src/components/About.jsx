@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { FaCube, FaUsers, FaRocket, FaHeart } from 'react-icons/fa';
+import { FaCube, FaUsers, FaRocket, FaHeart, FaEnvelope, FaPhone } from 'react-icons/fa';
 import '../styles/about.css';
 
 function About() {
@@ -7,8 +7,8 @@ function About() {
         <div className="about-page">
             <section className="about-hero">
                 <div className="about-hero-content">
-                    <h1>À Propos de la Marketplace 3D</h1>
-                    <p>Votre destination privilégiée pour des modèles 3D de haute qualité</p>
+                    <h1>À Propos de OakMesh</h1>
+                    <p>Votre destination privilégiée pour des modèles BIM de haute qualité</p>
                 </div>
             </section>
 
@@ -16,9 +16,9 @@ function About() {
                 <div className="about-section">
                     <h2>Notre Mission</h2>
                     <p>
-                        Nous nous engageons à fournir aux designers, développeurs et créateurs un accès à
-                        des modèles 3D premium dans plusieurs formats. Notre marketplace offre une collection
-                        soigneusement sélectionnée de mobilier, d'éclairage et d'objets décoratifs qui donnent vie à vos projets.
+                        Nous nous engageons à fournir aux architectes, ingénieurs et professionnels du BIM un accès à
+                        des modèles IFC de haute qualité. Notre plateforme offre une collection
+                        soigneusement sélectionnée de modèles BIM qui donnent vie à vos projets de construction.
                     </p>
                 </div>
 
@@ -34,7 +34,7 @@ function About() {
                             <FaCube />
                         </div>
                         <h3>Modèles de Qualité</h3>
-                        <p>Chaque modèle 3D est soigneusement sélectionné et optimisé pour un usage professionnel.</p>
+                        <p>Chaque modèle BIM est soigneusement sélectionné et optimisé pour un usage professionnel.</p>
                     </motion.div>
 
                     <motion.div
@@ -47,8 +47,8 @@ function About() {
                         <div className="feature-icon">
                             <FaRocket />
                         </div>
-                        <h3>Formats Multiples</h3>
-                        <p>Téléchargez au format GLB, GLTF, OBJ, FBX ou STL pour une compatibilité maximale.</p>
+                        <h3>Format IFC</h3>
+                        <p>Tous nos modèles sont disponibles au format IFC pour une compatibilité maximale avec les logiciels BIM.</p>
                     </motion.div>
 
                     <motion.div
@@ -84,33 +84,69 @@ function About() {
                     <h2>Ce Que Nous Offrons</h2>
                     <div className="offer-list">
                         <div className="offer-item">
-                            <h4>Collection de Mobilier</h4>
-                            <p>Chaises modernes, canapés, tables et solutions de rangement pour projets de design d'intérieur.</p>
+                            <h4>Zelige</h4>
+                            <p>Modèles de carreaux traditionnels marocains pour vos projets de décoration.</p>
                         </div>
                         <div className="offer-item">
-                            <h4>Modèles d'Éclairage</h4>
-                            <p>Lampes, lustres et luminaires pour illuminer vos scènes 3D.</p>
+                            <h4>Boiserie</h4>
+                            <p>Éléments en bois pour enrichir vos conceptions architecturales.</p>
                         </div>
                         <div className="offer-item">
-                            <h4>Objets Décoratifs</h4>
-                            <p>Vases, sculptures et accessoires pour ajouter du caractère à vos designs.</p>
+                            <h4>Platre</h4>
+                            <p>Modèles de plâtre décoratif pour vos projets d'intérieur.</p>
                         </div>
                     </div>
                 </div>
 
                 <div className="about-section">
                     <h2>Logiciels Supportés</h2>
-                    <p>Nos modèles 3D fonctionnent parfaitement avec :</p>
+                    <p>Nos modèles IFC fonctionnent parfaitement avec :</p>
                     <ul className="software-list">
-                        <li>Blender</li>
-                        <li>Autodesk Maya</li>
-                        <li>3ds Max</li>
-                        <li>Cinema 4D</li>
-                        <li>Unity</li>
-                        <li>Unreal Engine</li>
-                        <li>SketchUp</li>
+                        <li>Revit</li>
+                        <li>ArchiCAD</li>
+                        <li>Tekla Structures</li>
+                        <li>Allplan</li>
+                        <li>Vectorworks</li>
+                        <li>BIM 360</li>
+                        <li>Navisworks</li>
                         <li>Et bien d'autres...</li>
                     </ul>
+                </div>
+
+                <div className="about-section contact-section">
+                    <h2>Contactez-Nous</h2>
+                    <p>Des questions ? N'hésitez pas à nous contacter :</p>
+                    <div className="contact-info-simple">
+                        <motion.div
+                            className="contact-item"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5, delay: 0.1 }}
+                        >
+                            <div className="contact-icon">
+                                <FaEnvelope />
+                            </div>
+                            <div className="contact-details">
+                                <h4>Email</h4>
+                                <a href="mailto:contact@oakmesh.com">contact@oakmesh.com</a>
+                            </div>
+                        </motion.div>
+
+                        <motion.div
+                            className="contact-item"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                        >
+                            <div className="contact-icon">
+                                <FaPhone />
+                            </div>
+                            <div className="contact-details">
+                                <h4>Téléphone</h4>
+                                <a href="tel:+212123456789">+212 123 456 789</a>
+                            </div>
+                        </motion.div>
+                    </div>
                 </div>
             </section>
         </div>

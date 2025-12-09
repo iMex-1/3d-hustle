@@ -1,5 +1,8 @@
 .homepage {
     min-height: 100vh;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
 }
 
 /* Carousel Styles - Full Screen Dark Theme */
@@ -418,7 +421,9 @@
     z-index: 10;
     padding: 80px 40px;
     width: 100%;
+    max-width: 100vw;
     background: transparent;
+    overflow-x: hidden;
 }
 
 .section-header {
@@ -454,6 +459,8 @@
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
     max-width: 100%;
+    justify-items: center;
+    width: 100%;
 }
 
 .featured-card {
@@ -470,6 +477,8 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 400px;
 }
 
 [data-theme="dark"] .featured-card {
@@ -911,6 +920,8 @@
     max-width: 1400px;
     margin: 4rem auto;
     padding: 2rem;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 .categories-grid {
@@ -936,28 +947,57 @@
 
 @media (max-width: 768px) {
     .categories-section {
-        padding: 1.5rem;
+        padding: 1.5rem 1rem;
         margin: 3rem auto;
+        width: 100%;
+        max-width: 100vw;
     }
 
-    .categories-grid {
+    .categories-grid,
+    .categories-grid-simple {
         grid-template-columns: 1fr;
         gap: 2rem;
+        width: 100%;
     }
 
     .category-card-wrapper {
         max-width: 100%;
+        width: 100%;
+    }
+
+    .featured-section {
+        padding: 60px 1rem;
+    }
+
+    .featured-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
 }
 
 @media (max-width: 480px) {
     .categories-section {
-        padding: 1rem;
+        padding: 1rem 0.75rem;
         margin: 2rem auto;
+        width: 100%;
     }
 
-    .categories-grid {
+    .categories-grid,
+    .categories-grid-simple {
         gap: 1.5rem;
+        padding: 0 0.5rem;
+    }
+
+    .featured-section {
+        padding: 60px 0.75rem;
+    }
+
+    .simple-category-card {
+        max-width: 100%;
+    }
+
+    .featured-card {
+        max-width: 100%;
     }
 }
 
@@ -970,9 +1010,11 @@
 
 .categories-grid-simple {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
     margin-top: 2rem;
+    justify-items: center;
+    width: 100%;
 }
 
 .simple-category-card {
@@ -988,6 +1030,8 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    width: 100%;
+    max-width: 300px;
 }
 
 .simple-category-card::before {
@@ -1193,6 +1237,9 @@ y Showcase Section */
     position: relative;
     margin: 1rem 0;
     padding: 0 3rem;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .no-models-inline {
@@ -1259,6 +1306,7 @@ y Showcase Section */
 .carousel-track-container {
     overflow: hidden;
     width: 100%;
+    max-width: 100%;
 }
 
 .carousel-track {
