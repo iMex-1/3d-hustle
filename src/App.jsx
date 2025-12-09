@@ -10,7 +10,6 @@ import Categories from './components/Categories';
 import Login from './components/Login';
 import AdminDashboard from './components/AdminDashboard';
 import About from './components/About';
-import Contact from './components/Contact';
 import * as authService from './services/authService';
 import * as databaseService from './services/databaseService';
 
@@ -112,7 +111,6 @@ function AppContent() {
             <Route path="/gallery/product/:productId" element={<Gallery />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route
               path="/admin"

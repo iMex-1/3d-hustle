@@ -209,19 +209,22 @@
 .contact-item h4 {
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
-    color: var(--color-on-background);
+    color: var(--color-on-background, #E0E0E0);
 }
 
 .contact-item a {
-    color: var(--color-primary);
+    color: #00FFFF;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 1.1rem;
+    font-weight: 500;
     transition: all 0.3s ease;
+    display: block;
 }
 
 .contact-item a:hover {
-    color: var(--color-primary-light, #00FFFF);
+    color: #66FFFF;
     text-decoration: underline;
+    transform: translateX(4px);
 }
 
 @media (max-width: 768px) {
