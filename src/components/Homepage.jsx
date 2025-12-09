@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useModels } from '../context/ModelsContext';
-import XeokitViewer from './XeokitViewer';
 import { FaThLarge, FaTree, FaPaintRoller, FaCube, FaChevronLeft, FaChevronRight, FaChevronDown, FaChevronUp,  } from 'react-icons/fa';
 import '../styles/homepage.css';
 
@@ -72,20 +71,28 @@ function Homepage({ user }) {
         };
     }, [isAutoPlaying, slides.length]);
 
-    // Scroll progress calculation - hero stays stuck during first 100vh of scroll
+    // Scroll progress calculation with throttling for performance
     useEffect(() => {
+        let ticking = false;
+        
         const onScroll = () => {
-            const scrollY = window.scrollY;
-            const windowHeight = window.innerHeight;
-            
-            // Progress from 0 to 1 during first viewport height of scrolling
-            const progress = Math.min(scrollY / windowHeight, 1);
-            
-            setScrollProgress(progress);
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    if (!heroRef.current) return;
+                    
+                    const rect = heroRef.current.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    const progress = Math.min(Math.max(1 - rect.bottom / windowHeight, 0), 1);
+                    
+                    setScrollProgress(progress);
+                    ticking = false;
+                });
+                ticking = true;
+            }
         };
         
         window.addEventListener('scroll', onScroll, { passive: true });
-        onScroll(); // Initial call
+        onScroll();
         
         return () => window.removeEventListener('scroll', onScroll);
     }, []);
@@ -338,8 +345,8 @@ function Homepage({ user }) {
                             onClick={() => navigate(`/gallery/product/${obj.id}`)}
                         >
                             <div className="card-image">
-                                {obj.xktFile ? (
-                                    <XeokitViewer xktUrl={obj.xktFile} height="100%" width="100%" />
+                                {obj.thumbnail ? (
+                                    <img src={obj.thumbnail} alt={obj.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                 ) : (
                                     <div style={{ width: '100%', height: '100%', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                         <p style={{ color: '#666' }}>Pas de prévisualisation</p>
@@ -505,8 +512,8 @@ function CategoryCarousel({ objects }) {
                                 onClick={() => navigate(`/gallery/product/${obj.id}`)}
                             >
                                 <div className="showcase-card-image">
-                                    {obj.xktFile ? (
-                                        <XeokitViewer xktUrl={obj.xktFile} height="100%" width="100%" />
+                                    {obj.thumbnail ? (
+                                        <img src={obj.thumbnail} alt={obj.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                     ) : (
                                         <div style={{ width: '100%', height: '100%', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                             <p style={{ color: '#666' }}>Pas de prévisualisation</p>
