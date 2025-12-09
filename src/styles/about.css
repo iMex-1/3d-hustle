@@ -201,28 +201,30 @@
 }
 
 .contact-icon {
-    font-size: 2rem;
-    color: var(--color-primary);
+    font-size: 2.5rem;
+    color: #FF6B6B;
     flex-shrink: 0;
+    filter: drop-shadow(0 2px 4px rgba(255, 107, 107, 0.3));
 }
 
 .contact-item h4 {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-    color: var(--color-on-background, #E0E0E0);
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+    color: #FFFFFF;
+    font-weight: 600;
 }
 
 .contact-item a {
-    color: #00FFFF;
+    color: #FFD93D;
     text-decoration: none;
-    font-size: 1.1rem;
-    font-weight: 500;
+    font-size: 1.15rem;
+    font-weight: 600;
     transition: all 0.3s ease;
     display: block;
 }
 
 .contact-item a:hover {
-    color: #66FFFF;
+    color: #FFE66D;
     text-decoration: underline;
     transform: translateX(4px);
 }
