@@ -70,7 +70,7 @@ function Navigation({ user, userRecord, onLogout, onSearch }) {
                     <li className={currentPage === 'about' ? 'active' : ''}>
                         <Link to="/about" onClick={handleNavClick}>
                             <span><FaInfoCircle /></span>
-                            <span className="nav-text">À propos & Contact</span>
+                            <span className="nav-text">À propos</span>
                         </Link>
                     </li>
 
