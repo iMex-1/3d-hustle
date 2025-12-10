@@ -1,24 +1,31 @@
 import { useEffect, useRef, useState } from 'react';
-import { Viewer, XKTLoaderPlugin } from '@xeokit/xeokit-sdk';
+import { Viewer, XKTLoaderPlugin, GLTFLoaderPlugin } from '@xeokit/xeokit-sdk';
 import '../styles/xeokit-viewer.css';
 
-function XeokitViewer({ xktUrl, height = '100%', width = '100%', enableZoom = false }) {
+function XeokitViewer({ modelUrl, height = '100%', width = '100%', enableZoom = false }) {
     const canvasRef = useRef(null);
     const viewerRef = useRef(null);
     const rotationRef = useRef(null);
     const containerRef = useRef(null);
     const [isHovered, setIsHovered] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
-        if (!canvasRef.current || !xktUrl) {
+        if (!canvasRef.current || !modelUrl) {
             return;
         }
+
+        console.log('XeokitViewer: Loading model from URL:', modelUrl);
+        setIsLoading(true);
+        setHasError(false);
 
         try {
             // Create viewer
             const viewer = new Viewer({
                 canvasId: canvasRef.current.id,
                 transparent: true,
+                backgroundColor: [0.95, 0.95, 0.95, 1.0]
             });
 
             viewerRef.current = viewer;
@@ -26,61 +33,80 @@ function XeokitViewer({ xktUrl, height = '100%', width = '100%', enableZoom = fa
             // Configure camera for better initial view
             if (enableZoom) {
                 // Product page: Allow default camera controls for zoom
-                viewer.camera.eye = [-3.933, 2.855, 27.018];
-                viewer.camera.look = [4.400, 3.724, 8.899];
-                viewer.camera.up = [-0.018, 0.999, 0.039];
+                viewer.camera.eye = [10, 10, 10];
+                viewer.camera.look = [0, 0, 0];
+                viewer.camera.up = [0, 1, 0];
             } else {
                 // Gallery cards: Closer zoom with rotation
-                viewer.camera.eye = [-2.5, 2.0, 8.0];
+                viewer.camera.eye = [5, 5, 5];
                 viewer.camera.look = [0, 0, 0];
                 viewer.camera.up = [0, 1, 0];
             }
 
-            // Create XKT loader
-            const xktLoader = new XKTLoaderPlugin(viewer);
+            // Determine file type and create appropriate loader
+            const fileExtension = modelUrl.split('.').pop().toLowerCase();
+            let loader;
+            let model;
 
-            // Load the model
-            const model = xktLoader.load({
-                id: `model-${Date.now()}`,
-                src: xktUrl,
-                edges: true,
-            });
+            if (fileExtension === 'xkt') {
+                // Create XKT loader
+                loader = new XKTLoaderPlugin(viewer);
+                model = loader.load({
+                    id: `model-${Date.now()}`,
+                    src: modelUrl,
+                    edges: true,
+                });
+            } else if (fileExtension === 'glb' || fileExtension === 'gltf') {
+                // Create GLTF loader
+                loader = new GLTFLoaderPlugin(viewer);
+                model = loader.load({
+                    id: `model-${Date.now()}`,
+                    src: modelUrl,
+                    edges: false, // Disable edges for GLB files as they can cause issues
+                    backfaces: true
+                });
+            } else {
+                console.error('XeokitViewer: Unsupported file format', fileExtension);
+                setHasError(true);
+                setIsLoading(false);
+                return;
+            }
 
             model.on('loaded', () => {
-                if (enableZoom) {
-                    // Product page: Fit to view and allow user controls
-                    viewer.cameraFlight.flyTo({
-                        aabb: model.aabb,
-                        duration: 0.5
-                    });
-                    // No rotation animation for product page
-                } else {
-                    // Gallery cards: Closer zoom with rotation
-                    viewer.cameraFlight.flyTo({
-                        aabb: model.aabb,
-                        duration: 0.5,
-                        fitFOV: 35 // Tighter fit (smaller FOV = closer zoom)
-                    });
+                console.log('Model loaded successfully:', modelUrl);
+                setIsLoading(false);
+                setHasError(false);
 
-                    // Start very slow rotation animation
+                // Fit model to view
+                viewer.cameraFlight.flyTo({
+                    aabb: model.aabb,
+                    duration: 1.0,
+                    fitFOV: enableZoom ? 45 : 35
+                });
+
+                if (!enableZoom) {
+                    // Start very slow rotation animation for gallery cards
                     let angle = 0;
                     rotationRef.current = setInterval(() => {
-                        if (!isHovered) {
-                            angle += 0.0008; // Very slow rotation (~1 full rotation per 2 minutes)
-                            const radius = 8;
-                            viewer.camera.eye = [
-                                Math.sin(angle) * radius,
-                                2.0,
-                                Math.cos(angle) * radius
+                        if (!isHovered && viewerRef.current) {
+                            angle += 0.005; // Slightly faster rotation for better visibility
+                            const distance = 8;
+                            const eye = [
+                                Math.sin(angle) * distance,
+                                distance * 0.6,
+                                Math.cos(angle) * distance
                             ];
+                            viewer.camera.eye = eye;
                             viewer.camera.look = [0, 0, 0];
                         }
-                    }, 16); // ~60fps
+                    }, 50); // 20fps for smoother animation
                 }
             });
 
             model.on('error', (error) => {
-                console.error('XeokitViewer: Error loading model', xktUrl, error);
+                console.error('XeokitViewer: Error loading model', modelUrl, error);
+                setHasError(true);
+                setIsLoading(false);
             });
 
         } catch (error) {
@@ -100,7 +126,7 @@ function XeokitViewer({ xktUrl, height = '100%', width = '100%', enableZoom = fa
                 }
             }
         };
-    }, [xktUrl, enableZoom]);
+    }, [modelUrl, enableZoom]);
 
     // Handle hover zoom (only for gallery cards, not product page)
     useEffect(() => {
@@ -153,7 +179,26 @@ function XeokitViewer({ xktUrl, height = '100%', width = '100%', enableZoom = fa
                 id={`xeokit-canvas-${Math.random().toString(36).substr(2, 9)}`}
                 style={{ width: '100%', height: '100%' }}
             />
-            {!enableZoom && (
+
+            {isLoading && (
+                <div className="viewer-loading">
+                    <div className="loading-spinner"></div>
+                    <span>Chargement du modèle...</span>
+                </div>
+            )}
+
+            {hasError && (
+                <div className="viewer-error">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                    <span>Erreur de chargement</span>
+                </div>
+            )}
+
+            {!isLoading && !hasError && !enableZoom && (
                 <div className="viewer-hint">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <circle cx="12" cy="12" r="10"></circle>
@@ -163,7 +208,8 @@ function XeokitViewer({ xktUrl, height = '100%', width = '100%', enableZoom = fa
                     <span>Survolez pour zoomer</span>
                 </div>
             )}
-            {enableZoom && (
+
+            {!isLoading && !hasError && enableZoom && (
                 <div className="viewer-hint viewer-hint-zoom">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <circle cx="11" cy="11" r="8"></circle>

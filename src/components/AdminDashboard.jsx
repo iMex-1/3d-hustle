@@ -33,7 +33,7 @@ function AdminDashboard({ user }) {
     // Subscribe to real-time model updates
     useEffect(() => {
         setLoading(true);
-        
+
         // Set up real-time listener
         const unsubscribe = databaseService.listenToModels((models) => {
             setObjectList(models);
@@ -78,7 +78,7 @@ function AdminDashboard({ user }) {
         try {
             // Find the model to get its name for R2 deletion
             const model = objectList.find(obj => obj.model_id === deleteId);
-            
+
             if (model) {
                 // Delete from R2 storage first
                 try {
@@ -88,10 +88,10 @@ function AdminDashboard({ user }) {
                     // Continue with database deletion even if R2 fails
                 }
             }
-            
+
             // Delete from Firebase database
             await databaseService.deleteModel(deleteId);
-            
+
             setShowConfirmModal(false);
             setDeleteId(null);
             showNotification('Objet supprimé avec succès', 'success');
@@ -158,9 +158,9 @@ function AdminDashboard({ user }) {
         try {
             // Generate organized paths
             const paths = generateModelPaths(formData.name);
-            
+
             let ifcUrl, xktUrl;
-            
+
             // Check if files are new uploads (File objects) or existing URLs (strings)
             if (formData.ifcFile instanceof File) {
                 // Upload IFC to R2
@@ -171,7 +171,7 @@ function AdminDashboard({ user }) {
                 // Keep existing URL
                 ifcUrl = formData.ifcFile;
             }
-            
+
             if (formData.xktFile instanceof File) {
                 // Upload XKT to R2
                 setUploadProgress('Upload du fichier XKT...');
@@ -280,7 +280,7 @@ function AdminDashboard({ user }) {
                     <div key={obj.model_id} className="object-card animate-fade-in-up" style={{ '--index': index }}>
                         <div className="object-card-preview">
                             {obj.model_xkt_url ? (
-                                <XeokitViewer xktUrl={getPublicFileUrl(obj.model_xkt_url)} height="100%" width="100%" />
+                                <XeokitViewer modelUrl={getPublicFileUrl(obj.model_xkt_url)} height="100%" width="100%" />
                             ) : (
                                 <div style={{ width: '100%', height: '100%', background: 'var(--color-viewport-bg, #0A0A0A)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <p style={{ color: 'var(--color-on-surface-secondary, #666)' }}>Pas de prévisualisation</p>
@@ -396,9 +396,9 @@ function AdminDashboard({ user }) {
                             </div>
 
                             {uploadProgress && (
-                                <div style={{ 
-                                    padding: '1rem', 
-                                    background: 'rgba(0, 168, 150, 0.1)', 
+                                <div style={{
+                                    padding: '1rem',
+                                    background: 'rgba(0, 168, 150, 0.1)',
                                     border: '1px solid rgba(0, 168, 150, 0.3)',
                                     borderRadius: '8px',
                                     color: '#00A896',

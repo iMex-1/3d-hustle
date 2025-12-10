@@ -11,12 +11,15 @@
     "test": "vitest --run",
     "test:watch": "vitest",
     "test:integration": "firebase emulators:exec \"vitest --run src/test/*.integration.test.js\"",
-    "emulators": "firebase emulators:start"
+    "emulators": "firebase emulators:start",
+    "convert-models": "node convert-glb-to-xkt.cjs"
   },
   "dependencies": {
+    "@xeokit/xeokit-convert": "^1.3.1",
     "@xeokit/xeokit-sdk": "^2.6.95",
     "firebase": "^12.6.0",
     "framer-motion": "^12.23.25",
+    "lucide-react": "^0.556.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-icons": "^5.5.0",

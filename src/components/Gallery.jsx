@@ -87,7 +87,7 @@ function Gallery() {
                         <div className="detail-viewer">
                             {selectedObject.xktFile ? (
                                 <XeokitViewer
-                                    xktUrl={selectedObject.xktFile}
+                                    modelUrl={selectedObject.xktFile}
                                     height="600px"
                                     width="100%"
                                     enableZoom={true}
@@ -190,7 +190,7 @@ function Gallery() {
                     >
                         <div className="card-image">
                             {obj.xktFile ? (
-                                <XeokitViewer xktUrl={obj.xktFile} height="100%" width="100%" />
+                                <XeokitViewer modelUrl={obj.xktFile} height="100%" width="100%" />
                             ) : (
                                 <div style={{ width: '100%', height: '100%', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <p style={{ color: '#666' }}>Pas de prévisualisation</p>

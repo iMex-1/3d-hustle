@@ -1,103 +1,160 @@
-// new fixed Homepage.jsx
-
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import {
+    ChevronLeft,
+    ChevronRight,
+    ArrowUpRight
+} from 'lucide-react';
 import { useModels } from '../context/ModelsContext';
-import { FaThLarge, FaTree, FaPaintRoller, FaCube, FaChevronLeft, FaChevronRight, FaChevronDown, FaChevronUp,  } from 'react-icons/fa';
-import '../styles/homepage.css';
+import XeokitViewer from './XeokitViewer';
+import '../styles/design-system.css';
+import '../styles/homepage-new.css';
 
-function Homepage({ user }) {
+// Analytics tracking functions - replace with your actual analytics implementation
+const trackSocialClick = (platform) => {
+    try {
+        // Replace with your analytics implementation (Google Analytics, Mixpanel, etc.)
+        console.log(`Social click tracked: ${platform}`);
+        // Example: gtag('event', 'social_click', { platform });
+    } catch (error) {
+        console.error('Analytics tracking failed:', error);
+    }
+};
+
+const trackFooterClick = (section, link) => {
+    try {
+        console.log(`Footer click tracked: ${section} - ${link}`);
+        // Example: gtag('event', 'footer_click', { section, link });
+    } catch (error) {
+        console.error('Analytics tracking failed:', error);
+    }
+};
+
+function Homepage() {
     const navigate = useNavigate();
-    const { models: objects, loading } = useModels();
+    const { models, loading } = useModels();
     const [currentSlide, setCurrentSlide] = useState(0);
-    const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-    const [isDragging, setIsDragging] = useState(false);
-    const [touchStartX, setTouchStartX] = useState(0);
-    const [touchDeltaX, setTouchDeltaX] = useState(0);
-    const [showAllCategories, setShowAllCategories] = useState(false);
-    const [scrollProgress, setScrollProgress] = useState(0);
-    const containerRef = useRef(null);
-    const heroRef = useRef(null);
-    const autoPlayInterval = 5000;
+    const [theme, setTheme] = useState(() => {
+        return localStorage.getItem('theme') || 'dark';
+    });
+    const autoPlayInterval = 6000;
 
-    // Limit featured objects to reduce initial load
-    const featuredObjects = objects.filter(obj => obj.featured).slice(0, 3);
+    // Listen for theme changes
+    useEffect(() => {
+        const handleThemeChange = () => {
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            setTheme(currentTheme);
+        };
+
+        // Listen for storage changes (theme updates from other components)
+        window.addEventListener('storage', handleThemeChange);
+
+        // Also check for theme attribute changes on document
+        const observer = new MutationObserver(() => {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            setTheme(currentTheme);
+        });
+
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['data-theme']
+        });
+
+        return () => {
+            window.removeEventListener('storage', handleThemeChange);
+            observer.disconnect();
+        };
+    }, []);
 
     const slides = [
         {
             id: 'welcome',
-            type: 'welcome',
-            image: '/heroslides/Slide1.png',
+            badge: 'Plateforme BIM Avancée',
             title: 'Bienvenue sur OakMesh',
-            subtitle: 'Plateforme de Modèles BIM',
-            description: 'Explorez des modèles IFC de haute qualité pour vos projets.',
-            buttons: [
-                { text: 'Parcourir la Galerie', action: () => navigate('/gallery'), primary: true },
-                { text: 'Voir les Vedettes', action: () => document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' }) }
-            ]
+            description: 'Découvrez notre plateforme de visualisation 3D pour modèles BIM. Explorez des fichiers IFC avec une technologie de pointe.',
+            cta: 'Explorer la Galerie',
+            image: '/heroslides/Slide1.png',
+            alt: 'Interface de visualisation 3D OakMesh avec modèles BIM'
         },
         {
             id: 'models',
-            type: 'models',
+            badge: 'Modèles IFC Haute Qualité',
+            title: 'Bibliothèque BIM Complète',
+            description: 'Accédez à une vaste collection de modèles IFC organisés par catégorie. Zelige, Boiserie, Platre et autres éléments.',
+            cta: 'Voir les Modèles',
             image: '/heroslides/Slide2.png',
-            title: 'Explorez les Modèles BIM',
-            subtitle: 'Ressources de Haute Qualité',
-            description: 'Découvrez des modèles organisés par catégorie. Architecture, MEP, Structure et Infrastructure.',
-            buttons: [
-                { text: 'Voir Tous les Modèles', action: () => navigate('/gallery'), primary: true }
-            ]
+            alt: 'Collection de modèles BIM organisés par catégorie'
         },
         {
-            id: 'formats',
-            type: 'formats',
+            id: 'viewer',
+            badge: 'Visualisation WebGL',
+            title: 'Viewer 3D Intégré',
+            description: 'Visualisez vos modèles BIM directement dans le navigateur avec notre viewer 3D haute performance basé sur xeokit.',
+            cta: 'Tester le Viewer',
             image: '/heroslides/Slide3.png',
-            title: 'Format IFC',
-            subtitle: 'Téléchargement',
-            description: 'Téléchargez en format IFC. Compatible avec tous les logiciels BIM.',
-            buttons: [
-                { text: 'En Savoir Plus', action: () => navigate('/gallery'), primary: true }
-            ]
+            alt: 'Viewer 3D haute performance pour modèles BIM'
         }
     ];
 
-    useEffect(() => {
-        let interval;
-        if (isAutoPlaying) {
-            interval = setInterval(() => {
-                setCurrentSlide((prev) => (prev + 1) % slides.length);
-            }, autoPlayInterval);
+    const categories = [
+        {
+            name: 'Zelige',
+            description: 'Carreaux de mosaïque traditionnels marocains',
+            features: ['Carreaux émaillés', 'Motifs géométriques', 'Couleurs personnalisées']
+        },
+        {
+            name: 'Boiserie',
+            description: 'Panneaux et ornements en bois sculpté',
+            features: ['Bois de cèdre', 'Sculptures à la main', 'Détails complexes']
+        },
+        {
+            name: 'Platre',
+            description: 'Décorations et moulures en plâtre',
+            features: ['Détails sculptés', 'Motifs traditionnels', 'Designs personnalisés']
         }
-        return () => {
-            if (interval) clearInterval(interval);
-        };
-    }, [isAutoPlaying, slides.length]);
+    ];
 
-    // Scroll progress calculation with throttling for performance
+    // Get featured models from R2 storage
+    const featuredModels = models.filter(model => model.featured).slice(0, 4);
+
+    // If no featured models, get first 4 models
+    const availableModels = featuredModels.length > 0 ? featuredModels : models.slice(0, 4);
+
+    // Debug logging
+    console.log('Total models loaded:', models.length);
+    console.log('Featured models:', featuredModels.length);
+    console.log('Available models for homepage:', availableModels.length);
+    if (availableModels.length > 0) {
+        console.log('First model XKT URL:', availableModels[0].xktFile);
+    }
+
+    // Map to products format
+    const products = availableModels.length > 0 ? availableModels.map(model => ({
+        id: model.id,
+        title: model.name,
+        category: model.category,
+        description: model.description,
+        image: model.xktFile // This is the R2 storage URL
+    })) : [
+        {
+            id: 1,
+            title: 'Modèle BIM Exemple',
+            category: 'Autre',
+            description: 'Modèle d\'exemple en cours de chargement depuis le stockage cloud.',
+            image: null
+        }
+    ];
+
+    const features = [
+    ];
+
     useEffect(() => {
-        let ticking = false;
-        
-        const onScroll = () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    if (!heroRef.current) return;
-                    
-                    const rect = heroRef.current.getBoundingClientRect();
-                    const windowHeight = window.innerHeight;
-                    const progress = Math.min(Math.max(1 - rect.bottom / windowHeight, 0), 1);
-                    
-                    setScrollProgress(progress);
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        };
-        
-        window.addEventListener('scroll', onScroll, { passive: true });
-        onScroll();
-        
-        return () => window.removeEventListener('scroll', onScroll);
-    }, []);
+        const interval = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % slides.length);
+        }, autoPlayInterval);
+
+        return () => clearInterval(interval);
+    }, [slides.length, autoPlayInterval]);
 
     const goToSlide = (index) => {
         setCurrentSlide(index);
@@ -111,464 +168,683 @@ function Homepage({ user }) {
         setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
     };
 
-    const handleMouseEnter = () => {
-        setIsAutoPlaying(false);
-    };
-
-    const handleMouseLeave = () => {
-        setIsAutoPlaying(true);
-    };
-
-    const onTouchStart = (e) => {
-        if (!e.touches || e.touches.length === 0) return;
-        setIsDragging(true);
-        setIsAutoPlaying(false);
-        setTouchStartX(e.touches[0].clientX);
-        setTouchDeltaX(0);
-    };
-
-    const onTouchMove = (e) => {
-        if (!isDragging || !e.touches || e.touches.length === 0) return;
-        const currentX = e.touches[0].clientX;
-        setTouchDeltaX(currentX - touchStartX);
-    };
-
-    const onTouchEnd = () => {
-        if (!isDragging) return;
-        const threshold = 50;
-        if (Math.abs(touchDeltaX) > threshold) {
-            if (touchDeltaX > 0) {
-                prevSlide();
-            } else {
-                nextSlide();
-            }
-        }
-        setIsDragging(false);
-        setTouchDeltaX(0);
-        setIsAutoPlaying(true);
-    };
-
-    // Detect mobile for performance optimization
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-
     return (
         <div className="homepage">
-            <div
-                ref={heroRef}
-                className="hero-carousel"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                style={{
-                    '--scroll-progress': isMobile ? 1 : scrollProgress
-                }}
-            >
-                <div
-                    className="carousel-container"
-                    ref={containerRef}
-                    onTouchStart={onTouchStart}
-                    onTouchMove={onTouchMove}
-                    onTouchEnd={onTouchEnd}
-                    onTouchCancel={onTouchEnd}
-                >
-                    <div
-                        className="carousel-slides"
-                        style={{
-                            transform: (() => {
-                                const base = -currentSlide * 33.333;
-                                if (isDragging && containerRef.current) {
-                                    const width = containerRef.current.clientWidth || 1;
-                                    const dragPercent = (touchDeltaX / width) * 33.333;
-                                    return `translateX(${base + dragPercent}%)`;
-                                }
-                                return `translateX(${base}%)`;
-                            })(),
-                            transition: isDragging ? 'none' : undefined,
+            {/* Hero Carousel */}
+            <section className="hero-carousel">
+                {/* Background Image with Overlay */}
+                <div className="hero-background">
+                    <img
+                        src={slides[currentSlide].image}
+                        alt={slides[currentSlide].alt}
+                        className="hero-image"
+                        loading="eager"
+                        onError={(e) => {
+                            console.error('Hero image failed to load:', e.target.src);
+                            e.target.style.display = 'none';
                         }}
-                    >
-                        {slides.map((slide, slideIndex) => (
-                            <div key={slide.id} className={`carousel-slide slide-${slide.type}`}>
-                                <div
-                                    className="slide-background"
-                                    style={{
-                                        backgroundImage: `url(${slide.image})`,
-                                    }}
-                                />
-                                <div className="slide-overlay" />
-                                <div className="slide-content">
-                                    <div className="slide-text-content">
-                                        <div className="slide-badge">
-                                            {slide.subtitle}
-                                        </div>
-                                        <h1 className="slide-title">
-                                            {slide.title}
-                                        </h1>
-                                        <p className="slide-description">
-                                            {slide.description}
-                                        </p>
-                                        <div className="slide-buttons">
-                                            {slide.buttons.map((button, btnIndex) => (
-                                                <motion.button
-                                                    key={btnIndex}
-                                                    onClick={button.action}
-                                                    className={`slide-btn ${button.primary ? 'slide-btn-primary' : 'slide-btn-secondary'}`}
-                                                    whileHover={{ x: 4 }}
-                                                    whileTap={{ scale: 0.95 }}
-                                                >
-                                                    {button.text}
-                                                    <span className="btn-arrow">→</span>
-                                                </motion.button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                    />
+                    <div className="hero-overlay"></div>
+                </div>
+
+                {/* Moroccan Pattern Overlay */}
+                <div className="hero-pattern moroccan-pattern"></div>
+
+                {/* Corner Ornaments - Hidden on Mobile */}
+                <div className="corner-ornaments">
+                    <div className="corner-ornament corner-tl"></div>
+                    <div className="corner-ornament corner-tr"></div>
+                    <div className="corner-ornament corner-bl"></div>
+                    <div className="corner-ornament corner-br"></div>
+                </div>
+
+                {/* Decorative Top Divider - Hidden on Mobile */}
+                <div className="decorative-divider decorative-divider-top">
+                    <div className="divider-line"></div>
+                    <div className="divider-diamond"></div>
+                    <div className="divider-line"></div>
+                </div>
+
+                {/* Carousel Content */}
+                <div className="carousel-content">
+                    <div key={currentSlide} className="slide-content animate-slide-up">
+                        <div className="slide-badge">
+                            <div className="badge-diamond"></div>
+                            <span className="text-xs tracking-widest font-body font-light">
+                                {slides[currentSlide].badge}
+                            </span>
+                            <div className="badge-diamond"></div>
+                        </div>
+
+                        <h1 className="slide-title font-display font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl text-white mb-4 sm:mb-6">
+                            {slides[currentSlide].title}
+                        </h1>
+
+                        <p className="slide-description text-sm sm:text-base lg:text-lg text-gray-200 mb-6 sm:mb-8 max-w-xl lg:max-w-2xl mx-auto px-4 sm:px-0">
+                            {slides[currentSlide].description}
+                        </p>
+
+                        <div className="slide-buttons flex flex-col sm:flex-row gap-4 sm:gap-6 px-4 sm:px-0">
+                            <button
+                                className="btn btn-primary w-full sm:w-auto"
+                                onClick={() => navigate('/gallery')}
+                                aria-label={`${slides[currentSlide].cta} - Naviguer vers la galerie`}
+                            >
+                                {slides[currentSlide].cta}
+                                <ArrowUpRight className="w-4 h-4" />
+                            </button>
+                            <button
+                                className="btn btn-outline w-full sm:w-auto"
+                                onClick={() => navigate('/about')}
+                                aria-label="En savoir plus sur OakMesh"
+                            >
+                                En Savoir Plus
+                                <ArrowUpRight className="w-4 h-4" />
+                            </button>
+                        </div>
                     </div>
+                </div>
 
+                {/* Navigation */}
+                <div className="carousel-nav">
                     <button
-                        className={`carousel-arrow carousel-arrow-left ${currentSlide === 0 ? 'hidden' : ''}`}
+                        className="nav-btn nav-prev"
                         onClick={prevSlide}
-                        aria-label="Previous slide"
+                        aria-label="Diapositive précédente"
                     >
-                        ‹
+                        <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                     </button>
 
-                    <button
-                        className="carousel-arrow carousel-arrow-right"
-                        onClick={nextSlide}
-                        aria-label="Next slide"
-                    >
-                        ›
-                    </button>
-
-                    <div className="carousel-nav">
+                    <div className="nav-indicators">
                         {slides.map((_, index) => (
-                            <motion.button
+                            <button
                                 key={index}
-                                className={`nav-dot ${index === currentSlide ? 'active' : ''}`}
+                                className={`nav-indicator ${index === currentSlide ? 'active' : ''}`}
                                 onClick={() => goToSlide(index)}
-                                aria-label={`Go to slide ${index + 1}`}
-                                whileHover={{ scale: 1.3 }}
-                                whileTap={{ scale: 0.9 }}
+                                aria-label={`Aller à la diapositive ${index + 1}`}
                             />
                         ))}
                     </div>
 
-                    {/* Scroll Indicator */}
-                    <div 
-                        className="scroll-indicator"
-                        style={{
-                            opacity: 1 - scrollProgress * 2
-                        }}
+                    <button
+                        className="nav-btn nav-next"
+                        onClick={nextSlide}
+                        aria-label="Diapositive suivante"
                     >
-                        <div className="scroll-indicator-text">Scroll</div>
-                        <div className="scroll-indicator-line"></div>
+                        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </button>
+                </div>
+
+                {/* Decorative Bottom Divider - Hidden on Mobile */}
+                <div className="decorative-divider decorative-divider-bottom">
+                    <div className="divider-line"></div>
+                    <div className="divider-grid">
+                        {[...Array(9)].map((_, i) => (
+                            <div key={i} className={`grid-square ${i === 4 ? 'active' : ''}`}></div>
+                        ))}
+                    </div>
+                    <div className="divider-line"></div>
+                </div>
+            </section>
+
+            {/* Categories Section */}
+            <section className="categories-section py-24 bg-card moroccan-pattern">
+                <div className="container">
+                    {/* Section Header */}
+                    <div className="section-header text-center mb-16">
+                        <div className="decorative-label">
+                            <div className="label-line"></div>
+                            <span className="text-xs tracking-widest font-body font-medium text-muted-foreground">
+                                NOS CATÉGORIES
+                            </span>
+                            <div className="label-line"></div>
+                        </div>
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
+                            Modèles BIM par Catégorie
+                        </h2>
+                        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                            Explorez notre bibliothèque complète de modèles BIM organisés par domaine d'expertise.
+                            Chaque catégorie contient des modèles IFC de haute qualité prêts à l'emploi.
+                        </p>
+                    </div>
+
+                    {/* Categories Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {categories.map((category, index) => (
+                            <CategoryCard key={category.name} category={category} index={index} />
+                        ))}
+                    </div>
+
+                    {/* Decorative Footer */}
+                    <div className="decorative-footer mt-16">
+                        <div className="footer-diamonds">
+                            {[...Array(5)].map((_, i) => (
+                                <div key={i} className={`diamond ${i === 2 ? 'active' : ''}`}></div>
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            {/*
-            <section className="categories-section">
-                <div className="section-header">
-                    <h2 className="section-title">Parcourir par Catégorie</h2>
-                    <p className="section-description">
-                        Explorez nos modèles organisés par type de construction
-                    </p>
-                </div>
-                <motion.div
-                    className="categories-grid-simple"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3 }}
-                >
-                    <SimpleCategoryCard
-                        category="Zelige"
-                        icon={FaThLarge}
-                        description="Carreaux et revêtements"
-                    />
-                    <SimpleCategoryCard
-                        category="Boiserie"
-                        icon={FaTree}
-                        description="Bois et menuiserie"
-                    />
-                    <SimpleCategoryCard
-                        category="Platre"
-                        icon={FaPaintRoller}
-                        description="Ornements en plâtre"
-                    />
-                    <SimpleCategoryCard
-                        category="Autre"
-                        icon={FaCube}
-                        description="Autres éléments"
-                    />
-                </motion.div>
             </section>
-            */}
 
-            <section className="featured-section" id="featured">
-                <div className="section-header">
-                    <h2 className="section-title">Modèles BIM en Vedette</h2>
-                    <p className="section-description">
-                        Modèles premium sélectionnés pour votre prochain projet
-                    </p>
-                </div>
-                <div className="featured-grid">
-                    {featuredObjects.map((obj, index) => (
-                        <div
-                            key={obj.id}
-                            className="featured-card"
-                            onClick={() => navigate(`/gallery/product/${obj.id}`)}
-                        >
-                            <div className="card-image">
-                                {obj.thumbnail ? (
-                                    <img src={obj.thumbnail} alt={obj.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                ) : (
-                                    <div style={{ width: '100%', height: '100%', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <p style={{ color: '#666' }}>Pas de prévisualisation</p>
+            {/* Products Section */}
+            <section className="products-section py-24">
+                <div className="container">
+                    <div className="section-header text-center mb-16">
+                        <div className="decorative-label">
+                            <div className="label-line"></div>
+                            <span className="text-xs tracking-widest font-body font-medium text-muted-foreground">
+                                MODÈLES VEDETTES
+                            </span>
+                            <div className="label-line"></div>
+                        </div>
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
+                            Collection Premium
+                        </h2>
+                        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                            Découvrez notre sélection de modèles BIM premium avec des détails exceptionnels
+                            et des propriétés techniques complètes pour vos projets.
+                        </p>
+                    </div>
+
+                    {loading ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {[...Array(4)].map((_, index) => (
+                                <div key={index} className="product-card animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                                    <div className="card-image bg-muted flex items-center justify-center">
+                                        <div className="loading-spinner"></div>
                                     </div>
-                                )}
-                                <div className="card-overlay-hover">
-                                    <motion.button
-                                        className="btn-view-details"
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                    >
-                                        Voir les Détails
-                                    </motion.button>
+                                    <div className="card-content p-5">
+                                        <div className="h-6 bg-muted rounded mb-2"></div>
+                                        <div className="h-4 bg-muted rounded mb-4"></div>
+                                        <div className="h-10 bg-muted rounded"></div>
+                                    </div>
                                 </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {products.map((product, index) => (
+                                <ProductCard key={product.id} product={product} index={index} />
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </section>
+
+            {/* About Section */}
+            <section className="about-section py-24 bg-card">
+                <div className="container">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                        {/* Left Column */}
+                        <div>
+                            <div className="decorative-label mb-6">
+                                <span className="text-xs tracking-widest font-body font-medium text-muted-foreground">
+                                    À PROPOS
+                                </span>
                             </div>
-                            <div className="card-content">
-                                <div className="card-header">
-                                    <span className="card-category">{obj.category}</span>
-                                    <h3>{obj.name}</h3>
-                                    <p className="card-description">{obj.description}</p>
+                            <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-6">
+                                L'Avenir de la Visualisation BIM
+                            </h2>
+                            <div className="space-y-4 text-muted-foreground mb-8">
+                                <p>
+                                    OakMesh est une plateforme innovante dédiée à la visualisation et au partage de modèles BIM.
+                                    Nous utilisons les dernières technologies WebGL pour offrir une expérience 3D fluide directement dans votre navigateur.
+                                </p>
+                                <p>
+                                    Notre mission est de démocratiser l'accès aux modèles IFC et de faciliter la collaboration
+                                    entre tous les acteurs du secteur de la construction et de l'architecture.
+                                </p>
+                            </div>
+
+                            {/* Contact Info */}
+                            <div className="contact-info space-y-4 pt-8 border-t border-border">
+                                <div>
+                                    <h3 className="font-semibold text-foreground mb-2">Contactez-nous</h3>
+                                    <p className="text-sm text-muted-foreground">contact@oakmesh.com</p>
                                 </div>
-                                <div className="card-divider"></div>
-                                <motion.button
-                                    className="btn-card-details"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        navigate(`/gallery/product/${obj.id}`);
-                                    }}
-                                    whileHover={{ x: 4 }}
-                                    whileTap={{ scale: 0.98 }}
-                                >
-                                    <span>Voir Détails</span>
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                        <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </motion.button>
+                                <div>
+                                    <h3 className="font-semibold text-foreground mb-2">Support Technique</h3>
+                                    <p className="text-sm text-muted-foreground">support@oakmesh.com</p>
+                                </div>
                             </div>
                         </div>
-                    ))}
+
+                        {/* Right Column - Features */}
+                        <div className="grid grid-cols-2 gap-4">
+                            {features.map((feature, index) => (
+                                <FeatureCard key={feature.title} feature={feature} index={index} />
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            <CategoryShowcase
-                objects={objects}
-                showAllCategories={showAllCategories}
-                setShowAllCategories={setShowAllCategories}
-            />
+            {/* Footer */}
+            <footer className="footer-horizontal border-t border-border py-12">
+                <div className="footer-container">
+                    {/* Brand Section */}
+                    <div className="footer-brand">
+                        <div className="flex items-center gap-3 mb-4">
+                            <img
+                                src={theme === 'dark' ? "/logo/LogoInversed.png" : "/logo/Logo.png"}
+                                alt="OakMesh Logo"
+                                className="footer-logo"
+                                style={{ width: '50px', height: '50px', objectFit: 'contain' }}
+                                onError={(e) => {
+                                    console.error('Footer logo failed to load');
+                                    e.target.style.display = 'none';
+                                }}
+                            />
+                            <span className="font-display font-semibold text-lg">OakMesh</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+                            Plateforme de visualisation BIM innovante pour modèles IFC et fichiers 3D.
+                            Transformez vos données architecturales en expériences interactives.
+                        </p>
+                        <div className="flex gap-3" role="group" aria-label="Réseaux sociaux">
+                            <a
+                                href="https://twitter.com/oakmesh"
+                                className="social-btn"
+                                aria-label="Suivez-nous sur Twitter"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => trackSocialClick('twitter')}
+                            >
+                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                                </svg>
+                            </a>
+                            <a
+                                href="https://github.com/oakmesh"
+                                className="social-btn"
+                                aria-label="Consultez notre code sur GitHub"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => trackSocialClick('github')}
+                            >
+                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+                                </svg>
+                            </a>
+                            <a
+                                href="https://linkedin.com/company/oakmesh"
+                                className="social-btn"
+                                aria-label="Connectez-vous sur LinkedIn"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => trackSocialClick('linkedin')}
+                            >
+                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path fillRule="evenodd" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" clipRule="evenodd" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* Links Sections */}
+                    <div className="footer-links">
+                        <div className="footer-column">
+                            <h4 className="font-semibold mb-4 text-foreground">Produit</h4>
+                            <ul className="space-y-2 text-sm text-muted-foreground" role="list">
+                                <li>
+                                    <button
+                                        onClick={() => {
+                                            trackFooterClick('Produit', 'Fonctionnalités');
+                                            navigate('/features');
+                                        }}
+                                        className="hover:text-foreground transition-colors text-left w-full"
+                                        aria-label="Découvrir les fonctionnalités"
+                                    >
+                                        Fonctionnalités
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        onClick={() => {
+                                            trackFooterClick('Produit', 'Tarifs');
+                                            navigate('/pricing');
+                                        }}
+                                        className="hover:text-foreground transition-colors text-left w-full"
+                                        aria-label="Consulter les tarifs"
+                                    >
+                                        Tarifs
+                                    </button>
+                                </li>
+                                <li>
+                                    <a
+                                        href="/docs"
+                                        className="hover:text-foreground transition-colors"
+                                        onClick={() => trackFooterClick('Produit', 'Documentation')}
+                                        aria-label="Accéder à la documentation"
+                                    >
+                                        Documentation
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="/api"
+                                        className="hover:text-foreground transition-colors"
+                                        onClick={() => trackFooterClick('Produit', 'API')}
+                                        aria-label="Consulter l'API"
+                                    >
+                                        API
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="footer-column">
+                            <h4 className="font-semibold mb-4 text-foreground">Entreprise</h4>
+                            <ul className="space-y-2 text-sm text-muted-foreground" role="list">
+                                <li>
+                                    <button
+                                        onClick={() => {
+                                            trackFooterClick('Entreprise', 'À propos');
+                                            navigate('/about');
+                                        }}
+                                        className="hover:text-foreground transition-colors text-left w-full"
+                                        aria-label="En savoir plus sur l'entreprise"
+                                    >
+                                        À propos
+                                    </button>
+                                </li>
+                                <li>
+                                    <a
+                                        href="/careers"
+                                        className="hover:text-foreground transition-colors"
+                                        onClick={() => trackFooterClick('Entreprise', 'Carrières')}
+                                        aria-label="Voir les opportunités de carrière"
+                                    >
+                                        Carrières
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="/blog"
+                                        className="hover:text-foreground transition-colors"
+                                        onClick={() => trackFooterClick('Entreprise', 'Blog')}
+                                        aria-label="Lire notre blog"
+                                    >
+                                        Blog
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="/press"
+                                        className="hover:text-foreground transition-colors"
+                                        onClick={() => trackFooterClick('Entreprise', 'Presse')}
+                                        aria-label="Ressources presse"
+                                    >
+                                        Presse
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="footer-column">
+                            <h4 className="font-semibold mb-4 text-foreground">Ressources</h4>
+                            <ul className="space-y-2 text-sm text-muted-foreground" role="list">
+                                <li>
+                                    <button
+                                        onClick={() => {
+                                            trackFooterClick('Ressources', 'Tutoriels');
+                                            navigate('/tutorials');
+                                        }}
+                                        className="hover:text-foreground transition-colors text-left w-full"
+                                        aria-label="Accéder aux tutoriels"
+                                    >
+                                        Tutoriels
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        onClick={() => {
+                                            trackFooterClick('Ressources', 'Exemples');
+                                            navigate('/gallery');
+                                        }}
+                                        className="hover:text-foreground transition-colors text-left w-full"
+                                        aria-label="Voir les exemples"
+                                    >
+                                        Exemples
+                                    </button>
+                                </li>
+                                <li>
+                                    <a
+                                        href="/community"
+                                        className="hover:text-foreground transition-colors"
+                                        onClick={() => trackFooterClick('Ressources', 'Communauté')}
+                                        aria-label="Rejoindre la communauté"
+                                    >
+                                        Communauté
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="/support"
+                                        className="hover:text-foreground transition-colors"
+                                        onClick={() => trackFooterClick('Ressources', 'Support')}
+                                        aria-label="Obtenir de l'aide"
+                                    >
+                                        Support
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="footer-column">
+                            <h4 className="font-semibold mb-4 text-foreground">Légal</h4>
+                            <ul className="space-y-2 text-sm text-muted-foreground" role="list">
+                                <li>
+                                    <a
+                                        href="/privacy"
+                                        className="hover:text-foreground transition-colors"
+                                        onClick={() => trackFooterClick('Légal', 'Confidentialité')}
+                                        aria-label="Politique de confidentialité"
+                                    >
+                                        Confidentialité
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="/terms"
+                                        className="hover:text-foreground transition-colors"
+                                        onClick={() => trackFooterClick('Légal', 'Conditions')}
+                                        aria-label="Conditions d'utilisation"
+                                    >
+                                        Conditions
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="/cookies"
+                                        className="hover:text-foreground transition-colors"
+                                        onClick={() => trackFooterClick('Légal', 'Cookies')}
+                                        aria-label="Politique des cookies"
+                                    >
+                                        Cookies
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Bottom Bar */}
+                <div className="footer-bottom border-t border-border mt-8 pt-8">
+                    <div className="footer-container">
+                        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
+                            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+                                <p>&copy; {new Date().getFullYear()} OakMesh. Tous droits réservés.</p>
+                                <span className="hidden sm:inline text-border">|</span>
+                                <p className="flex items-center gap-1">
+                                    Propulsé par
+                                    <a
+                                        href="https://xeokit.io"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:text-foreground transition-colors font-medium"
+                                        onClick={() => trackFooterClick('Bottom', 'Xeokit')}
+                                    >
+                                        xeokit
+                                    </a>
+                                </p>
+                            </div>
+                            <div className="flex items-center gap-4 text-xs">
+                                <span>Version 1.0.0</span>
+                                <span className="hidden sm:inline text-border">|</span>
+                                <span>Statut:
+                                    <span className="inline-flex items-center gap-1 ml-1">
+                                        <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                                        Opérationnel
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Structured Data for SEO */}
+                <script type="application/ld+json">
+                    {JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "Organization",
+                        "name": "OakMesh",
+                        "description": "Plateforme de visualisation BIM innovante pour modèles IFC et fichiers 3D",
+                        "url": "https://oakmesh.com",
+                        "logo": "https://oakmesh.com/logo/Logo.png",
+                        "sameAs": [
+                            "https://twitter.com/oakmesh",
+                            "https://github.com/oakmesh",
+                            "https://linkedin.com/company/oakmesh"
+                        ],
+                        "contactPoint": {
+                            "@type": "ContactPoint",
+                            "contactType": "customer service",
+                            "url": "https://oakmesh.com/support"
+                        }
+                    })}
+                </script>
+            </footer>
         </div>
     );
 }
 
-function CategoryShowcase({ objects, showAllCategories, setShowAllCategories }) {
-    const navigate = useNavigate();
-    const categories = [
-        { name: 'Zelige', icon: FaThLarge, description: 'Carreaux et revêtements traditionnels' },
-        { name: 'Boiserie', icon: FaTree, description: 'Éléments en bois et menuiserie' },
-        { name: 'Platre', icon: FaPaintRoller, description: 'Ornements et décorations' },
-        { name: 'Autre', icon: FaCube, description: 'Autres éléments architecturaux' }
-    ];
-
-    // Show only first category by default
-    const displayedCategories = showAllCategories ? categories : categories.slice(0, 1);
+// Category Card Component
+function CategoryCard({ category, index }) {
+    const handleClick = () => {
+        // Navigate to category page or show more details
+        console.log(`Clicked on ${category.name}`);
+    };
 
     return (
-        <section className="category-showcase">
-            {displayedCategories.map((category) => {
-                const categoryObjects = objects.filter(obj => obj.category === category.name);
-                const Icon = category.icon;
+        <div
+            className="category-card animate-slide-up group"
+            style={{ animationDelay: `${index * 0.1}s` }}
+            onClick={handleClick}
+        >
+            {/* Corner Decorations */}
+            <div className="card-corners">
+                <div className="corner-decoration corner-tl"></div>
+                <div className="corner-decoration corner-tr"></div>
+                <div className="corner-decoration corner-bl"></div>
+                <div className="corner-decoration corner-br"></div>
+            </div>
 
-                return (
-                    <div key={category.name} className="category-section">
-                        <div className="category-header">
-                            <div className="category-header-content">
-                                <Icon className="category-icon" />
-                                <div className="category-title-group">
-                                    <h2 className="category-title">{category.name}</h2>
-                                    <p className="category-subtitle">{category.description}</p>
-                                </div>
-                            </div>
-                            <motion.button
-                                className="btn-view-category"
-                                onClick={() => navigate(`/gallery/category/${category.name}`)}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                Voir tout
-                            </motion.button>
-                        </div>
 
-                        {categoryObjects.length > 0 ? (
-                            <CategoryCarousel
-                                objects={categoryObjects}
-                            />
-                        ) : (
-                            <div className="no-models-inline">
-                                <p>Aucun modèle disponible</p>
-                            </div>
-                        )}
+
+            {/* Content */}
+            <div className="card-content">
+                <div className="card-header">
+                    <h3 className="text-2xl font-display font-semibold text-foreground mb-2 flex items-center gap-2">
+                        {category.name}
+                        <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                        {category.description}
+                    </p>
+                </div>
+
+                {/* Features */}
+                <div className="features flex flex-wrap gap-2 mb-4">
+                    {category.features.map((feature, i) => (
+                        <span key={i} className="feature-tag text-xs border border-border px-2 py-1 text-muted-foreground">
+                            {feature}
+                        </span>
+                    ))}
+                </div>
+
+                {/* Bottom Line */}
+                <div className="bottom-line"></div>
+            </div>
+        </div>
+    );
+}
+
+// Product Card Component
+function ProductCard({ product, index }) {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        // Navigate to product details in gallery
+        navigate(`/gallery/product/${product.id}`);
+    };
+
+    return (
+        <div
+            className="product-card animate-slide-up group"
+            style={{ animationDelay: `${index * 0.1}s` }}
+            onClick={handleClick}
+        >
+            <div className="card-image">
+                {product.image ? (
+                    <XeokitViewer
+                        modelUrl={product.image}
+                        height="100%"
+                        width="100%"
+                        enableZoom={false}
+                    />
+                ) : (
+                    <div className="image-placeholder bg-muted flex items-center justify-center text-muted-foreground flex-col">
+                        <Box className="w-8 h-8" />
+                        <span className="text-xs mt-2">Chargement...</span>
                     </div>
-                );
-            })}
+                )}
+                <div className="category-badge bg-background border border-border text-xs px-2 py-1">
+                    {product.category}
+                </div>
+            </div>
 
-            <div className="category-toggle-container">
-                <button
-                    className="category-toggle-btn"
-                    onClick={() => setShowAllCategories(!showAllCategories)}
-                >
-                    {showAllCategories ? (
-                        <>
-                            <FaChevronUp /> Voir Moins de Catégories
-                        </>
-                    ) : (
-                        <>
-                            <FaChevronDown /> Voir Toutes les Catégories
-                        </>
-                    )}
+            <div className="card-content p-5">
+                <h3 className="font-display font-semibold text-foreground mb-2 group-hover:text-foreground transition-colors">
+                    {product.title}
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                    {product.description || 'Modèle BIM de haute qualité disponible au téléchargement.'}
+                </p>
+                <button className="btn-ghost w-full flex items-center justify-between group-hover:text-foreground transition-colors">
+                    <span>Voir Détails</span>
+                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                 </button>
             </div>
-        </section>
-    );
-}
-
-function CategoryCarousel({ objects }) {
-    const navigate = useNavigate();
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const cardsToShow = 3;
-
-    // Limit to first 6 items for performance
-    const limitedObjects = objects.slice(0, 6);
-
-    const nextSlide = () => {
-        if (currentIndex < limitedObjects.length - cardsToShow) {
-            setCurrentIndex(prev => prev + 1);
-        }
-    };
-
-    const prevSlide = () => {
-        if (currentIndex > 0) {
-            setCurrentIndex(prev => prev - 1);
-        }
-    };
-
-    return (
-        <div className="carousel-wrapper">
-            <button
-                className="carousel-btn carousel-btn-prev"
-                onClick={prevSlide}
-                disabled={currentIndex === 0}
-            >
-                <FaChevronLeft />
-            </button>
-
-            <div className="carousel-track-container">
-                <motion.div
-                    className="carousel-track"
-                    animate={{ x: -currentIndex * (100 / cardsToShow) + '%' }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                >
-                    {limitedObjects.map((obj, index) => (
-                        <div key={obj.id} className="carousel-card">
-                            <div
-                                className="showcase-card"
-                                onClick={() => navigate(`/gallery/product/${obj.id}`)}
-                            >
-                                <div className="showcase-card-image">
-                                    {obj.thumbnail ? (
-                                        <img src={obj.thumbnail} alt={obj.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                    ) : (
-                                        <div style={{ width: '100%', height: '100%', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                            <p style={{ color: '#666' }}>Pas de prévisualisation</p>
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="showcase-card-content">
-                                    <div className="card-header">
-                                        <span className="card-category">{obj.category}</span>
-                                        <h3>{obj.name}</h3>
-                                        <p className="showcase-description">{obj.description}</p>
-                                    </div>
-                                    <div className="card-divider"></div>
-                                    <motion.button
-                                        className="btn-card-details"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            navigate(`/gallery/product/${obj.id}`);
-                                        }}
-                                        whileHover={{ x: 4 }}
-                                        whileTap={{ scale: 0.98 }}
-                                    >
-                                        <span>Voir Détails</span>
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                            <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </motion.button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </motion.div>
-            </div>
-
-            <button
-                className="carousel-btn carousel-btn-next"
-                onClick={nextSlide}
-                disabled={currentIndex >= objects.length - cardsToShow}
-            >
-                <FaChevronRight />
-            </button>
         </div>
     );
 }
 
-function SimpleCategoryCard({ category, icon: Icon, description }) {
-    const navigate = useNavigate();
+// Feature Card Component
+function FeatureCard({ feature, index }) {
+    const Icon = feature.icon;
 
     return (
-        <motion.div
-            className="simple-category-card"
-            onClick={() => navigate(`/gallery/category/${category}`)}
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{
-                duration: 0.5,
-                ease: "easeOut"
-            }}
-            whileHover={{
-                y: -8,
-                scale: 1.05,
-                transition: { duration: 0.2 }
-            }}
-            whileTap={{ scale: 0.95 }}
-        >
-            <motion.div
-                className="category-icon-wrapper"
-                whileHover={{
-                    rotate: [0, -10, 10, -10, 0],
-                    scale: 1.2
-                }}
-                transition={{ duration: 0.5 }}
-            >
-                <Icon />
-            </motion.div>
-            <h3>{category}</h3>
-            <p>{description}</p>
-        </motion.div>
+        <div className="feature-card p-4 border border-border bg-background hover:border-foreground/20 transition-colors animate-slide-up"
+            style={{ animationDelay: `${index * 0.1}s` }}>
+            <Icon className="w-5 h-5 mb-3" />
+            <h4 className="text-sm font-display font-semibold text-foreground mb-1">
+                {feature.title}
+            </h4>
+            <p className="text-xs text-muted-foreground">
+                {feature.description}
+            </p>
+        </div>
     );
 }
 

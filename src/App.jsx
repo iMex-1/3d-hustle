@@ -12,6 +12,7 @@ import AdminDashboard from './components/AdminDashboard';
 import About from './components/About';
 import * as authService from './services/authService';
 import * as databaseService from './services/databaseService';
+import './styles/design-system.css';
 
 function AppContent() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ function AppContent() {
   const [user, setUser] = useState(null);
   const [userRecord, setUserRecord] = useState(null);
   const [notification, setNotification] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
     // Initialize theme on app load
@@ -28,6 +30,7 @@ function AppContent() {
     // Subscribe to Firebase auth state changes
     const unsubscribeAuth = authService.onAuthStateChanged((firebaseUser) => {
       setUser(firebaseUser);
+      setAuthLoading(false); // Auth state is now determined
     });
 
     // Cleanup on unmount
@@ -80,10 +83,42 @@ function AppContent() {
 
   // Protected route component
   const ProtectedRoute = ({ children }) => {
-    if (!user || !userRecord || !userRecord.isAdmin) {
+    // Show loading while auth state is being determined
+    if (authLoading) {
+      return (
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Vérification des permissions...</p>
+          </div>
+        </div>
+      );
+    }
+
+    // If no user, redirect to login
+    if (!user) {
+      setNotification({ message: 'Connexion requise', type: 'error' });
+      return <Navigate to="/login" replace />;
+    }
+
+    // If user exists but userRecord is still loading, show loading
+    if (user && userRecord === null) {
+      return (
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Chargement du profil utilisateur...</p>
+          </div>
+        </div>
+      );
+    }
+
+    // Check admin access after everything is loaded
+    if (!userRecord || !userRecord.isAdmin) {
       setNotification({ message: 'Accès administrateur requis', type: 'error' });
       return <Navigate to="/login" replace />;
     }
+
     return children;
   };
 

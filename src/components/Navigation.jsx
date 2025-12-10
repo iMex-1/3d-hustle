@@ -40,11 +40,15 @@ function Navigation({ user, userRecord, onLogout, onSearch }) {
                 <Link to="/" onClick={handleNavClick} style={{ textDecoration: 'none' }}>
                     <div className="nav-brand">
                         <img
-                            src={theme === 'dark' ? '/logo/LogoInversed.png' : '/logo/Logo.png'}
-                            alt="OakMesh"
+                            src={theme === 'dark' ? "/logo/LogoInversed.png" : "/logo/Logo.png"}
+                            alt="OakMesh Logo"
                             className="brand-logo"
+                            onError={(e) => {
+                                console.error('Navigation logo failed to load');
+                                e.target.style.display = 'none';
+                            }}
                         />
-                        <h2 className="brand-name">OakMesh</h2>
+                        <h2 className="brand-name font-display">OakMesh</h2>
                     </div>
                 </Link>
 
@@ -119,6 +123,12 @@ function Navigation({ user, userRecord, onLogout, onSearch }) {
                         aria-label="Toggle theme"
                     >
                         {theme === 'dark' ? <FaSun /> : <FaMoon />}
+                    </button>
+                    <button
+                        className="btn-get-started"
+                        onClick={() => navigate('/gallery')}
+                    >
+                        Commencer
                     </button>
                 </div>
             </div>
