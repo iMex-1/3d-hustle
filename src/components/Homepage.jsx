@@ -146,21 +146,20 @@ function Homepage({ user }) {
         setIsAutoPlaying(true);
     };
 
+    // Detect mobile for performance optimization
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
     return (
         <div className="homepage">
-            {/* Wrapper creates scroll space for sticky effect */}
-            <div style={{ minHeight: '200vh', position: 'relative' }}>
-                <div
-                    ref={heroRef}
-                    className="hero-carousel"
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                    style={{
-                        position: 'sticky',
-                        top: 0,
-                        '--scroll-progress': scrollProgress
-                    }}
-                >
+            <div
+                ref={heroRef}
+                className="hero-carousel"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                    '--scroll-progress': isMobile ? 1 : scrollProgress
+                }}
+            >
                 <div
                     className="carousel-container"
                     ref={containerRef}
@@ -195,40 +194,16 @@ function Homepage({ user }) {
                                 <div className="slide-overlay" />
                                 <div className="slide-content">
                                     <div className="slide-text-content">
-                                        <div 
-                                            className="slide-badge"
-                                            style={{
-                                                transform: `translateY(${(1 - scrollProgress) * 80}px)`,
-                                                opacity: scrollProgress
-                                            }}
-                                        >
+                                        <div className="slide-badge">
                                             {slide.subtitle}
                                         </div>
-                                        <h1 
-                                            className="slide-title"
-                                            style={{
-                                                transform: `translateY(${(1 - scrollProgress) * 100}px)`,
-                                                opacity: scrollProgress
-                                            }}
-                                        >
+                                        <h1 className="slide-title">
                                             {slide.title}
                                         </h1>
-                                        <p 
-                                            className="slide-description"
-                                            style={{
-                                                transform: `translateY(${(1 - scrollProgress) * 80}px)`,
-                                                opacity: scrollProgress
-                                            }}
-                                        >
+                                        <p className="slide-description">
                                             {slide.description}
                                         </p>
-                                        <div 
-                                            className="slide-buttons"
-                                            style={{
-                                                transform: `translateY(${(1 - scrollProgress) * 60}px)`,
-                                                opacity: scrollProgress
-                                            }}
-                                        >
+                                        <div className="slide-buttons">
                                             {slide.buttons.map((button, btnIndex) => (
                                                 <motion.button
                                                     key={btnIndex}
@@ -288,7 +263,6 @@ function Homepage({ user }) {
                         <div className="scroll-indicator-line"></div>
                     </div>
                 </div>
-            </div>
             </div>
 
             {/*

@@ -47,7 +47,7 @@
     overflow: hidden;
 }
 
-/* Full-Frame Background Image with Parallax Effect */
+/* Full-Frame Background Image - Simplified for performance */
 .slide-background {
     position: absolute;
     top: 0;
@@ -57,19 +57,12 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    filter: blur(calc(var(--scroll-progress, 0) * 12px)) brightness(calc(1 - var(--scroll-progress, 0) * 0.3));
-    /* GPU acceleration for 60fps */
-    will-change: filter;
     transform: translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
 
-.carousel-slide:hover .slide-background {
-    filter: blur(calc(var(--scroll-progress, 0) * 12px)) brightness(calc(1 - var(--scroll-progress, 0) * 0.3 + 0.05));
-}
-
-/* Dark Charcoal Overlay - Fades in on scroll */
+/* Dark Charcoal Overlay - Static for performance */
 .slide-overlay {
     position: absolute;
     top: 0;
@@ -77,20 +70,15 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg,
-            rgba(0, 0, 0, 0.95) 0%,
-            rgba(0, 0, 0, 0.88) 15%,
-            rgba(0, 0, 0, 0.8) 30%,
-            rgba(0, 0, 0, 0.7) 45%,
-            rgba(0, 0, 0, 0.55) 60%,
-            rgba(0, 0, 0, 0.35) 80%,
-            rgba(0, 0, 0, 0.15) 100%);
-    backdrop-filter: blur(calc(var(--scroll-progress, 0) * 8px));
-    -webkit-backdrop-filter: blur(calc(var(--scroll-progress, 0) * 8px));
-    /* GPU acceleration */
-    will-change: opacity, backdrop-filter;
-    transform: translateZ(0);
-    opacity: var(--scroll-progress, 0);
+            rgba(0, 0, 0, 0.85) 0%,
+            rgba(0, 0, 0, 0.75) 15%,
+            rgba(0, 0, 0, 0.65) 30%,
+            rgba(0, 0, 0, 0.55) 45%,
+            rgba(0, 0, 0, 0.45) 60%,
+            rgba(0, 0, 0, 0.3) 80%,
+            rgba(0, 0, 0, 0.1) 100%);
     pointer-events: none;
+    opacity: 1;
 }
 
 @keyframes overlayPulse {
@@ -121,9 +109,18 @@
     max-width: 650px;
     text-align: left;
     color: #ffffff;
-    /* GPU acceleration */
-    will-change: transform, opacity;
-    transform: translateZ(0);
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes slideContentIn {
@@ -862,63 +859,44 @@
     }
 }
 
-/* Performance optimizations for 60fps on mobile */
+/* AGGRESSIVE Performance optimizations for mobile */
 @media (max-width: 768px) {
-
-    /* Reduce animation complexity on mobile */
-    .slide-background {
-        transition: transform 8s ease-out, filter 0.4s ease;
-        will-change: auto;
-    }
-
-    .carousel-slide:hover .slide-background {
-        transform: translateZ(0) scale(1.05);
-    }
-
-    /* Disable heavy animations on mobile */
-    .slide-title,
-    .slide-badge,
-    .slide-overlay {
+    /* Kill ALL expensive effects on mobile */
+    .hero-carousel *,
+    .hero-carousel *::before,
+    .hero-carousel *::after {
+        transition: none !important;
         animation: none !important;
+        filter: none !important;
+        backdrop-filter: none !important;
+        will-change: auto !important;
+        transform: none !important;
     }
-
-    /* Simple fade in for mobile */
+    
+    /* Re-enable only essential transforms */
+    .carousel-slides {
+        transform: translateX(calc(-33.333% * var(--current-slide, 0))) !important;
+        transition: transform 0.5s ease !important;
+    }
+    
+    /* Simple text fade only */
     .slide-text-content {
-        animation: simpleFadeIn 0.6s ease-out;
+        animation: simpleFadeIn 0.6s ease-out !important;
+        transform: none !important;
     }
 
     @keyframes simpleFadeIn {
         from {
             opacity: 0;
         }
-
         to {
             opacity: 1;
         }
     }
-
-    @keyframes overlayPulse {
-
-        0%,
-        100% {
-            opacity: 1;
-        }
-
-        50% {
-            opacity: 1;
-        }
-    }
-
-    @keyframes titleGlow {
-
-        0%,
-        100% {
-            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
-        }
-
-        50% {
-            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
-        }
+    
+    /* Remove shadows on mobile */
+    .slide-title {
+        text-shadow: none !important;
     }
 
     @keyframes fadeGlow {
