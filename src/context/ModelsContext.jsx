@@ -1,41 +1,32 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import * as databaseService from '../services/databaseService';
+import { createContext, useContext } from 'react';
+import { useModels as useModelsHook } from '../hooks/useModels';
 import { getPublicFileUrl } from '../utils/storageHelpers';
 
 const ModelsContext = createContext();
 
 export function ModelsProvider({ children }) {
-    const [models, setModels] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const modelsData = useModelsHook();
 
-    useEffect(() => {
-        const unsubscribe = databaseService.listenToModels((rawModels) => {
-            console.log('Models loaded globally:', rawModels.length);
+    // Transform models for backward compatibility
+    const transformedModels = modelsData.models.map(model => ({
+        id: model.model_id || model.id,
+        name: model.model_name || model.name || 'Sans nom',
+        category: model.model_category || model.category || 'Autre',
+        description: model.model_description || model.description || '',
+        xktFile: model.model_xkt_url ? getPublicFileUrl(model.model_xkt_url) : (model.xktFile || ''),
+        ifcFile: model.model_ifc_url ? getPublicFileUrl(model.model_ifc_url) : (model.ifcFile || ''),
+        fileSize: model.model_xkt_size ? `${(model.model_xkt_size / (1024 * 1024)).toFixed(1)} Mo` : (model.fileSize || 'N/A'),
+        downloads: model.downloads || 0,
+        featured: model.featured || false
+    }));
 
-            // Transform models once globally
-            const transformedModels = rawModels.map(model => ({
-                id: model.model_id || model.id,
-                name: model.model_name || model.name || 'Sans nom',
-                category: model.model_category || model.category || 'Autre',
-                description: model.model_description || model.description || '',
-                xktFile: model.model_xkt_url ? getPublicFileUrl(model.model_xkt_url) : (model.xktFile || ''),
-                ifcFile: model.model_ifc_url ? getPublicFileUrl(model.model_ifc_url) : (model.ifcFile || ''),
-                fileSize: model.model_xkt_size ? `${(model.model_xkt_size / (1024 * 1024)).toFixed(1)} Mo` : (model.fileSize || 'N/A'),
-                downloads: model.downloads || 0,
-                featured: model.featured || false
-            }));
-
-            setModels(transformedModels);
-            setLoading(false);
-        });
-
-        return () => {
-            if (unsubscribe) unsubscribe();
-        };
-    }, []);
+    const contextValue = {
+        ...modelsData,
+        models: transformedModels,
+    };
 
     return (
-        <ModelsContext.Provider value={{ models, loading }}>
+        <ModelsContext.Provider value={contextValue}>
             {children}
         </ModelsContext.Provider>
     );
