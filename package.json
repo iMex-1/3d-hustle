@@ -12,32 +12,36 @@
     "test:watch": "vitest",
     "test:integration": "firebase emulators:exec \"vitest --run src/test/*.integration.test.js\"",
     "emulators": "firebase emulators:start",
-    "convert-models": "node convert-glb-to-xkt.cjs"
+    "convert-models": "node convert-ifc-to-xkt.js"
   },
   "dependencies": {
-    "@xeokit/xeokit-convert": "^1.3.1",
-    "@xeokit/xeokit-sdk": "^2.6.95",
+    "@xeokit/xeokit-sdk": "^2.6.100",
     "firebase": "^12.6.0",
-    "framer-motion": "^12.23.25",
-    "lucide-react": "^0.556.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "framer-motion": "^12.23.26",
+    "lucide-react": "^0.561.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "react-icons": "^5.5.0",
-    "react-router-dom": "^7.10.0"
+    "react-router-dom": "^7.10.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.36.0",
-    "@types/react": "^19.1.16",
+    "@eslint/js": "^9.39.2",
+    "@types/react": "^19.2.7",
     "@types/react-dom": "^19.1.9",
-    "@vitejs/plugin-react": "^5.0.4",
-    "@vitest/ui": "^4.0.14",
-    "eslint": "^9.36.0",
-    "eslint-plugin-react-hooks": "^5.2.0",
+    "@vitejs/plugin-react": "^5.1.2",
+    "@vitest/ui": "^4.0.15",
+    "@xeokit/xeokit-convert": "^1.3.1",
+    "eslint": "^9.39.2",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.22",
-    "fast-check": "^4.3.0",
+    "fast-check": "^4.4.0",
     "globals": "^16.4.0",
-    "jsdom": "^27.2.0",
-    "vite": "^7.1.7",
-    "vitest": "^4.0.14"
+    "jsdom": "^27.3.0",
+    "vite": "^7.2.7",
+    "vitest": "^4.0.15"
+  },
+  "overrides": {
+    "form-data": "^4.0.0",
+    "tough-cookie": "^4.1.3"
   }
 }
