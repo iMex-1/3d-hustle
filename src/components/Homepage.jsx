@@ -3,12 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import {
     ChevronLeft,
     ChevronRight,
-    ArrowUpRight
+    ArrowUpRight,
+    Box
 } from 'lucide-react';
 import { useModels } from '../context/ModelsContext';
 import XeokitViewer from './XeokitViewer';
 import '../styles/design-system.css';
-import '../styles/homepage-new.css';
+import '../styles/homepage-clean.css';
+import DecorativeDiamond, { 
+    DecorativeSectionDivider, 
+    CornerOrnament, 
+    FloatingDecorations 
+} from './DecorativeDiamond';
 
 // Analytics tracking functions - replace with your actual analytics implementation
 const trackSocialClick = (platform) => {
@@ -172,6 +178,22 @@ function Homepage() {
         <div className="homepage">
             {/* Hero Carousel */}
             <section className="hero-carousel">
+                {/* Floating Decorative Elements in Hero */}
+                <div className="absolute inset-0 pointer-events-none z-10">
+                    <div className="absolute top-20 left-10 opacity-20">
+                        <DecorativeDiamond size="sm" variant="outline" animated />
+                    </div>
+                    <div className="absolute top-32 right-20 opacity-15">
+                        <DecorativeDiamond size="xs" variant="gold" />
+                    </div>
+                    <div className="absolute bottom-40 left-16 opacity-25">
+                        <DecorativeDiamond size="md" variant="subtle" animated />
+                    </div>
+                    <div className="absolute top-1/3 right-10 opacity-10">
+                        <DecorativeDiamond size="lg" variant="gradient" />
+                    </div>
+                </div>
+
                 {/* Background Image with Overlay */}
                 <div className="hero-background">
                     <img
@@ -287,16 +309,51 @@ function Homepage() {
                 </div>
             </section>
 
+            {/* Decorative Gap Filler - Hero to Categories */}
+            <div className="gap-filler relative">
+                <div className="gap-filler-content">
+                    <DecorativeSectionDivider />
+                </div>
+                <FloatingDecorations density="low" />
+                
+                {/* Artistic diamonds for first gap */}
+                <div className="absolute top-4 left-1/4 opacity-15">
+                    <DecorativeDiamond size="md" variant="gold" animated />
+                </div>
+                <div className="absolute bottom-4 right-1/4 opacity-20">
+                    <DecorativeDiamond size="sm" variant="gradient" />
+                </div>
+                <div className="absolute top-1/2 left-8 opacity-10 hidden lg:block">
+                    <DecorativeDiamond size="lg" variant="subtle" animated />
+                </div>
+                <div className="absolute top-1/2 right-8 opacity-10 hidden lg:block">
+                    <DecorativeDiamond size="lg" variant="subtle" animated />
+                </div>
+            </div>
+
             {/* Categories Section */}
             <section className="categories-section py-24 bg-card moroccan-pattern">
                 <div className="container">
                     {/* Section Header */}
-                    <div className="section-header text-center mb-16">
+                    <div className="section-header text-center mb-16 relative">
+                        {/* Decorative elements around section header */}
+                        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-30">
+                            <DecorativeDiamond size="xs" variant="filled" />
+                        </div>
+                        <div className="absolute top-4 -left-8 opacity-20 hidden lg:block">
+                            <DecorativeDiamond size="sm" variant="outline" animated />
+                        </div>
+                        <div className="absolute top-4 -right-8 opacity-20 hidden lg:block">
+                            <DecorativeDiamond size="sm" variant="outline" animated />
+                        </div>
+                        
                         <div className="decorative-label">
                             <div className="label-line"></div>
+                            <DecorativeDiamond size="xs" variant="gold" />
                             <span className="text-xs tracking-widest font-body font-medium text-muted-foreground">
                                 NOS CATÉGORIES
                             </span>
+                            <DecorativeDiamond size="xs" variant="gold" />
                             <div className="label-line"></div>
                         </div>
                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
@@ -316,7 +373,18 @@ function Homepage() {
                     </div>
 
                     {/* Decorative Footer */}
-                    <div className="decorative-footer mt-16">
+                    <div className="decorative-footer mt-16 relative">
+                        {/* Additional artistic diamonds around the footer diamonds */}
+                        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-20">
+                            <DecorativeDiamond size="sm" variant="gold" animated />
+                        </div>
+                        <div className="absolute -bottom-4 left-1/3 opacity-15">
+                            <DecorativeDiamond size="xs" variant="outline" />
+                        </div>
+                        <div className="absolute -bottom-4 right-1/3 opacity-15">
+                            <DecorativeDiamond size="xs" variant="outline" />
+                        </div>
+                        
                         <div className="footer-diamonds">
                             {[...Array(5)].map((_, i) => (
                                 <div key={i} className={`diamond ${i === 2 ? 'active' : ''}`}></div>
@@ -326,15 +394,50 @@ function Homepage() {
                 </div>
             </section>
 
+            {/* Decorative Gap Filler - Categories to Products */}
+            <div className="gap-filler relative">
+                <div className="gap-filler-content">
+                    <DecorativeSectionDivider />
+                </div>
+                <FloatingDecorations density="medium" />
+                
+                {/* Artistic diamonds for second gap */}
+                <div className="absolute top-6 left-1/3 opacity-25">
+                    <DecorativeDiamond size="sm" variant="terracotta" animated />
+                </div>
+                <div className="absolute bottom-6 right-1/3 opacity-25">
+                    <DecorativeDiamond size="sm" variant="terracotta" animated />
+                </div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-15">
+                    <DecorativeDiamond size="xl" variant="outline" />
+                </div>
+                <div className="absolute top-2 right-12 opacity-20 hidden md:block">
+                    <DecorativeDiamond size="md" variant="gold" />
+                </div>
+                <div className="absolute bottom-2 left-12 opacity-20 hidden md:block">
+                    <DecorativeDiamond size="md" variant="gold" />
+                </div>
+            </div>
+
             {/* Products Section */}
             <section className="products-section py-24">
                 <div className="container">
-                    <div className="section-header text-center mb-16">
+                    <div className="section-header text-center mb-16 relative">
+                        {/* Decorative elements for products section */}
+                        <div className="absolute -top-6 left-1/4 opacity-25 hidden md:block">
+                            <DecorativeDiamond size="sm" variant="gradient" animated />
+                        </div>
+                        <div className="absolute -top-6 right-1/4 opacity-25 hidden md:block">
+                            <DecorativeDiamond size="sm" variant="gradient" animated />
+                        </div>
+                        
                         <div className="decorative-label">
                             <div className="label-line"></div>
+                            <DecorativeDiamond size="xs" variant="terracotta" />
                             <span className="text-xs tracking-widest font-body font-medium text-muted-foreground">
                                 MODÈLES VEDETTES
                             </span>
+                            <DecorativeDiamond size="xs" variant="terracotta" />
                             <div className="label-line"></div>
                         </div>
                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
@@ -347,11 +450,20 @@ function Homepage() {
                     </div>
 
                     {loading ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+                            {/* Decorative elements during loading */}
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-10 pointer-events-none">
+                                <DecorativeDiamond size="3xl" variant="gradient" animated />
+                            </div>
+                            
                             {[...Array(4)].map((_, index) => (
                                 <div key={index} className="product-card animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                                    <div className="card-image bg-muted flex items-center justify-center">
+                                    <div className="card-image bg-muted flex items-center justify-center relative">
                                         <div className="loading-spinner"></div>
+                                        {/* Small decorative element in loading cards */}
+                                        <div className="absolute top-2 right-2 opacity-20">
+                                            <DecorativeDiamond size="xs" variant="outline" />
+                                        </div>
                                     </div>
                                     <div className="card-content p-5">
                                         <div className="h-6 bg-muted rounded mb-2"></div>
@@ -371,16 +483,51 @@ function Homepage() {
                 </div>
             </section>
 
+            {/* Decorative Gap Filler - Products to About */}
+            <div className="gap-filler relative">
+                <div className="gap-filler-content">
+                    <DecorativeSectionDivider />
+                </div>
+                <FloatingDecorations density="low" />
+                
+                {/* Artistic diamonds for third gap */}
+                <div className="absolute top-8 left-1/5 opacity-20">
+                    <DecorativeDiamond size="lg" variant="gradient" animated />
+                </div>
+                <div className="absolute bottom-8 right-1/5 opacity-20">
+                    <DecorativeDiamond size="lg" variant="gradient" animated />
+                </div>
+                <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 opacity-10">
+                    <DecorativeDiamond size="2xl" variant="subtle" />
+                </div>
+                <div className="absolute bottom-1/3 left-16 opacity-15 hidden lg:block">
+                    <DecorativeDiamond size="md" variant="gold" animated />
+                </div>
+                <div className="absolute bottom-1/3 right-16 opacity-15 hidden lg:block">
+                    <DecorativeDiamond size="md" variant="gold" animated />
+                </div>
+            </div>
+
             {/* About Section */}
             <section className="about-section py-24 bg-card">
                 <div className="container">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         {/* Left Column */}
-                        <div>
+                        <div className="relative">
+                            {/* Decorative elements in about section */}
+                            <div className="absolute -top-4 -left-4 opacity-20">
+                                <DecorativeDiamond size="md" variant="subtle" />
+                            </div>
+                            <div className="absolute top-20 -right-6 opacity-15">
+                                <DecorativeDiamond size="sm" variant="gold" animated />
+                            </div>
+                            
                             <div className="decorative-label mb-6">
+                                <DecorativeDiamond size="xs" variant="outline" />
                                 <span className="text-xs tracking-widest font-body font-medium text-muted-foreground">
                                     À PROPOS
                                 </span>
+                                <DecorativeDiamond size="xs" variant="outline" />
                             </div>
                             <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-6">
                                 L'Avenir de la Visualisation BIM
@@ -410,10 +557,28 @@ function Homepage() {
                         </div>
 
                         {/* Right Column - Features */}
-                        <div className="grid grid-cols-2 gap-4">
-                            {features.map((feature, index) => (
-                                <FeatureCard key={feature.title} feature={feature} index={index} />
-                            ))}
+                        <div className="grid grid-cols-2 gap-4 relative">
+                            {/* Decorative elements around features */}
+                            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-20">
+                                <DecorativeDiamond size="lg" variant="gradient" animated />
+                            </div>
+                            <div className="absolute bottom-4 -right-8 opacity-15">
+                                <DecorativeDiamond size="md" variant="gold" />
+                            </div>
+                            
+                            {features.length > 0 ? (
+                                features.map((feature, index) => (
+                                    <FeatureCard key={feature.title} feature={feature} index={index} />
+                                ))
+                            ) : (
+                                // Placeholder when no features
+                                <div className="col-span-2 flex items-center justify-center p-12">
+                                    <div className="text-center">
+                                        <DecorativeDiamond size="xl" variant="subtle" animated />
+                                        <p className="text-muted-foreground mt-4">Fonctionnalités à venir</p>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -423,7 +588,12 @@ function Homepage() {
             <footer className="footer-horizontal border-t border-border py-12">
                 <div className="footer-container">
                     {/* Brand Section */}
-                    <div className="footer-brand">
+                    <div className="footer-brand relative">
+                        {/* Decorative elements in footer */}
+                        <div className="absolute -top-6 -left-2 opacity-15">
+                            <DecorativeDiamond size="sm" variant="outline" />
+                        </div>
+                        
                         <div className="flex items-center gap-3 mb-4">
                             <img
                                 src={theme === 'dark' ? "/logo/LogoInversed.png" : "/logo/Logo.png"}
@@ -670,7 +840,15 @@ function Homepage() {
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="footer-bottom border-t border-border mt-8 pt-8">
+                <div className="footer-bottom border-t border-border mt-8 pt-8 relative">
+                    {/* Decorative elements in footer bottom */}
+                    <div className="absolute top-2 left-1/4 opacity-15 hidden md:block">
+                        <DecorativeDiamond size="sm" variant="outline" />
+                    </div>
+                    <div className="absolute top-2 right-1/4 opacity-15 hidden md:block">
+                        <DecorativeDiamond size="sm" variant="outline" />
+                    </div>
+                    
                     <div className="footer-container">
                         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
                             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
@@ -743,18 +921,21 @@ function CategoryCard({ category, index }) {
             onClick={handleClick}
         >
             {/* Corner Decorations */}
-            <div className="card-corners">
-                <div className="corner-decoration corner-tl"></div>
-                <div className="corner-decoration corner-tr"></div>
-                <div className="corner-decoration corner-bl"></div>
-                <div className="corner-decoration corner-br"></div>
-            </div>
+            <CornerOrnament position="top-left" size="sm" />
+            <CornerOrnament position="top-right" size="sm" />
+            <CornerOrnament position="bottom-left" size="sm" />
+            <CornerOrnament position="bottom-right" size="sm" />
 
 
 
             {/* Content */}
             <div className="card-content">
-                <div className="card-header">
+                <div className="card-header relative">
+                    {/* Small decorative diamond next to title */}
+                    <div className="absolute -left-6 top-1 opacity-30">
+                        <DecorativeDiamond size="xs" variant="gold" />
+                    </div>
+                    
                     <h3 className="text-2xl font-display font-semibold text-foreground mb-2 flex items-center gap-2">
                         {category.name}
                         <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -795,6 +976,9 @@ function ProductCard({ product, index }) {
             style={{ animationDelay: `${index * 0.1}s` }}
             onClick={handleClick}
         >
+            {/* Corner Decoration */}
+            <CornerOrnament position="top-right" size="xs" />
+            
             <div className="card-image">
                 {product.image ? (
                     <XeokitViewer
