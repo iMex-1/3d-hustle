@@ -22,7 +22,7 @@
 }
 
 .admin-dashboard .admin-header h1 {
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 2rem;
   margin: 0;
   font-weight: 600;
@@ -134,7 +134,7 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: #FFFFFF;
+  background: #ffffff;
   color: #000;
   padding: 0.5rem;
   border-radius: 50%;
@@ -161,7 +161,7 @@
 }
 
 .admin-dashboard .card-header h3 {
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 1.1rem;
   margin: 0;
   flex: 1;
@@ -250,7 +250,7 @@
   cursor: pointer;
   width: 20px;
   height: 20px;
-  accent-color: #4A90E2;
+  accent-color: #4a90e2;
 }
 
 .admin-dashboard .action-buttons {
@@ -271,7 +271,7 @@
 
 .admin-dashboard .btn-edit {
   background: transparent;
-  color: #FFFFFF;
+  color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.1);
   opacity: 0;
   transition: all 0.3s ease;
@@ -302,13 +302,13 @@
 
 .admin-dashboard .btn-delete {
   background: transparent;
-  color: #FF4444;
-  border: 1px solid #FF4444;
+  color: #ff4444;
+  border: 1px solid #ff4444;
 }
 
 .admin-dashboard .btn-delete:hover {
   background: rgba(255, 68, 68, 0.1);
-  border-color: #FF5555;
+  border-color: #ff5555;
 }
 
 /* Modal Styles */
@@ -366,7 +366,7 @@
 }
 
 .admin-dashboard .modal-header h2 {
-  color: #FFFFFF;
+  color: #ffffff;
   margin: 0;
   font-size: 1.35rem;
   font-weight: 600;
@@ -401,7 +401,7 @@
   background: rgba(28, 28, 44, 0.6);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 [data-theme="light"] .admin-dashboard .modal-close:hover {
@@ -452,7 +452,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 0.75rem;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 0.95rem;
   transition: all 0.3s ease;
   font-family: inherit;
@@ -498,6 +498,20 @@
   color: #ffffff;
   font-size: 0.85rem;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.admin-dashboard .file-type-badge {
+  background: linear-gradient(135deg, #00a896, #00c9b7);
+  color: #ffffff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 [data-theme="light"] .admin-dashboard .file-preview {
@@ -539,7 +553,7 @@
   background: rgba(28, 28, 44, 0.6);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  color: #FFFFFF;
+  color: #ffffff;
   border-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -656,7 +670,7 @@
 
 .admin-upload-container h2,
 .admin-model-manager h2 {
-  color: #FFFFFF;
+  color: #ffffff;
   margin-bottom: 1.5rem;
   font-size: 1.75rem;
 }
@@ -675,7 +689,7 @@
 }
 
 .form-group label {
-  color: #B8BCC8;
+  color: #b8bcc8;
   font-weight: 600;
   font-size: 0.95rem;
 }
@@ -689,7 +703,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 0.75rem;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 1rem;
   transition: all 0.3s;
 }
@@ -698,17 +712,17 @@
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: var(--color-primary, #00A896);
+  border-color: var(--color-primary, #00a896);
   box-shadow: 0 0 0 3px rgba(0, 168, 150, 0.2);
 }
 
 .form-group input[type="file"] {
-  color: #B8BCC8;
+  color: #b8bcc8;
   padding: 0.5rem;
 }
 
 .file-info {
-  color: #00A896;
+  color: #00a896;
   font-size: 0.9rem;
   margin-top: 0.25rem;
 }
@@ -716,7 +730,7 @@
 .error-message {
   background: rgba(255, 59, 48, 0.1);
   border: 1px solid rgba(255, 59, 48, 0.3);
-  color: #FF3B30;
+  color: #ff3b30;
   padding: 1rem;
   border-radius: 8px;
   font-weight: 500;
@@ -725,15 +739,15 @@
 .progress-message {
   background: rgba(0, 168, 150, 0.1);
   border: 1px solid rgba(0, 168, 150, 0.3);
-  color: #00A896;
+  color: #00a896;
   padding: 1rem;
   border-radius: 8px;
   font-weight: 500;
 }
 
 .btn-upload {
-  background: linear-gradient(135deg, #00A896 0%, #00C8B3 100%);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #00a896 0%, #00c8b3 100%);
+  color: #ffffff;
   border: none;
   padding: 1rem 2rem;
   border-radius: 8px;
@@ -745,7 +759,7 @@
 }
 
 .btn-upload:hover:not(:disabled) {
-  background: linear-gradient(135deg, #00C8B3 0%, #00A896 100%);
+  background: linear-gradient(135deg, #00c8b3 0%, #00a896 100%);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 168, 150, 0.4);
 }
@@ -788,13 +802,13 @@
 }
 
 .model-header h3 {
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 1.25rem;
   margin: 0;
 }
 
 .badge-featured {
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
   color: #000;
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
@@ -807,13 +821,13 @@
 }
 
 .model-info p {
-  color: #B8BCC8;
+  color: #b8bcc8;
   margin: 0.5rem 0;
   font-size: 0.95rem;
 }
 
 .model-desc {
-  color: #8B92A8;
+  color: #8b92a8;
   font-size: 0.9rem;
   line-height: 1.5;
   margin-top: 0.75rem;
@@ -832,7 +846,7 @@
 .file-item {
   display: flex;
   justify-content: space-between;
-  color: #B8BCC8;
+  color: #b8bcc8;
   padding: 0.5rem 0;
   font-size: 0.9rem;
 }
@@ -858,24 +872,24 @@
 
 .btn-test {
   background: rgba(0, 168, 150, 0.2);
-  color: #00A896;
+  color: #00a896;
   border: 1px solid rgba(0, 168, 150, 0.3);
 }
 
 .btn-test:hover {
   background: rgba(0, 168, 150, 0.3);
-  border-color: #00A896;
+  border-color: #00a896;
 }
 
 .btn-delete {
   background: rgba(255, 59, 48, 0.2);
-  color: #FF3B30;
+  color: #ff3b30;
   border: 1px solid rgba(255, 59, 48, 0.3);
 }
 
 .btn-delete:hover:not(:disabled) {
   background: rgba(255, 59, 48, 0.3);
-  border-color: #FF3B30;
+  border-color: #ff3b30;
 }
 
 .btn-delete:disabled {
@@ -885,14 +899,13 @@
 
 .loading {
   text-align: center;
-  color: #B8BCC8;
+  color: #b8bcc8;
   padding: 2rem;
   font-size: 1.1rem;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-
   .admin-upload-container,
   .admin-model-manager {
     padding: 1.5rem;
@@ -923,7 +936,7 @@
 }
 
 .admin-header h1 {
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 2.5rem;
   margin-bottom: 1.5rem;
   text-align: center;
@@ -941,7 +954,7 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.1);
-  color: #B8BCC8;
+  color: #b8bcc8;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   font-weight: 600;
@@ -958,9 +971,9 @@
 }
 
 .tab-btn.active {
-  background: linear-gradient(135deg, #00A896 0%, #00C8B3 100%);
-  border-color: #00A896;
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #00a896 0%, #00c8b3 100%);
+  border-color: #00a896;
+  color: #ffffff;
   box-shadow: 0 4px 12px rgba(0, 168, 150, 0.3);
 }
 
