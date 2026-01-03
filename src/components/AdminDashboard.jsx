@@ -1,4 +1,10 @@
 import { useState, useEffect } from "react";
+import {
+  FaStar,
+  FaTimes,
+  FaExclamationTriangle,
+  FaSpinner,
+} from "react-icons/fa";
 import Notification from "./Notification";
 import XeokitViewer from "./XeokitViewer";
 import * as databaseService from "../services/databaseService";
@@ -360,7 +366,11 @@ function AdminDashboard({ user }) {
                   </p>
                 </div>
               )}
-              {obj.featured && <span className="featured-badge">⭐</span>}
+              {obj.featured && (
+                <span className="featured-badge">
+                  <FaStar />
+                </span>
+              )}
             </div>
             <div className="object-card-content">
               <div className="card-header">
@@ -415,7 +425,7 @@ function AdminDashboard({ user }) {
                 {editingId ? "Modifier le Modèle" : "Ajouter un Nouveau Modèle"}
               </h2>
               <button className="modal-close" onClick={closeModal}>
-                ✕
+                <FaTimes />
               </button>
             </div>
 
@@ -508,7 +518,7 @@ function AdminDashboard({ user }) {
                     textAlign: "center",
                   }}
                 >
-                  ⏳ {uploadProgress}
+                  <FaSpinner className="spin" /> {uploadProgress}
                 </div>
               )}
 
@@ -549,12 +559,15 @@ function AdminDashboard({ user }) {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="modal-header">
-              <h2>⚠️ Confirmer la Suppression</h2>
+              <h2>
+                <FaExclamationTriangle style={{ marginRight: "8px" }} />{" "}
+                Confirmer la Suppression
+              </h2>
               <button
                 className="modal-close"
                 onClick={() => setShowConfirmModal(false)}
               >
-                ✕
+                <FaTimes />
               </button>
             </div>
             <div className="modal-body">

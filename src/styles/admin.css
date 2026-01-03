@@ -272,8 +272,7 @@
 .admin-dashboard .btn-edit {
   background: transparent;
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  opacity: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
 }
 
@@ -282,15 +281,11 @@
   border-color: #e5e5e5;
 }
 
-.admin-dashboard .object-card:hover .btn-edit {
-  opacity: 1;
-}
-
 .admin-dashboard .btn-edit:hover {
   background: rgba(28, 28, 44, 0.6);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
   color: #ffffff;
 }
 
