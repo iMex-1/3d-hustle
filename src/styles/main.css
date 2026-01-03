@@ -1,23 +1,19 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Montserrat', 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-weight: 300;
-    background: var(--color-background-dark);
-    background-attachment: fixed;
-    color: var(--color-on-background, #ffffff);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    min-height: 100vh;
-}
-
-[data-theme="light"] body {
-    background: #ffffff;
-    color: #1a1a1a;
+  font-family: "Montserrat", "Poppins", "Inter", -apple-system,
+    BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  background: var(--color-background-dark);
+  background-attachment: fixed;
+  color: var(--color-on-background, #ffffff);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
 }
 
 button,
@@ -27,36 +23,36 @@ input,
 .filter-btn,
 .nav-item,
 .category-card {
-    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.5, 1);
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.5, 1);
 }
 
 .app {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .main-content {
-    flex: 1;
-    padding-top: 62px;
+  flex: 1;
+  padding-top: 62px;
 }
 
 button {
-    cursor: pointer;
-    border: none;
-    outline: none;
-    font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: inherit;
 }
 
 a {
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 img {
-    max-width: 100%;
-    display: block;
+  max-width: 100%;
+  display: block;
 }
 
 h1,
@@ -65,57 +61,39 @@ h3,
 h4,
 h5,
 h6 {
-    font-weight: 600;
-    letter-spacing: -0.02em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 /* Custom Text Selection */
 ::selection {
-    background-color: #1a1a1a;
-    color: #ffffff;
+  background-color: #1a1a1a;
+  color: #ffffff;
 }
 
 ::-moz-selection {
-    background-color: #1a1a1a;
-    color: #ffffff;
-}
-
-[data-theme="light"] ::selection {
-    background-color: #1a1a1a;
-    color: #ffffff;
-}
-
-[data-theme="light"] ::-moz-selection {
-    background-color: #1a1a1a;
-    color: #ffffff;
+  background-color: #1a1a1a;
+  color: #ffffff;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--color-background-dark);
+  background: var(--color-background-dark);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--color-border);
-    border-radius: 10px;
-    border: 2px solid var(--color-background-dark);
+  background: var(--color-border);
+  border-radius: 10px;
+  border: 2px solid var(--color-background-dark);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-on-surface-secondary);
-}
-
-[data-theme="light"] ::-webkit-scrollbar-thumb {
-    background: rgba(26, 26, 26, 0.3);
-}
-
-[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
-    background: #1a1a1a;
+  background: var(--color-on-surface-secondary);
 }
 
 /* Ripple Effect for Buttons */
@@ -123,46 +101,47 @@ h6 {
 .btn-add-object,
 .slide-btn-primary,
 .btn-download {
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-submit::after,
 .btn-add-object::after,
 .slide-btn-primary::after,
 .btn-download::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(var(--color-primary-rgb), 0.6);
-    transform: translate(-50%, -50%);
-    transition: width 0.3s cubic-bezier(0, 0, 0.2, 1), height 0.3s cubic-bezier(0, 0, 0.2, 1), opacity 0.3s;
-    opacity: 0;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(var(--color-primary-rgb), 0.6);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s cubic-bezier(0, 0, 0.2, 1),
+    height 0.3s cubic-bezier(0, 0, 0.2, 1), opacity 0.3s;
+  opacity: 0;
 }
 
 .btn-submit:active::after,
 .btn-add-object:active::after,
 .slide-btn-primary:active::after,
 .btn-download:active::after {
-    width: 300px;
-    height: 300px;
-    opacity: 1;
-    transition: width 0s, height 0s, opacity 0s;
+  width: 300px;
+  height: 300px;
+  opacity: 1;
+  transition: width 0s, height 0s, opacity 0s;
 }
 
 /* Fast transitions for non-spatial changes */
 button,
 a,
 input {
-    transition: color 0.2s cubic-bezier(0.25, 0.8, 0.5, 1),
-        background-color 0.2s cubic-bezier(0.25, 0.8, 0.5, 1),
-        border-color 0.2s cubic-bezier(0.25, 0.8, 0.5, 1),
-        box-shadow 0.25s cubic-bezier(0.25, 0.8, 0.5, 1),
-        transform 0.35s cubic-bezier(0.25, 0.8, 0.5, 1);
+  transition: color 0.2s cubic-bezier(0.25, 0.8, 0.5, 1),
+    background-color 0.2s cubic-bezier(0.25, 0.8, 0.5, 1),
+    border-color 0.2s cubic-bezier(0.25, 0.8, 0.5, 1),
+    box-shadow 0.25s cubic-bezier(0.25, 0.8, 0.5, 1),
+    transform 0.35s cubic-bezier(0.25, 0.8, 0.5, 1);
 }
 
 /* Holographic Scanline Texture */
@@ -170,27 +149,27 @@ input {
 .category-card::before,
 .auth-card::before,
 .featured-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-    background-size: 100% 4px;
-    pointer-events: none;
-    opacity: 0.1;
-    z-index: 1;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  background-size: 100% 4px;
+  pointer-events: none;
+  opacity: 0.1;
+  z-index: 1;
 }
 
 /* 3D Button Protrusion */
 .btn-submit:hover,
 .btn-download:hover,
 .btn-add-object:hover {
-    transform: scale(1.01) translateZ(10px);
+  transform: scale(1.01) translateZ(10px);
 }
 
 /* 
 Loading spinner animation */
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }
