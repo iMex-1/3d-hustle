@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
-import {
-  FaStar,
-  FaTimes,
-  FaExclamationTriangle,
-  FaSpinner,
-} from "react-icons/fa";
+import { FaTimes, FaExclamationTriangle, FaSpinner } from "react-icons/fa";
 import Notification from "./Notification";
 import XeokitViewer from "./XeokitViewer";
 import * as databaseService from "../services/databaseService";
@@ -181,7 +176,10 @@ function AdminDashboard() {
     e.preventDefault();
 
     if (!formData.displayFile) {
-      showNotification("Veuillez télécharger un fichier d'affichage (XKT ou image)", "error");
+      showNotification(
+        "Veuillez télécharger un fichier d'affichage (XKT ou image)",
+        "error"
+      );
       return;
     }
 
@@ -226,8 +224,14 @@ function AdminDashboard() {
       if (formData.displayFile instanceof File) {
         // Upload display file (XKT or image) to R2
         const fileType = formData.displayFileType;
-        const uploadType = ["jpg", "jpeg", "png", "gif", "webp"].includes(fileType) ? "image" : "xkt";
-        setUploadProgress(`Upload du fichier d'affichage ${fileType.toUpperCase()}...`);
+        const uploadType = ["jpg", "jpeg", "png", "gif", "webp"].includes(
+          fileType
+        )
+          ? "image"
+          : "xkt";
+        setUploadProgress(
+          `Upload du fichier d'affichage ${fileType.toUpperCase()}...`
+        );
         const displayResult = await uploadToR2(
           formData.displayFile,
           formData.name,
@@ -359,29 +363,37 @@ function AdminDashboard() {
         {objectList.map((obj, index) => (
           <div
             key={obj.model_id}
-            className="object-card animate-fade-in-up"
+            className={`object-card animate-fade-in-up ${
+              obj.featured ? "featured" : ""
+            }`}
             style={{ "--index": index }}
           >
             <div className="object-card-preview">
               {obj.model_xkt_url ? (
                 (() => {
                   const fileUrl = getPublicFileUrl(obj.model_xkt_url);
-                  const fileExtension = fileUrl.split('.').pop().toLowerCase();
-                  const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension);
-                  
+                  const fileExtension = fileUrl.split(".").pop().toLowerCase();
+                  const isImage = [
+                    "jpg",
+                    "jpeg",
+                    "png",
+                    "gif",
+                    "webp",
+                  ].includes(fileExtension);
+
                   return isImage ? (
-                    <img 
+                    <img
                       src={fileUrl}
                       alt={obj.model_name}
                       style={{
                         width: "100%",
                         height: "100%",
                         objectFit: "cover",
-                        borderRadius: "8px 8px 0 0"
+                        borderRadius: "8px 8px 0 0",
                       }}
                       onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'flex';
+                        e.target.style.display = "none";
+                        e.target.nextSibling.style.display = "flex";
                       }}
                     />
                   ) : (
@@ -421,17 +433,11 @@ function AdminDashboard() {
                   justifyContent: "center",
                 }}
               >
-                <p
-                  style={{ color: "var(--color-on-surface-secondary, #666)" }}
-                >
+                <p style={{ color: "var(--color-on-surface-secondary, #666)" }}>
                   Erreur de chargement
                 </p>
               </div>
-              {obj.featured && (
-                <span className="featured-badge">
-                  <FaStar />
-                </span>
-              )}
+              {obj.featured && <span className="featured-badge">Vedette</span>}
             </div>
             <div className="object-card-content">
               <div className="card-header">
@@ -492,7 +498,9 @@ function AdminDashboard() {
 
             <form onSubmit={handleSubmit} className="modal-form">
               <div className="form-group">
-                <label>Fichier d'affichage * (XKT ou Image pour visualisation)</label>
+                <label>
+                  Fichier d'affichage * (XKT ou Image pour visualisation)
+                </label>
                 <input
                   type="file"
                   accept=".xkt,.jpg,.jpeg,.png,.gif,.webp"
