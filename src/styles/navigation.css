@@ -128,66 +128,111 @@
 
 /* User profile container */
 .user-profile-container {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: background 0.3s ease, backdrop-filter 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    min-height: 44px;
 }
 
 [data-theme="light"] .user-profile-container {
-  background: rgba(26, 26, 26, 0.05);
+    background: rgba(26, 26, 26, 0.08);
+    border-color: rgba(26, 26, 26, 0.1);
 }
 
 .user-profile-container:hover {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
 }
 
 [data-theme="light"] .user-profile-container:hover {
-  background: rgba(26, 26, 26, 0.1);
+    background: rgba(26, 26, 26, 0.12);
+    border-color: rgba(26, 26, 26, 0.2);
 }
 
 .user-profile-info {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.user-avatar-container {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
 }
 
 .user-profile-photo {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  transition: border-color 0.3s ease;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
 }
 
 [data-theme="light"] .user-profile-photo {
-  border-color: rgba(26, 26, 26, 0.2);
+    border-color: rgba(26, 26, 26, 0.3);
 }
 
 .user-profile-container:hover .user-profile-photo {
-  border-color: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
 }
 
 [data-theme="light"] .user-profile-container:hover .user-profile-photo {
-  border-color: rgba(26, 26, 26, 0.4);
+    border-color: rgba(26, 26, 26, 0.5);
+}
+
+.user-profile-avatar-fallback {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+[data-theme="light"] .user-profile-avatar-fallback {
+    border-color: rgba(26, 26, 26, 0.3);
+}
+
+.user-profile-container:hover .user-profile-avatar-fallback {
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+}
+
+[data-theme="light"] .user-profile-container:hover .user-profile-avatar-fallback {
+    border-color: rgba(26, 26, 26, 0.5);
 }
 
 .user-display-name {
-  color: var(--color-on-surface, #e0e0e0);
-  font-weight: 500;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  max-width: 150px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.3s ease;
 }
 
 [data-theme="light"] .user-display-name {
@@ -213,9 +258,9 @@
 }
 
 [data-theme="light"] .sign-out-btn {
-  background: rgba(26, 26, 26, 0.05);
-  border-color: rgba(26, 26, 26, 0.2);
-  color: #1a1a1a !important;
+    background: rgba(26, 26, 26, 0.08);
+    border-color: rgba(26, 26, 26, 0.2);
+    color: #1a1a1a !important;
 }
 
 .sign-out-btn:hover {
@@ -227,8 +272,8 @@
 }
 
 [data-theme="light"] .sign-out-btn:hover {
-  background: rgba(26, 26, 26, 0.1);
-  border-color: rgba(26, 26, 26, 0.4);
+    background: rgba(26, 26, 26, 0.15);
+    border-color: rgba(26, 26, 26, 0.4);
 }
 
 .nav-right {

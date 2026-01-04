@@ -21,16 +21,15 @@ function About() {
         </div>
       </section>
 
-      <section className="about-content">
-        <div className="about-section">
-          <h2>Notre Mission</h2>
-          <p>
-            Nous nous engageons à fournir aux professionnels du BIM un accès à
-            des modèles IFC de haute qualité. Notre plateforme offre une
-            collection soigneusement sélectionnée d'éléments architecturaux qui
-            donnent vie à vos projets BIM.
-          </p>
-        </div>
+            <section className="about-content">
+                <div className="">
+                    <h2>Notre Mission</h2>
+                    <p>
+                        Nous nous engageons à fournir aux professionnels du BIM un accès à
+                        des modèles IFC de haute qualité. Notre plateforme offre une collection
+                        soigneusement sélectionnée d'éléments architecturaux qui donnent vie à vos projets BIM.
+                    </p>
+                </div>
 
         <div className="features-grid">
           <motion.div
@@ -102,45 +101,37 @@ function About() {
           </motion.div>
         </div>
 
-        <div className="about-section">
-          <h2>Ce Que Nous Offrons</h2>
-          <div className="offer-list">
-            <div className="offer-item">
-              <h4>Zelige</h4>
-              <p>
-                Carreaux et revêtements traditionnels pour vos projets
-                architecturaux.
-              </p>
-            </div>
-            <div className="offer-item">
-              <h4>Boiserie</h4>
-              <p>
-                Éléments en bois et menuiserie pour enrichir vos modèles BIM.
-              </p>
-            </div>
-            <div className="offer-item">
-              <h4>Plâtre</h4>
-              <p>
-                Ornements et décorations en plâtre pour ajouter du caractère à
-                vos designs.
-              </p>
-            </div>
-          </div>
-        </div>
+                <div className="">
+                    <h2>Ce Que Nous Offrons</h2>
+                    <div className="offer-list">
+                        <div className="offer-item">
+                            <h4>Zelige</h4>
+                            <p>Carreaux et revêtements traditionnels pour vos projets architecturaux.</p>
+                        </div>
+                        <div className="offer-item">
+                            <h4>Boiserie</h4>
+                            <p>Éléments en bois et menuiserie pour enrichir vos modèles BIM.</p>
+                        </div>
+                        <div className="offer-item">
+                            <h4>Plâtre</h4>
+                            <p>Ornements et décorations en plâtre pour ajouter du caractère à vos designs.</p>
+                        </div>
+                    </div>
+                </div>
 
-        <div className="about-section">
-          <h2>Logiciels BIM Supportés</h2>
-          <p>Nos modèles IFC fonctionnent parfaitement avec :</p>
-          <ul className="software-list">
-            <li>Autodesk Revit</li>
-            <li>ArchiCAD</li>
-            <li>Tekla Structures</li>
-            <li>Bentley AECOsim</li>
-            <li>Allplan</li>
-            <li>Vectorworks</li>
-            <li>Et tous les logiciels compatibles IFC...</li>
-          </ul>
-        </div>
+                <div className="">
+                    <h2>Logiciels BIM Supportés</h2>
+                    <p>Nos modèles IFC fonctionnent parfaitement avec :</p>
+                    <ul className="software-list">
+                        <li>Autodesk Revit</li>
+                        <li>ArchiCAD</li>
+                        <li>Tekla Structures</li>
+                        <li>Bentley AECOsim</li>
+                        <li>Allplan</li>
+                        <li>Vectorworks</li>
+                        <li>Et tous les logiciels compatibles IFC...</li>
+                    </ul>
+                </div>
 
         <div className="about-section contact-section">
           <h2>Contactez-Nous</h2>
