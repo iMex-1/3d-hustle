@@ -193,13 +193,7 @@ function AdminDashboard() {
       return;
     }
 
-    // Debug logging
-    console.log("User object:", user);
-    console.log("User UID:", user?.uid);
-    console.log("User record:", userRecord);
-
     if (!user || !user.uid) {
-      console.error("Authentication failed - user object:", user);
       showNotification("Utilisateur non authentifié", "error");
       return;
     }
