@@ -60,9 +60,9 @@
   border-radius: 8px;
   padding: 1.5rem;
   cursor: pointer;
-  transition: border-color 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
-    box-shadow 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
-    transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -83,7 +83,7 @@
   background: var(--accent);
   transform: scaleX(0);
   transform-origin: center;
-  transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: transform 0.3s ease;
 }
 
 .category-card:hover::before {
@@ -96,28 +96,59 @@
 }
 
 .category-icon-wrapper {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: var(--muted);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
-  transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: all 0.25s ease;
   border: 2px solid var(--border);
+  overflow: hidden;
 }
 
 .category-card:hover .category-icon-wrapper {
-  background: var(--accent);
   border-color: var(--accent);
   transform: scale(1.08);
+  box-shadow: 0 8px 24px hsla(42, 80%, 55%, 0.2);
+}
+
+.category-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: transform 0.25s ease;
+}
+
+.category-card:hover .category-image {
+  transform: scale(1.1);
+}
+
+.category-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 2rem;
+  font-weight: 300;
+  transition: all 0.25s ease;
+}
+
+.category-card:hover .category-placeholder {
+  background: var(--accent);
+  color: var(--accent-foreground);
 }
 
 .category-icon {
   font-size: 2rem;
   color: var(--sand);
-  transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: all 0.25s ease;
 }
 
 .category-card:hover .category-icon {
@@ -172,7 +203,7 @@
   font-weight: 600;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: all 0.25s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -184,7 +215,7 @@
 }
 
 .category-btn svg {
-  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: transform 0.25s ease;
 }
 
 .category-card:hover .category-btn svg {
@@ -228,8 +259,8 @@
   }
 
   .category-icon-wrapper {
-    width: 55px;
-    height: 55px;
+    width: 70px;
+    height: 70px;
   }
 
   .category-icon {
@@ -252,8 +283,8 @@
   }
 
   .category-icon-wrapper {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
   }
 
   .category-icon {

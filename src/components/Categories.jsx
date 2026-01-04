@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
-import { GiBrickWall, GiWoodBeam, GiCube } from "react-icons/gi";
-import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import "../styles/categories.css";
 
 function Categories() {
@@ -13,7 +11,7 @@ function Categories() {
       id: "zelige",
       name: "Zelige",
       description: "Carreaux de mosaïque traditionnels marocains",
-      icon: GiBrickWall,
+      image: "/themes/zelige.png",
       color: "hsl(42, 80%, 55%)", // Gold
       count: 0,
     },
@@ -21,7 +19,7 @@ function Categories() {
       id: "boiserie",
       name: "Boiserie",
       description: "Panneaux et ornements en bois sculpté",
-      icon: GiWoodBeam,
+      image: "/themes/woodwork.png",
       color: "hsl(15, 60%, 45%)", // Terracotta
       count: 0,
     },
@@ -29,7 +27,7 @@ function Categories() {
       id: "platre",
       name: "Plâtre",
       description: "Décorations et moulures en plâtre",
-      icon: BsFillGrid3X3GapFill,
+      image: "/themes/plaster.png",
       color: "hsl(35, 40%, 75%)", // Sand
       count: 0,
     },
@@ -37,7 +35,7 @@ function Categories() {
       id: "autre",
       name: "Autre",
       description: "Autres éléments décoratifs et architecturaux",
-      icon: GiCube,
+      image: null, // No image for "Autre"
       color: "hsl(210, 60%, 35%)", // Moroccan Blue
       count: 0,
     },
@@ -106,7 +104,6 @@ function Categories() {
         animate="visible"
       >
         {categories.map((category) => {
-          const IconComponent = category.icon;
           return (
             <motion.div
               key={category.id}
@@ -130,7 +127,17 @@ function Categories() {
                 className="category-icon-wrapper"
                 style={{ "--category-color": category.color }}
               >
-                <IconComponent className="category-icon" />
+                {category.image ? (
+                  <img 
+                    src={category.image} 
+                    alt={category.name}
+                    className="category-image"
+                  />
+                ) : (
+                  <div className="category-placeholder">
+                    <span>+</span>
+                  </div>
+                )}
               </div>
               <div className="category-content">
                 <h2>{category.name}</h2>
