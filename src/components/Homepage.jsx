@@ -40,17 +40,17 @@ function Homepage() {
   const slides = [
     {
       id: "welcome",
-      badge: "Plateforme BIM Avancée",
-      title: "Bienvenue sur OakMesh",
+      badge: "Moroccan Design BIM",
+      title: "Bienvenue sur MDBIM",
       description:
         "Découvrez notre plateforme de visualisation 3D pour modèles BIM. Explorez des fichiers IFC avec une technologie de pointe.",
       cta: "Explorer la Galerie",
       image: "/heroslides/Slide1.png",
-      alt: "Interface de visualisation 3D OakMesh avec modèles BIM",
+      alt: "Interface de visualisation 3D MDBIM avec modèles BIM",
     },
     {
       id: "models",
-      badge: "Modèles IFC Haute Qualité",
+      badge: "Moroccan Design BIM",
       title: "Bibliothèque BIM Complète",
       description:
         "Accédez à une vaste collection de modèles IFC organisés par catégorie. Zelige, Boiserie, Platre et autres éléments.",
@@ -60,7 +60,7 @@ function Homepage() {
     },
     {
       id: "viewer",
-      badge: "Visualisation WebGL",
+      badge: "Moroccan Design BIM",
       title: "Viewer 3D Intégré",
       description:
         "Visualisez vos modèles BIM directement dans le navigateur avec notre viewer 3D haute performance basé sur xeokit.",
@@ -238,7 +238,7 @@ function Homepage() {
               <button
                 className="btn btn-outline w-full sm:w-auto"
                 onClick={() => navigate("/about")}
-                aria-label="En savoir plus sur OakMesh"
+                aria-label="En savoir plus sur MDBIM"
               >
                 En Savoir Plus
                 <ArrowUpRight className="w-4 h-4" />
@@ -532,10 +532,10 @@ function Homepage() {
               </h2>
               <div className="space-y-4 text-muted-foreground mb-8">
                 <p>
-                  OakMesh est une plateforme innovante dédiée à la visualisation
-                  et au partage de modèles BIM. Nous utilisons les dernières
-                  technologies WebGL pour offrir une expérience 3D fluide
-                  directement dans votre navigateur.
+                  MDBIM (Moroccan Design BIM) est une plateforme innovante
+                  dédiée à la visualisation et au partage de modèles BIM. Nous
+                  utilisons les dernières technologies WebGL pour offrir une
+                  expérience 3D fluide directement dans votre navigateur.
                 </p>
                 <p>
                   Notre mission est de démocratiser l'accès aux modèles IFC et
@@ -551,7 +551,7 @@ function Homepage() {
                     Contactez-nous
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    contact@oakmesh.com
+                    contact@mdbim.ma
                   </p>
                 </div>
                 <div>
@@ -559,7 +559,7 @@ function Homepage() {
                     Support Technique
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    support@oakmesh.com
+                    support@mdbim.ma
                   </p>
                 </div>
               </div>
@@ -612,7 +612,7 @@ function Homepage() {
             <div className="flex items-center gap-3 mb-4">
               <img
                 src="/logo/Logo.png"
-                alt="OakMesh Logo"
+                alt="MDBIM Logo"
                 className="footer-logo"
                 style={{ width: "50px", height: "50px", objectFit: "contain" }}
                 onError={(e) => {
@@ -620,9 +620,7 @@ function Homepage() {
                   e.target.style.display = "none";
                 }}
               />
-              <span className="font-display font-semibold text-lg">
-                OakMesh
-              </span>
+              <span className="font-display font-semibold text-lg">MDBIM</span>
             </div>
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
               Plateforme de visualisation BIM innovante pour modèles IFC et
@@ -635,7 +633,7 @@ function Homepage() {
               aria-label="Réseaux sociaux"
             >
               <a
-                href="https://twitter.com/oakmesh"
+                href="https://twitter.com/mdbim_ma"
                 className="social-btn"
                 aria-label="Suivez-nous sur Twitter"
                 target="_blank"
@@ -652,7 +650,7 @@ function Homepage() {
                 </svg>
               </a>
               <a
-                href="https://github.com/oakmesh"
+                href="https://github.com/mdbim"
                 className="social-btn"
                 aria-label="Consultez notre code sur GitHub"
                 target="_blank"
@@ -673,7 +671,7 @@ function Homepage() {
                 </svg>
               </a>
               <a
-                href="https://linkedin.com/company/oakmesh"
+                href="https://linkedin.com/company/mdbim"
                 className="social-btn"
                 aria-label="Connectez-vous sur LinkedIn"
                 target="_blank"
@@ -910,8 +908,7 @@ function Homepage() {
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
               <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
                 <p>
-                  &copy; {new Date().getFullYear()} OakMesh. Tous droits
-                  réservés.
+                  &copy; {new Date().getFullYear()} MDBIM. Tous droits réservés.
                 </p>
                 <span className="hidden sm:inline text-border">|</span>
                 <p className="flex items-center gap-1">
@@ -947,20 +944,20 @@ function Homepage() {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
-            name: "OakMesh",
+            name: "MDBIM - Moroccan Design BIM",
             description:
               "Plateforme de visualisation BIM innovante pour modèles IFC et fichiers 3D",
-            url: "https://oakmesh.com",
-            logo: "https://oakmesh.com/logo/Logo.png",
+            url: "https://mdbim.ma",
+            logo: "https://mdbim.ma/logo/Logo.png",
             sameAs: [
-              "https://twitter.com/oakmesh",
-              "https://github.com/oakmesh",
-              "https://linkedin.com/company/oakmesh",
+              "https://twitter.com/mdbim_ma",
+              "https://github.com/mdbim",
+              "https://linkedin.com/company/mdbim",
             ],
             contactPoint: {
               "@type": "ContactPoint",
               contactType: "customer service",
-              url: "https://oakmesh.com/support",
+              url: "https://mdbim.ma/support",
             },
           })}
         </script>

@@ -76,16 +76,13 @@ export const uploadToR2 = async (file, modelName, fileType) => {
 
   const url = `${WORKER_URL}${path}`;
 
-  // Debug logging
-  console.log("Upload to R2:", {
-    file: file.name,
-    fileType,
-    path,
-    url,
-    hasWorkerUrl: !!WORKER_URL,
-    hasAdminSecret: !!ADMIN_SECRET,
-    adminSecretLength: ADMIN_SECRET?.length
-  });
+  if (!WORKER_URL) {
+    throw new Error("R2 Worker URL not configured. Please check VITE_R2_WORKER_URL environment variable.");
+  }
+
+  if (!ADMIN_SECRET) {
+    throw new Error("Admin secret not configured. Please check VITE_ADMIN_SECRET environment variable.");
+  }
 
   try {
     const response = await fetch(url, {
@@ -97,16 +94,19 @@ export const uploadToR2 = async (file, modelName, fileType) => {
       body: file,
     });
 
-    console.log("R2 Response:", {
-      status: response.status,
-      statusText: response.statusText,
-      ok: response.ok
-    });
-
     if (!response.ok) {
       const error = await response.text();
-      console.error("R2 Upload Error Response:", error);
-      throw new Error(`Upload failed: ${error}`);
+      
+      // Provide more specific error messages
+      if (response.status === 401) {
+        throw new Error("Unauthorized: Invalid admin secret. Please check your credentials.");
+      } else if (response.status === 403) {
+        throw new Error("Forbidden: Access denied to R2 storage. Please check your permissions.");
+      } else if (response.status === 404) {
+        throw new Error("Not found: R2 worker endpoint not found. Please check the worker URL.");
+      } else {
+        throw new Error(`Upload failed (${response.status}): ${error}`);
+      }
     }
 
     return {
