@@ -86,12 +86,35 @@ function Gallery() {
           <div className="detail-container">
             <div className="detail-viewer">
               {selectedObject.xktFile ? (
-                <XeokitViewer
-                  modelUrl={selectedObject.xktFile}
-                  height="600px"
-                  width="100%"
-                  enableZoom={true}
-                />
+                (() => {
+                  const fileExtension = selectedObject.xktFile.split('.').pop().toLowerCase();
+                  const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension);
+                  
+                  return isImage ? (
+                    <img 
+                      src={selectedObject.xktFile}
+                      alt={selectedObject.name}
+                      style={{
+                        width: "100%",
+                        height: "600px",
+                        objectFit: "contain",
+                        borderRadius: "12px",
+                        background: "#0A0A0A"
+                      }}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                    />
+                  ) : (
+                    <XeokitViewer
+                      modelUrl={selectedObject.xktFile}
+                      height="600px"
+                      width="100%"
+                      enableZoom={true}
+                    />
+                  );
+                })()
               ) : (
                 <div
                   style={{
@@ -109,6 +132,22 @@ function Gallery() {
                   </p>
                 </div>
               )}
+              {/* Fallback error display for images */}
+              <div
+                style={{
+                  width: "100%",
+                  height: "600px",
+                  background: "#0A0A0A",
+                  display: "none",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "12px",
+                }}
+              >
+                <p style={{ color: "#666" }}>
+                  Erreur de chargement de l'image
+                </p>
+              </div>
             </div>
 
             <div className="detail-info">
@@ -206,11 +245,32 @@ function Gallery() {
           >
             <div className="card-image">
               {obj.xktFile ? (
-                <XeokitViewer
-                  modelUrl={obj.xktFile}
-                  height="100%"
-                  width="100%"
-                />
+                (() => {
+                  const fileExtension = obj.xktFile.split('.').pop().toLowerCase();
+                  const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension);
+                  
+                  return isImage ? (
+                    <img 
+                      src={obj.xktFile}
+                      alt={obj.name}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover"
+                      }}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                    />
+                  ) : (
+                    <XeokitViewer
+                      modelUrl={obj.xktFile}
+                      height="100%"
+                      width="100%"
+                    />
+                  );
+                })()
               ) : (
                 <div
                   style={{
@@ -225,6 +285,19 @@ function Gallery() {
                   <p style={{ color: "#666" }}>Pas de prévisualisation</p>
                 </div>
               )}
+              {/* Fallback error display for images */}
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  background: "#0A0A0A",
+                  display: "none",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <p style={{ color: "#666" }}>Erreur de chargement</p>
+              </div>
               <div className="card-overlay">
                 <button className="btn-view">Voir les Détails</button>
               </div>

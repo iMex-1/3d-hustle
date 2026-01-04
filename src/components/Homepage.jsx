@@ -1044,18 +1044,47 @@ function ProductCard({ product, index }) {
 
       <div className="card-image">
         {product.image ? (
-          <XeokitViewer
-            modelUrl={product.image}
-            height="100%"
-            width="100%"
-            enableZoom={false}
-          />
+          (() => {
+            const fileExtension = product.image.split('.').pop().toLowerCase();
+            const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension);
+            
+            return isImage ? (
+              <img 
+                src={product.image}
+                alt={product.title}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover"
+                }}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+              />
+            ) : (
+              <XeokitViewer
+                modelUrl={product.image}
+                height="100%"
+                width="100%"
+                enableZoom={false}
+              />
+            );
+          })()
         ) : (
           <div className="image-placeholder bg-muted flex items-center justify-center text-muted-foreground flex-col">
             <Box className="w-8 h-8" />
             <span className="text-xs mt-2">Chargement...</span>
           </div>
         )}
+        {/* Fallback error display for images */}
+        <div 
+          className="image-placeholder bg-muted flex items-center justify-center text-muted-foreground flex-col"
+          style={{ display: "none" }}
+        >
+          <Box className="w-8 h-8" />
+          <span className="text-xs mt-2">Erreur de chargement</span>
+        </div>
         <div className="category-badge bg-background border border-border text-xs px-2 py-1">
           {product.category}
         </div>
