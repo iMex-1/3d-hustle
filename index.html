@@ -10,6 +10,32 @@
       type="module"
       src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"
     ></script>
+    <style>
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      body {
+        margin: 0;
+        background-color: #0a0a0a;
+      }
+      #root:empty {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #root:empty::after {
+        content: "";
+        width: 48px;
+        height: 48px;
+        border: 3px solid rgba(200, 170, 110, 0.2);
+        border-top-color: #c8aa6e;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+    </style>
   </head>
 
   <body>

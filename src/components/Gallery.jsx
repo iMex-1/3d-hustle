@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
+import { ArrowUpRight, Box } from "lucide-react";
 import { useModels } from "../context/ModelsContext";
 import { useAuth } from "../hooks/useAuth";
 import * as databaseService from "../services/databaseService";
@@ -88,9 +89,9 @@ function Gallery() {
   if (selectedObject) {
     return (
       <div className="gallery">
-        <SignInModal 
-          isOpen={showSignInModal} 
-          onClose={() => setShowSignInModal(false)} 
+        <SignInModal
+          isOpen={showSignInModal}
+          onClose={() => setShowSignInModal(false)}
         />
         <div className="product-detail">
           <button className="back-button" onClick={handleBackToGallery}>
@@ -101,11 +102,20 @@ function Gallery() {
             <div className="detail-viewer">
               {selectedObject.xktFile ? (
                 (() => {
-                  const fileExtension = selectedObject.xktFile.split('.').pop().toLowerCase();
-                  const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension);
-                  
+                  const fileExtension = selectedObject.xktFile
+                    .split(".")
+                    .pop()
+                    .toLowerCase();
+                  const isImage = [
+                    "jpg",
+                    "jpeg",
+                    "png",
+                    "gif",
+                    "webp",
+                  ].includes(fileExtension);
+
                   return isImage ? (
-                    <img 
+                    <img
                       src={selectedObject.xktFile}
                       alt={selectedObject.name}
                       style={{
@@ -113,11 +123,11 @@ function Gallery() {
                         height: "600px",
                         objectFit: "contain",
                         borderRadius: "12px",
-                        background: "#0A0A0A"
+                        background: "hsl(30, 10%, 20%)",
                       }}
                       onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'flex';
+                        e.target.style.display = "none";
+                        e.target.nextSibling.style.display = "flex";
                       }}
                     />
                   ) : (
@@ -134,14 +144,14 @@ function Gallery() {
                   style={{
                     width: "100%",
                     height: "600px",
-                    background: "#0A0A0A",
+                    background: "hsl(30, 10%, 20%)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     borderRadius: "12px",
                   }}
                 >
-                  <p style={{ color: "#666" }}>
+                  <p style={{ color: "hsl(30, 15%, 60%)" }}>
                     Pas de prévisualisation disponible
                   </p>
                 </div>
@@ -151,14 +161,14 @@ function Gallery() {
                 style={{
                   width: "100%",
                   height: "600px",
-                  background: "#0A0A0A",
+                  background: "hsl(30, 10%, 20%)",
                   display: "none",
                   alignItems: "center",
                   justifyContent: "center",
                   borderRadius: "12px",
                 }}
               >
-                <p style={{ color: "#666" }}>
+                <p style={{ color: "hsl(30, 15%, 60%)" }}>
                   Erreur de chargement de l'image
                 </p>
               </div>
@@ -221,12 +231,12 @@ function Gallery() {
 
   return (
     <div className="gallery">
-      <SignInModal 
-        isOpen={showSignInModal} 
-        onClose={() => setShowSignInModal(false)} 
+      <SignInModal
+        isOpen={showSignInModal}
+        onClose={() => setShowSignInModal(false)}
       />
       <div className="gallery-header">
-        <h1>Galerie de Modèles IFC/XKT</h1>
+        <h1>Moroccan Design BIM</h1>
         <p>Parcourez notre collection de {objects.length} modèles BIM</p>
       </div>
 
@@ -255,30 +265,40 @@ function Gallery() {
       </div>
 
       <div className="gallery-grid">
-        {filteredObjects.map((obj) => (
+        {filteredObjects.map((obj, index) => (
           <div
             key={obj.id}
-            className="gallery-card"
+            className="gallery-card group"
+            style={{ animationDelay: `${index * 0.05}s` }}
             onClick={() => setSelectedObject(obj)}
           >
             <div className="card-image">
               {obj.xktFile ? (
                 (() => {
-                  const fileExtension = obj.xktFile.split('.').pop().toLowerCase();
-                  const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension);
-                  
+                  const fileExtension = obj.xktFile
+                    .split(".")
+                    .pop()
+                    .toLowerCase();
+                  const isImage = [
+                    "jpg",
+                    "jpeg",
+                    "png",
+                    "gif",
+                    "webp",
+                  ].includes(fileExtension);
+
                   return isImage ? (
-                    <img 
+                    <img
                       src={obj.xktFile}
                       alt={obj.name}
                       style={{
                         width: "100%",
                         height: "100%",
-                        objectFit: "cover"
+                        objectFit: "cover",
                       }}
                       onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'flex';
+                        e.target.style.display = "none";
+                        e.target.nextSibling.style.display = "flex";
                       }}
                     />
                   ) : (
@@ -286,74 +306,34 @@ function Gallery() {
                       modelUrl={obj.xktFile}
                       height="100%"
                       width="100%"
+                      enableZoom={false}
                     />
                   );
                 })()
               ) : (
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    background: "#0A0A0A",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <p style={{ color: "#666" }}>Pas de prévisualisation</p>
+                <div className="image-placeholder">
+                  <Box className="placeholder-icon" />
+                  <span>Chargement...</span>
                 </div>
               )}
               {/* Fallback error display for images */}
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  background: "#0A0A0A",
-                  display: "none",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <p style={{ color: "#666" }}>Erreur de chargement</p>
+              <div className="image-placeholder" style={{ display: "none" }}>
+                <Box className="placeholder-icon" />
+                <span>Erreur de chargement</span>
               </div>
-              <div className="card-overlay">
-                <button className="btn-view">Voir les Détails</button>
-              </div>
+              <span className="category-badge">{obj.category}</span>
             </div>
-            <div className="card-info">
-              <h3>{obj.name}</h3>
-              <span className="badge">{obj.category}</span>
-              <p className="card-description">{obj.description}</p>
-              <div className="card-meta">
-                <span className="meta-item">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                  </svg>
-                  {obj.fileSize}
-                </span>
-                <span className="meta-item">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                  </svg>
-                  {obj.downloads}
-                </span>
-              </div>
+
+            <div className="card-content">
+              <h3 className="card-title">{obj.name}</h3>
+              <p className="card-description">
+                {obj.description ||
+                  "Modèle BIM de haute qualité disponible au téléchargement."}
+              </p>
+              <button className="btn-explore">
+                <span>Voir Détails</span>
+                <ArrowUpRight className="btn-icon" />
+              </button>
             </div>
           </div>
         ))}

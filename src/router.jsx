@@ -179,14 +179,34 @@ function RootLayout() {
   // Show loading state during auth initialization
   if (loading) {
     return (
-      <div className="app">
-        <div className="loading-container" style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          minHeight: '100vh' 
-        }}>
-          <div className="loading-spinner">Loading...</div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          backgroundColor: "#0a0a0a",
+        }}
+      >
+        <div style={{ position: "relative", width: "48px", height: "48px" }}>
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              border: "3px solid rgba(200, 170, 110, 0.2)",
+              borderRadius: "50%",
+            }}
+          ></div>
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              border: "3px solid transparent",
+              borderTopColor: "#c8aa6e",
+              borderRadius: "50%",
+              animation: "spin 1s linear infinite",
+            }}
+          ></div>
         </div>
       </div>
     );
