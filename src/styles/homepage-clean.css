@@ -7,28 +7,28 @@
   --foreground: hsl(35, 30%, 90%);
   --card: hsl(30, 15%, 12%);
   --card-foreground: hsl(35, 30%, 90%);
-  
+
   /* Primary Colors */
   --primary: hsl(25, 70%, 50%);
   --primary-foreground: hsl(35, 30%, 95%);
-  
+
   /* Secondary Colors */
   --secondary: hsl(210, 60%, 30%);
   --secondary-foreground: hsl(35, 30%, 95%);
-  
+
   /* Accent Colors */
   --accent: hsl(42, 80%, 55%);
   --accent-foreground: hsl(30, 20%, 10%);
-  
+
   /* Muted/Neutral */
   --muted: hsl(30, 10%, 20%);
   --muted-foreground: hsl(30, 15%, 60%);
-  
+
   /* Borders & Inputs */
   --border: hsl(30, 15%, 20%);
   --input: hsl(30, 15%, 20%);
   --ring: hsl(25, 70%, 50%);
-  
+
   /* Custom Moroccan Palette */
   --terracotta: hsl(15, 60%, 45%);
   --terracotta-light: hsl(15, 50%, 60%);
@@ -46,7 +46,7 @@
   min-height: 100vh;
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 /* Hero Carousel with Moroccan styling */
@@ -99,8 +99,11 @@
   width: 100%;
   height: 100%;
   opacity: 0.1;
-  background-image: 
-    radial-gradient(circle at 25% 25%, var(--accent) 2px, transparent 2px),
+  background-image: radial-gradient(
+      circle at 25% 25%,
+      var(--accent) 2px,
+      transparent 2px
+    ),
     radial-gradient(circle at 75% 75%, var(--terracotta) 1px, transparent 1px);
   background-size: 60px 60px, 40px 40px;
   z-index: 2;
@@ -249,19 +252,23 @@
   font-weight: 300;
   letter-spacing: 3px;
   text-transform: uppercase;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
 /* Slide title with Playfair Display */
 .slide-title {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(3rem, 8vw, 6rem);
   font-weight: 700;
   line-height: 0.9;
   margin-bottom: 24px;
   color: var(--foreground);
   text-shadow: 0 4px 20px hsla(30, 20%, 6%, 0.8);
-  background: linear-gradient(135deg, var(--foreground) 0%, var(--sand-light) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--foreground) 0%,
+    var(--sand-light) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -304,13 +311,18 @@
 }
 
 .btn::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
   transition: left 0.5s ease;
 }
 
@@ -418,14 +430,17 @@
 }
 
 .categories-section::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
-    radial-gradient(circle at 20% 80%, var(--accent) 1px, transparent 1px),
+  background-image: radial-gradient(
+      circle at 20% 80%,
+      var(--accent) 1px,
+      transparent 1px
+    ),
     radial-gradient(circle at 80% 20%, var(--terracotta) 1px, transparent 1px);
   background-size: 100px 100px, 80px 80px;
   opacity: 0.05;
@@ -467,7 +482,7 @@
 }
 
 .section-header h2 {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 700;
   color: var(--foreground);
@@ -499,13 +514,13 @@
   border-radius: 16px;
   padding: 32px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
   position: relative;
   overflow: hidden;
 }
 
 .category-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -513,7 +528,7 @@
   height: 100%;
   background: linear-gradient(135deg, var(--accent) 0%, var(--terracotta) 100%);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
   z-index: 1;
 }
 
@@ -545,7 +560,8 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .lantern-idle {
@@ -571,7 +587,7 @@
 }
 
 .card-content h3 {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: "Playfair Display", Georgia, serif;
   font-size: 24px;
   font-weight: 600;
   color: var(--foreground);
@@ -651,7 +667,7 @@
 }
 
 .card-content h3 {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: "Playfair Display", Georgia, serif;
   font-size: 20px;
   font-weight: 600;
   color: var(--foreground);
@@ -698,7 +714,7 @@
 }
 
 .footer-brand span {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: "Playfair Display", Georgia, serif;
   color: var(--foreground);
 }
 
@@ -806,7 +822,7 @@
 
 /* Animations */
 .animate-slide-up {
-  animation: slideUp 0.6s ease-out;
+  animation: slideUp 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 @keyframes slideUp {
@@ -831,8 +847,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsive design */
@@ -840,35 +860,35 @@
   .corner-ornaments {
     display: none;
   }
-  
+
   .decorative-divider {
     display: none;
   }
-  
+
   .carousel-content {
     padding: 0 5%;
   }
-  
+
   .slide-buttons {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .btn {
     width: 100%;
     max-width: 280px;
     justify-content: center;
   }
-  
+
   .categories-grid,
   .products-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .footer-links {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   /* Hide some decorative elements on mobile for cleaner look */
   .hero-carousel .absolute.opacity-20,
   .hero-carousel .absolute.opacity-15,
@@ -876,16 +896,16 @@
   .hero-carousel .absolute.opacity-10 {
     display: none;
   }
-  
+
   /* Keep only essential decorative elements on mobile */
   .gap-filler .absolute {
     display: none;
   }
-  
+
   .gap-filler .gap-filler-content {
     padding: 1rem 0;
   }
-  
+
   /* Lantern on mobile */
   .lantern-container {
     width: 100px;
@@ -897,49 +917,102 @@
   .container {
     padding: 0 16px;
   }
-  
+
   .category-card,
   .product-card .card-content {
     padding: 20px;
   }
-  
+
   .footer-links {
     grid-template-columns: 1fr;
   }
 }
 
 /* Utility classes for consistent spacing */
-.mb-4 { margin-bottom: 16px; }
-.mb-6 { margin-bottom: 24px; }
-.mb-8 { margin-bottom: 32px; }
-.py-12 { padding: 48px 0; }
-.py-24 { padding: 96px 0; }
+.mb-4 {
+  margin-bottom: 16px;
+}
+.mb-6 {
+  margin-bottom: 24px;
+}
+.mb-8 {
+  margin-bottom: 32px;
+}
+.py-12 {
+  padding: 48px 0;
+}
+.py-24 {
+  padding: 96px 0;
+}
 
 /* Text utilities */
-.text-xs { font-size: 12px; }
-.text-sm { font-size: 14px; }
-.text-lg { font-size: 18px; }
-.font-light { font-weight: 300; }
-.font-medium { font-weight: 500; }
-.font-semibold { font-weight: 600; }
-.font-bold { font-weight: 700; }
-.tracking-widest { letter-spacing: 0.1em; }
+.text-xs {
+  font-size: 12px;
+}
+.text-sm {
+  font-size: 14px;
+}
+.text-lg {
+  font-size: 18px;
+}
+.font-light {
+  font-weight: 300;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.font-bold {
+  font-weight: 700;
+}
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
 
 /* Display utilities */
-.hidden { display: none; }
-.flex { display: flex; }
-.items-center { align-items: center; }
-.justify-center { justify-content: center; }
-.gap-4 { gap: 16px; }
-.w-32 { width: 128px; }
-.h-32 { height: 128px; }
-.rotate-45 { transform: rotate(45deg); }
-.relative { position: relative; }
-.absolute { position: absolute; }
-.inset-4 { top: 16px; right: 16px; bottom: 16px; left: 16px; }
+.hidden {
+  display: none;
+}
+.flex {
+  display: flex;
+}
+.items-center {
+  align-items: center;
+}
+.justify-center {
+  justify-content: center;
+}
+.gap-4 {
+  gap: 16px;
+}
+.w-32 {
+  width: 128px;
+}
+.h-32 {
+  height: 128px;
+}
+.rotate-45 {
+  transform: rotate(45deg);
+}
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
+.inset-4 {
+  top: 16px;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+}
 
 @media (min-width: 1024px) {
-  .lg\\:block { display: block; }
+  .lg\\:block {
+    display: block;
+  }
 }
 
 /* Decorative Diamond Utilities */
@@ -993,14 +1066,17 @@
 }
 
 .gap-filler::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: 
-    radial-gradient(circle at 25% 25%, var(--accent) 1px, transparent 1px),
+  background-image: radial-gradient(
+      circle at 25% 25%,
+      var(--accent) 1px,
+      transparent 1px
+    ),
     radial-gradient(circle at 75% 75%, var(--terracotta) 1px, transparent 1px);
   background-size: 60px 60px, 40px 40px;
   opacity: 0.03;
@@ -1063,7 +1139,8 @@
 
 /* Floating Animation for Decorative Elements */
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) rotate(45deg);
   }
   50% {
@@ -1112,11 +1189,21 @@
   animation: fadeInStagger 0.8s ease-out forwards;
 }
 
-.decorative-diamond:nth-child(1) { animation-delay: 0.1s; }
-.decorative-diamond:nth-child(2) { animation-delay: 0.2s; }
-.decorative-diamond:nth-child(3) { animation-delay: 0.3s; }
-.decorative-diamond:nth-child(4) { animation-delay: 0.4s; }
-.decorative-diamond:nth-child(5) { animation-delay: 0.5s; }
+.decorative-diamond:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.decorative-diamond:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.decorative-diamond:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.decorative-diamond:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.decorative-diamond:nth-child(5) {
+  animation-delay: 0.5s;
+}
 
 /* Hover effects for sections with decorative elements */
 .section-header:hover .decorative-diamond {
@@ -1133,7 +1220,8 @@
 
 /* Pulse animation for active diamonds */
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: var(--base-opacity, 0.2);
     transform: rotate(45deg) scale(1);
   }

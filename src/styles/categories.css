@@ -60,7 +60,9 @@
   border-radius: 8px;
   padding: 1.5rem;
   cursor: pointer;
-  transition: border-color 0.25s ease-out, box-shadow 0.25s ease-out;
+  transition: border-color 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+    box-shadow 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -68,6 +70,7 @@
   min-height: 280px;
   width: 100%;
   box-sizing: border-box;
+  will-change: transform, box-shadow;
 }
 
 .category-card::before {
@@ -79,7 +82,8 @@
   height: 4px;
   background: var(--accent);
   transform: scaleX(0);
-  transition: transform 0.25s ease-out;
+  transform-origin: center;
+  transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .category-card:hover::before {
@@ -88,7 +92,7 @@
 
 .category-card:hover {
   border-color: var(--accent);
-  box-shadow: 0 20px 40px hsla(30, 20%, 6%, 0.3);
+  box-shadow: 0 24px 48px hsla(30, 20%, 6%, 0.35);
 }
 
 .category-icon-wrapper {
@@ -100,25 +104,25 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
-  transition: all 0.25s ease-out;
+  transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
   border: 2px solid var(--border);
 }
 
 .category-card:hover .category-icon-wrapper {
   background: var(--accent);
   border-color: var(--accent);
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 .category-icon {
   font-size: 2rem;
   color: var(--sand);
-  transition: all 0.25s ease-out;
+  transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .category-card:hover .category-icon {
   color: var(--accent-foreground);
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .category-content {
@@ -168,7 +172,7 @@
   font-weight: 600;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.25s ease-out;
+  transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -176,15 +180,15 @@
 .category-btn:hover {
   background: var(--terracotta);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px hsla(25, 70%, 50%, 0.3);
+  box-shadow: 0 10px 28px hsla(25, 70%, 50%, 0.25);
 }
 
 .category-btn svg {
-  transition: transform 0.25s ease-out;
+  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .category-card:hover .category-btn svg {
-  transform: translateX(4px);
+  transform: translateX(3px);
 }
 
 /* Responsive Design */

@@ -49,26 +49,27 @@ function Categories() {
     });
   };
 
-  // Container animation for staggered children
+  // Container animation for staggered children - slower, more elegant
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.12,
         delayChildren: 0.15,
       },
     },
   };
 
-  // Card animation variants
+  // Card animation variants - smoother, lantern-like feel
   const cardVariants = {
-    hidden: { opacity: 0, y: 25 },
+    hidden: { opacity: 0, y: 20, scale: 0.98 },
     visible: {
       opacity: 1,
       y: 0,
+      scale: 1,
       transition: {
-        duration: 0.35,
+        duration: 0.8,
         ease: [0.25, 0.1, 0.25, 1],
       },
     },
@@ -80,14 +81,18 @@ function Categories() {
         <motion.h1
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
+          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         >
           Catégories
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+          transition={{
+            duration: 0.6,
+            delay: 0.15,
+            ease: [0.25, 0.1, 0.25, 1],
+          }}
           className="categories-subtitle"
         >
           Explorez notre collection organisée par type d'élément architectural
@@ -108,10 +113,17 @@ function Categories() {
               className="category-card"
               variants={cardVariants}
               whileHover={{
-                y: -8,
-                transition: { duration: 0.25, ease: "easeOut" },
+                y: -6,
+                scale: 1.02,
+                transition: {
+                  duration: 0.5,
+                  ease: [0.25, 0.1, 0.25, 1],
+                },
               }}
-              whileTap={{ scale: 0.98 }}
+              whileTap={{
+                scale: 0.98,
+                transition: { duration: 0.15, ease: "easeOut" },
+              }}
               onClick={() => handleCategoryClick(category.name)}
             >
               <div
@@ -126,8 +138,14 @@ function Categories() {
                 <div className="category-footer">
                   <motion.button
                     className="category-btn"
-                    whileHover={{ x: 4 }}
-                    whileTap={{ scale: 0.97 }}
+                    whileHover={{
+                      x: 3,
+                      transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
+                    }}
+                    whileTap={{
+                      scale: 0.97,
+                      transition: { duration: 0.15, ease: "easeOut" },
+                    }}
                   >
                     Explorer <FaArrowRight />
                   </motion.button>

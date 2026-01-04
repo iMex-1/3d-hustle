@@ -904,7 +904,7 @@ function CategoryCard({ category, index }) {
   return (
     <div
       className="category-card animate-slide-up group"
-      style={{ animationDelay: `${index * 0.1}s` }}
+      style={{ animationDelay: `${index * 0.15}s` }}
       onClick={handleClick}
     >
       {/* Corner Decorations */}
