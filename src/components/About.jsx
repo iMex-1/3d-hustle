@@ -13,7 +13,7 @@ function About() {
             </section>
 
             <section className="about-content">
-                <div className="about-section">
+                <div className="">
                     <h2>Notre Mission</h2>
                     <p>
                         Nous nous engageons à fournir aux professionnels du BIM un accès à
@@ -80,7 +80,7 @@ function About() {
                     </motion.div>
                 </div>
 
-                <div className="about-section">
+                <div className="">
                     <h2>Ce Que Nous Offrons</h2>
                     <div className="offer-list">
                         <div className="offer-item">
@@ -98,7 +98,7 @@ function About() {
                     </div>
                 </div>
 
-                <div className="about-section">
+                <div className="">
                     <h2>Logiciels BIM Supportés</h2>
                     <p>Nos modèles IFC fonctionnent parfaitement avec :</p>
                     <ul className="software-list">

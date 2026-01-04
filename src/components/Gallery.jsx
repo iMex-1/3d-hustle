@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { useModels } from "../context/ModelsContext";
+import { useAuth } from "../hooks/useAuth";
 import * as databaseService from "../services/databaseService";
 import XeokitViewer from "./XeokitViewer";
+import SignInModal from "./SignInModal";
 import "../styles/gallery.css";
 
 function Gallery() {
   const { models: objects, loading } = useModels();
+  const { user } = useAuth();
   const { category: urlCategory, productId } = useParams();
   const location = useLocation();
   const searchQuery = location.state?.searchQuery || "";
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Tout");
   const [selectedObject, setSelectedObject] = useState(null);
+  const [showSignInModal, setShowSignInModal] = useState(false);
 
   const categories = ["Tout", "Zelige", "Boiserie", "Platre", "Autre"];
 
@@ -52,6 +56,12 @@ function Gallery() {
   });
 
   const handleDownload = async (obj) => {
+    // Check if user is authenticated before allowing download
+    if (!user) {
+      setShowSignInModal(true);
+      return;
+    }
+
     const downloadUrl = obj.downloadFile || obj.ifcFile;
     if (downloadUrl) {
       try {
@@ -78,6 +88,10 @@ function Gallery() {
   if (selectedObject) {
     return (
       <div className="gallery">
+        <SignInModal 
+          isOpen={showSignInModal} 
+          onClose={() => setShowSignInModal(false)} 
+        />
         <div className="product-detail">
           <button className="back-button" onClick={handleBackToGallery}>
             ← Retour à la galerie
@@ -168,6 +182,10 @@ function Gallery() {
 
   return (
     <div className="gallery">
+      <SignInModal 
+        isOpen={showSignInModal} 
+        onClose={() => setShowSignInModal(false)} 
+      />
       <div className="gallery-header">
         <h1>Galerie de Modèles IFC/XKT</h1>
         <p>Parcourez notre collection de {objects.length} modèles BIM</p>
@@ -198,7 +216,7 @@ function Gallery() {
       </div>
 
       <div className="gallery-grid">
-        {filteredObjects.map((obj, index) => (
+        {filteredObjects.map((obj) => (
           <div
             key={obj.id}
             className="gallery-card"

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import {
   createBrowserRouter,
-  useLoaderData,
   useNavigate,
   useLocation,
   useRouteError,
@@ -18,29 +17,9 @@ import Categories from "./components/Categories";
 import Login from "./components/Login";
 import AdminDashboard from "./components/AdminDashboard";
 import About from "./components/About";
+import { useAuth } from "./hooks/useAuth";
 import * as authService from "./services/authService";
 import * as databaseService from "./services/databaseService";
-
-// Root loader - handles auth state and user data
-async function rootLoader() {
-  return new Promise((resolve) => {
-    const unsubscribe = authService.onAuthStateChanged(async (user) => {
-      unsubscribe(); // Clean up listener after first response
-
-      if (user) {
-        try {
-          const userRecord = await databaseService.getUserData(user.uid);
-          resolve({ user, userRecord });
-        } catch (error) {
-          console.error("Error loading user data:", error);
-          resolve({ user, userRecord: null });
-        }
-      } else {
-        resolve({ user: null, userRecord: null });
-      }
-    });
-  });
-}
 
 // Models loader - pre-fetch models data
 async function modelsLoader() {
@@ -124,7 +103,6 @@ async function adminLoader() {
 export const router = createBrowserRouter([
   {
     path: "/",
-    loader: rootLoader,
     Component: RootLayout,
     errorElement: <ErrorBoundary />,
     children: [
@@ -171,7 +149,7 @@ export const router = createBrowserRouter([
 
 // Root layout component
 function RootLayout() {
-  const { user, userRecord } = useLoaderData();
+  const { user, userRecord, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [notification, setNotification] = useState(null);
@@ -183,7 +161,7 @@ function RootLayout() {
 
   const handleLogout = async () => {
     try {
-      await authService.signOut();
+      await signOut();
       navigate("/");
     } catch (error) {
       console.error("Logout error:", error);
@@ -197,6 +175,22 @@ function RootLayout() {
   const handleSearch = (query) => {
     navigate(`/gallery?search=${encodeURIComponent(query)}`);
   };
+
+  // Show loading state during auth initialization
+  if (loading) {
+    return (
+      <div className="app">
+        <div className="loading-container" style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          minHeight: '100vh' 
+        }}>
+          <div className="loading-spinner">Loading...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <ModelsProvider>
