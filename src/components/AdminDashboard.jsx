@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLoaderData } from "react-router-dom";
 import {
   FaStar,
   FaTimes,
@@ -18,7 +19,8 @@ import "../styles/admin.css";
 
 const CATEGORIES = ["Zelige", "Boiserie", "Platre", "Autre"];
 
-function AdminDashboard({ user }) {
+function AdminDashboard() {
+  const { user, userRecord, models: initialModels } = useLoaderData();
   const [objectList, setObjectList] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -30,13 +32,14 @@ function AdminDashboard({ user }) {
     name: "",
     category: "Zelige",
     description: "",
-    xktFile: null,
-    xktFileName: "",
+    displayFile: null,
+    displayFileName: "",
+    displayFileType: "",
     downloadFile: null,
     downloadFileName: "",
     downloadFileType: "",
     fileSize: "",
-    xktSize: 0,
+    displaySize: 0,
     downloadSize: 0,
   });
   const [uploading, setUploading] = useState(false);
@@ -68,26 +71,38 @@ function AdminDashboard({ user }) {
     setEditingId(obj.model_id);
     // Determine file type from URL
     const downloadUrl = obj.model_download_url || obj.model_ifc_url;
-    let fileType = "ifc";
+    let downloadFileType = "ifc";
     if (downloadUrl) {
       const ext = downloadUrl.split(".").pop().toLowerCase();
       if (["ifc", "rvt", "rfa"].includes(ext)) {
-        fileType = ext;
+        downloadFileType = ext;
       }
     }
+
+    // Determine display file type from XKT URL
+    const displayUrl = obj.model_xkt_url;
+    let displayFileType = "xkt";
+    if (displayUrl) {
+      const ext = displayUrl.split(".").pop().toLowerCase();
+      if (["xkt", "jpg", "jpeg", "png", "gif", "webp"].includes(ext)) {
+        displayFileType = ext;
+      }
+    }
+
     setFormData({
       name: obj.model_name,
       category: obj.model_category,
       description: obj.model_description,
-      xktFile: obj.model_xkt_url,
-      xktFileName: obj.filename,
+      displayFile: displayUrl,
+      displayFileName: obj.filename,
+      displayFileType: displayFileType,
       downloadFile: downloadUrl,
       downloadFileName: obj.filename,
-      downloadFileType: fileType,
+      downloadFileType: downloadFileType,
       fileSize: obj.model_xkt_size
         ? `${(obj.model_xkt_size / (1024 * 1024)).toFixed(2)} Mo`
         : "",
-      xktSize: obj.model_xkt_size,
+      displaySize: obj.model_xkt_size,
       downloadSize: obj.model_download_size || obj.model_ifc_size,
     });
     setShowModal(true);
@@ -125,10 +140,11 @@ function AdminDashboard({ user }) {
     }
   };
 
-  const handleXKTUpload = (e) => {
+  const handleDisplayFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Store the actual File object, not blob URL
+      // Determine file type from extension
+      const ext = file.name.split(".").pop().toLowerCase();
       const fileName = file.name.replace(/\.[^/.]+$/, "");
       const formattedName = fileName
         .replace(/[_-]/g, " ")
@@ -137,10 +153,11 @@ function AdminDashboard({ user }) {
       setFormData((prev) => ({
         ...prev,
         name: prev.name || formattedName,
-        xktFile: file, // Store actual file
-        xktFileName: file.name,
+        displayFile: file,
+        displayFileName: file.name,
+        displayFileType: ext,
         fileSize: (file.size / (1024 * 1024)).toFixed(2) + " Mo",
-        xktSize: file.size,
+        displaySize: file.size,
       }));
     }
   };
@@ -163,8 +180,8 @@ function AdminDashboard({ user }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.xktFile) {
-      showNotification("Veuillez télécharger un fichier XKT", "error");
+    if (!formData.displayFile) {
+      showNotification("Veuillez télécharger un fichier d'affichage (XKT ou image)", "error");
       return;
     }
 
@@ -188,7 +205,7 @@ function AdminDashboard({ user }) {
       // Generate organized paths
       const paths = generateModelPaths(formData.name);
 
-      let downloadUrl, xktUrl;
+      let downloadUrl, displayUrl;
 
       // Check if files are new uploads (File objects) or existing URLs (strings)
       if (formData.downloadFile instanceof File) {
@@ -206,24 +223,26 @@ function AdminDashboard({ user }) {
         downloadUrl = formData.downloadFile;
       }
 
-      if (formData.xktFile instanceof File) {
-        // Upload XKT to R2
-        setUploadProgress("Upload du fichier XKT...");
-        const xktResult = await uploadToR2(
-          formData.xktFile,
+      if (formData.displayFile instanceof File) {
+        // Upload display file (XKT or image) to R2
+        const fileType = formData.displayFileType;
+        const uploadType = ["jpg", "jpeg", "png", "gif", "webp"].includes(fileType) ? "image" : "xkt";
+        setUploadProgress(`Upload du fichier d'affichage ${fileType.toUpperCase()}...`);
+        const displayResult = await uploadToR2(
+          formData.displayFile,
           formData.name,
-          "xkt"
+          uploadType
         );
-        xktUrl = xktResult.path;
+        displayUrl = displayResult.path;
       } else {
         // Keep existing URL
-        xktUrl = formData.xktFile;
+        displayUrl = formData.displayFile;
       }
 
       // Save to Firebase
       setUploadProgress("Enregistrement dans la base de données...");
       const modelData = {
-        filename: formData.xktFileName || formData.name,
+        filename: formData.displayFileName || formData.name,
         model_name: formData.name,
         model_folder: paths.folder,
         model_category: formData.category,
@@ -231,9 +250,10 @@ function AdminDashboard({ user }) {
         model_owner: user.uid,
         model_download_url: downloadUrl,
         model_download_type: formData.downloadFileType || "ifc",
-        model_xkt_url: xktUrl,
+        model_xkt_url: displayUrl,
+        model_display_type: formData.displayFileType,
         model_download_size: formData.downloadSize || 0,
-        model_xkt_size: formData.xktSize || 0,
+        model_xkt_size: formData.displaySize || 0,
         // Keep legacy field for backward compatibility
         model_ifc_url: downloadUrl,
         model_ifc_size: formData.downloadSize || 0,
@@ -266,13 +286,14 @@ function AdminDashboard({ user }) {
       name: "",
       category: "Zelige",
       description: "",
-      xktFile: null,
-      xktFileName: "",
+      displayFile: null,
+      displayFileName: "",
+      displayFileType: "",
       downloadFile: null,
       downloadFileName: "",
       downloadFileType: "",
       fileSize: "",
-      xktSize: 0,
+      displaySize: 0,
       downloadSize: 0,
     });
   };
@@ -343,11 +364,34 @@ function AdminDashboard({ user }) {
           >
             <div className="object-card-preview">
               {obj.model_xkt_url ? (
-                <XeokitViewer
-                  modelUrl={getPublicFileUrl(obj.model_xkt_url)}
-                  height="100%"
-                  width="100%"
-                />
+                (() => {
+                  const fileUrl = getPublicFileUrl(obj.model_xkt_url);
+                  const fileExtension = fileUrl.split('.').pop().toLowerCase();
+                  const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension);
+                  
+                  return isImage ? (
+                    <img 
+                      src={fileUrl}
+                      alt={obj.model_name}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: "8px 8px 0 0"
+                      }}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                    />
+                  ) : (
+                    <XeokitViewer
+                      modelUrl={fileUrl}
+                      height="100%"
+                      width="100%"
+                    />
+                  );
+                })()
               ) : (
                 <div
                   style={{
@@ -366,6 +410,23 @@ function AdminDashboard({ user }) {
                   </p>
                 </div>
               )}
+              {/* Fallback error display */}
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  background: "var(--color-viewport-bg, #0A0A0A)",
+                  display: "none",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <p
+                  style={{ color: "var(--color-on-surface-secondary, #666)" }}
+                >
+                  Erreur de chargement
+                </p>
+              </div>
               {obj.featured && (
                 <span className="featured-badge">
                   <FaStar />
@@ -431,16 +492,21 @@ function AdminDashboard({ user }) {
 
             <form onSubmit={handleSubmit} className="modal-form">
               <div className="form-group">
-                <label>Télécharger Fichier XKT * (pour visualisation)</label>
+                <label>Fichier d'affichage * (XKT ou Image pour visualisation)</label>
                 <input
                   type="file"
-                  accept=".xkt"
-                  onChange={handleXKTUpload}
+                  accept=".xkt,.jpg,.jpeg,.png,.gif,.webp"
+                  onChange={handleDisplayFileUpload}
                   className="file-input"
                 />
-                {formData.xktFileName && (
+                {formData.displayFileName && (
                   <div className="file-preview">
-                    {formData.xktFileName} ({formData.fileSize})
+                    {formData.displayFileName} ({formData.fileSize})
+                    {formData.displayFileType && (
+                      <span className="file-type-badge">
+                        {formData.displayFileType.toUpperCase()}
+                      </span>
+                    )}
                   </div>
                 )}
               </div>

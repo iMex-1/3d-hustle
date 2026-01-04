@@ -16,7 +16,7 @@ export const generateFolderName = (modelName) => {
 
 /**
  * Generate storage paths for a model
- * Returns paths for download file (IFC/RVT/RFA) and XKT in organized folder structure
+ * Returns paths for download file (IFC/RVT/RFA) and display file (XKT/Image) in organized folder structure
  */
 export const generateModelPaths = (modelName, downloadFileType = "ifc") => {
   const folderName = generateFolderName(modelName);
@@ -26,6 +26,7 @@ export const generateModelPaths = (modelName, downloadFileType = "ifc") => {
     folder: folderName,
     downloadPath: `${basePath}/${folderName}.${downloadFileType}`,
     xktPath: `${basePath}/${folderName}.xkt`,
+    imagePath: `${basePath}/${folderName}`, // Will append extension based on file type
     downloadFileName: `${folderName}.${downloadFileType}`,
     xktFileName: `${folderName}.xkt`,
     // Legacy support
@@ -55,14 +56,33 @@ export const getPublicFileUrl = (path) => {
  * Upload file to R2 via Cloudflare Worker
  * @param {File} file - The file to upload
  * @param {string} modelName - Name of the model
- * @param {string} fileType - 'ifc', 'rvt', 'rfa', or 'xkt'
+ * @param {string} fileType - 'ifc', 'rvt', 'rfa', 'xkt', or 'image'
  * @returns {Promise<{path: string, url: string, size: number}>}
  */
 export const uploadToR2 = async (file, modelName, fileType) => {
   const paths = generateModelPaths(modelName, fileType);
-  // Use downloadPath for IFC/RVT/RFA, xktPath for XKT
-  const path = fileType === "xkt" ? paths.xktPath : paths.downloadPath;
+  let path;
+
+  if (fileType === "xkt") {
+    path = paths.xktPath;
+  } else if (fileType === "image") {
+    // For images, use the original file extension
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    path = `${paths.imagePath}.${fileExtension}`;
+  } else {
+    // For download files (IFC/RVT/RFA)
+    path = paths.downloadPath;
+  }
+
   const url = `${WORKER_URL}${path}`;
+
+  if (!WORKER_URL) {
+    throw new Error("R2 Worker URL not configured. Please check VITE_R2_WORKER_URL environment variable.");
+  }
+
+  if (!ADMIN_SECRET) {
+    throw new Error("Admin secret not configured. Please check VITE_ADMIN_SECRET environment variable.");
+  }
 
   try {
     const response = await fetch(url, {
@@ -76,7 +96,17 @@ export const uploadToR2 = async (file, modelName, fileType) => {
 
     if (!response.ok) {
       const error = await response.text();
-      throw new Error(`Upload failed: ${error}`);
+      
+      // Provide more specific error messages
+      if (response.status === 401) {
+        throw new Error("Unauthorized: Invalid admin secret. Please check your credentials.");
+      } else if (response.status === 403) {
+        throw new Error("Forbidden: Access denied to R2 storage. Please check your permissions.");
+      } else if (response.status === 404) {
+        throw new Error("Not found: R2 worker endpoint not found. Please check the worker URL.");
+      } else {
+        throw new Error(`Upload failed (${response.status}): ${error}`);
+      }
     }
 
     return {
