@@ -294,28 +294,6 @@ function Homepage() {
         </div>
       </section>
 
-      {/* Decorative Gap Filler - Hero to Categories */}
-      <div className="gap-filler relative">
-        <div className="gap-filler-content">
-          <DecorativeSectionDivider />
-        </div>
-        <FloatingDecorations density="low" />
-
-        {/* Artistic diamonds for first gap */}
-        <div className="absolute top-4 left-1/4 opacity-15">
-          <DecorativeDiamond size="md" variant="gold" animated />
-        </div>
-        <div className="absolute bottom-4 right-1/4 opacity-20">
-          <DecorativeDiamond size="sm" variant="gradient" />
-        </div>
-        <div className="absolute top-1/2 left-8 opacity-10 hidden lg:block">
-          <DecorativeDiamond size="lg" variant="subtle" animated />
-        </div>
-        <div className="absolute top-1/2 right-8 opacity-10 hidden lg:block">
-          <DecorativeDiamond size="lg" variant="subtle" animated />
-        </div>
-      </div>
-
       {/* Categories Section */}
       <section className="categories-section py-24 bg-card moroccan-pattern">
         <div className="container">
@@ -387,31 +365,6 @@ function Homepage() {
         </div>
       </section>
 
-      {/* Decorative Gap Filler - Categories to Products */}
-      <div className="gap-filler relative">
-        <div className="gap-filler-content">
-          <DecorativeSectionDivider />
-        </div>
-        <FloatingDecorations density="medium" />
-
-        {/* Artistic diamonds for second gap */}
-        <div className="absolute top-6 left-1/3 opacity-25">
-          <DecorativeDiamond size="sm" variant="terracotta" animated />
-        </div>
-        <div className="absolute bottom-6 right-1/3 opacity-25">
-          <DecorativeDiamond size="sm" variant="terracotta" animated />
-        </div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-15">
-          <DecorativeDiamond size="xl" variant="outline" />
-        </div>
-        <div className="absolute top-2 right-12 opacity-20 hidden md:block">
-          <DecorativeDiamond size="md" variant="gold" />
-        </div>
-        <div className="absolute bottom-2 left-12 opacity-20 hidden md:block">
-          <DecorativeDiamond size="md" variant="gold" />
-        </div>
-      </div>
-
       {/* Products Section */}
       <section className="products-section py-24">
         <div className="container">
@@ -480,31 +433,6 @@ function Homepage() {
           )}
         </div>
       </section>
-
-      {/* Decorative Gap Filler - Products to About */}
-      <div className="gap-filler relative">
-        <div className="gap-filler-content">
-          <DecorativeSectionDivider />
-        </div>
-        <FloatingDecorations density="low" />
-
-        {/* Artistic diamonds for third gap */}
-        <div className="absolute top-8 left-1/5 opacity-20">
-          <DecorativeDiamond size="lg" variant="gradient" animated />
-        </div>
-        <div className="absolute bottom-8 right-1/5 opacity-20">
-          <DecorativeDiamond size="lg" variant="gradient" animated />
-        </div>
-        <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 opacity-10">
-          <DecorativeDiamond size="2xl" variant="subtle" />
-        </div>
-        <div className="absolute bottom-1/3 left-16 opacity-15 hidden lg:block">
-          <DecorativeDiamond size="md" variant="gold" animated />
-        </div>
-        <div className="absolute bottom-1/3 right-16 opacity-15 hidden lg:block">
-          <DecorativeDiamond size="md" variant="gold" animated />
-        </div>
-      </div>
 
       {/* About Section */}
       <section className="about-section py-24 bg-card">
@@ -987,14 +915,14 @@ function CategoryCard({ category, index }) {
 
       {/* Lantern Icon - Idle by default, Moving on hover */}
       <div className="lantern-container">
-        <img 
-          src="/cards lantern/idle lantern.png" 
-          alt="Lantern" 
+        <img
+          src="/cards lantern/idle lantern.png"
+          alt="Lantern"
           className="lantern-idle"
         />
-        <img 
-          src="/cards lantern/moving lantern.png" 
-          alt="Lantern animé" 
+        <img
+          src="/cards lantern/moving lantern.png"
+          alt="Lantern animé"
           className="lantern-moving"
         />
       </div>
@@ -1056,21 +984,23 @@ function ProductCard({ product, index }) {
       <div className="card-image">
         {product.image ? (
           (() => {
-            const fileExtension = product.image.split('.').pop().toLowerCase();
-            const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension);
-            
+            const fileExtension = product.image.split(".").pop().toLowerCase();
+            const isImage = ["jpg", "jpeg", "png", "gif", "webp"].includes(
+              fileExtension
+            );
+
             return isImage ? (
-              <img 
+              <img
                 src={product.image}
                 alt={product.title}
                 style={{
                   width: "100%",
                   height: "100%",
-                  objectFit: "cover"
+                  objectFit: "cover",
                 }}
                 onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'flex';
+                  e.target.style.display = "none";
+                  e.target.nextSibling.style.display = "flex";
                 }}
               />
             ) : (
@@ -1089,7 +1019,7 @@ function ProductCard({ product, index }) {
           </div>
         )}
         {/* Fallback error display for images */}
-        <div 
+        <div
           className="image-placeholder bg-muted flex items-center justify-center text-muted-foreground flex-col"
           style={{ display: "none" }}
         >
