@@ -988,6 +988,20 @@ function CategoryCard({ category, index }) {
       <CornerOrnament position="bottom-left" size="sm" />
       <CornerOrnament position="bottom-right" size="sm" />
 
+      {/* Lantern Icon - Idle by default, Moving on hover */}
+      <div className="lantern-container">
+        <img 
+          src="/cards lantern/idle lantern.png" 
+          alt="Lantern" 
+          className="lantern-idle"
+        />
+        <img 
+          src="/cards lantern/moving lantern.png" 
+          alt="Lantern animé" 
+          className="lantern-moving"
+        />
+      </div>
+
       {/* Content */}
       <div className="card-content">
         <div className="card-header relative">
