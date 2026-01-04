@@ -1,6 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useLoaderData } from "react-router-dom";
-import { FaTimes, FaExclamationTriangle, FaSpinner } from "react-icons/fa";
+import {
+  FaTimes,
+  FaExclamationTriangle,
+  FaSpinner,
+  FaSearch,
+} from "react-icons/fa";
 import Notification from "./Notification";
 import XeokitViewer from "./XeokitViewer";
 import * as databaseService from "../services/databaseService";
@@ -39,6 +44,9 @@ function AdminDashboard() {
   });
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterCategory, setFilterCategory] = useState("Tous");
+  const [filterFeatured, setFilterFeatured] = useState("Tous");
 
   // Subscribe to real-time model updates
   useEffect(() => {
@@ -57,6 +65,31 @@ function AdminDashboard() {
       }
     };
   }, []);
+
+  // Filter and search models
+  const filteredModels = useMemo(() => {
+    return objectList.filter((model) => {
+      // Search filter
+      const matchesSearch =
+        searchQuery === "" ||
+        model.model_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        model.model_description
+          ?.toLowerCase()
+          .includes(searchQuery.toLowerCase());
+
+      // Category filter
+      const matchesCategory =
+        filterCategory === "Tous" || model.model_category === filterCategory;
+
+      // Featured filter
+      const matchesFeatured =
+        filterFeatured === "Tous" ||
+        (filterFeatured === "Vedette" && model.featured) ||
+        (filterFeatured === "Standard" && !model.featured);
+
+      return matchesSearch && matchesCategory && matchesFeatured;
+    });
+  }, [objectList, searchQuery, filterCategory, filterFeatured]);
 
   const showNotification = (message, type = "success") => {
     setNotification({ message, type });
@@ -332,6 +365,55 @@ function AdminDashboard() {
         </div>
       </div>
 
+      <div className="admin-filters">
+        <div className="search-box">
+          <FaSearch className="search-icon" />
+          <input
+            type="text"
+            placeholder="Rechercher par nom ou description..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+          {searchQuery && (
+            <button
+              className="search-clear"
+              onClick={() => setSearchQuery("")}
+              title="Effacer"
+            >
+              <FaTimes />
+            </button>
+          )}
+        </div>
+        <div className="filter-group">
+          <select
+            value={filterCategory}
+            onChange={(e) => setFilterCategory(e.target.value)}
+            className="filter-select"
+          >
+            <option value="Tous">Toutes catégories</option>
+            {CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+          <select
+            value={filterFeatured}
+            onChange={(e) => setFilterFeatured(e.target.value)}
+            className="filter-select"
+          >
+            <option value="Tous">Tous les modèles</option>
+            <option value="Vedette">Vedettes uniquement</option>
+            <option value="Standard">Standards uniquement</option>
+          </select>
+        </div>
+        <div className="filter-results">
+          {filteredModels.length} modèle{filteredModels.length !== 1 ? "s" : ""}{" "}
+          trouvé{filteredModels.length !== 1 ? "s" : ""}
+        </div>
+      </div>
+
       {loading && (
         <div
           style={{
@@ -359,8 +441,38 @@ function AdminDashboard() {
         </div>
       )}
 
+      {!loading && objectList.length > 0 && filteredModels.length === 0 && (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "40px",
+            color: "var(--muted-foreground)",
+          }}
+        >
+          <p>Aucun modèle ne correspond à vos critères de recherche.</p>
+          <button
+            onClick={() => {
+              setSearchQuery("");
+              setFilterCategory("Tous");
+              setFilterFeatured("Tous");
+            }}
+            style={{
+              marginTop: "1rem",
+              background: "transparent",
+              border: "1px solid var(--accent)",
+              color: "var(--accent)",
+              padding: "0.5rem 1rem",
+              borderRadius: "6px",
+              cursor: "pointer",
+            }}
+          >
+            Réinitialiser les filtres
+          </button>
+        </div>
+      )}
+
       <div className="objects-grid">
-        {objectList.map((obj, index) => (
+        {filteredModels.map((obj, index) => (
           <div
             key={obj.model_id}
             className={`object-card animate-fade-in-up ${
