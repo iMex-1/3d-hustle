@@ -41,14 +41,14 @@ function Navigation({ user, userRecord, onLogout, onSearch }) {
           <div className="nav-brand">
             <img
               src="/logo/Logo.png"
-              alt="OakMesh Logo"
+              alt="MDBIM Logo"
               className="brand-logo"
               onError={(e) => {
                 console.error("Navigation logo failed to load");
                 e.target.style.display = "none";
               }}
             />
-            <h2 className="brand-name font-display">OakMesh</h2>
+            <h2 className="brand-name font-display">MDBIM</h2>
           </div>
         </Link>
 
