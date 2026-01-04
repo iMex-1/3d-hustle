@@ -611,7 +611,7 @@ function Homepage() {
 
             <div className="flex items-center gap-3 mb-4">
               <img
-                src="/logo/LogoInversed.png"
+                src="/logo/Logo.png"
                 alt="OakMesh Logo"
                 className="footer-logo"
                 style={{ width: "50px", height: "50px", objectFit: "contain" }}

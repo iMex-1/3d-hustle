@@ -40,7 +40,7 @@ function Navigation({ user, userRecord, onLogout, onSearch }) {
         >
           <div className="nav-brand">
             <img
-              src="/logo/LogoInversed.png"
+              src="/logo/Logo.png"
               alt="OakMesh Logo"
               className="brand-logo"
               onError={(e) => {
