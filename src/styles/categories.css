@@ -272,11 +272,12 @@
   }
 
   .category-card {
-    min-height: 240px;
+    min-height: 280px;
   }
 
   .category-card-inner {
-    min-height: 240px;
+    min-height: 280px;
+    padding: 6rem 1rem 2rem;
   }
 
   .category-icon-wrapper {
@@ -295,12 +296,12 @@
   }
 
   .category-card {
-    min-height: 220px;
+    min-height: 280px;
   }
 
   .category-card-inner {
-    min-height: 220px;
-    padding: 1.5rem 1rem;
+    min-height: 280px;
+    padding: 6.5rem 1rem 2rem;
   }
 
   .category-icon-wrapper {
