@@ -101,6 +101,12 @@
   flex-shrink: 0;
 }
 
+.mission-image {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+}
+
 .building-icon {
   width: 120px;
   height: 100px;

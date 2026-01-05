@@ -84,7 +84,11 @@ function About() {
             </p>
           </div>
           <div className="mission-visual">
-            <BuildingIcon />
+            <img 
+              src="/apropos/notre mission.png" 
+              alt="Notre Mission" 
+              className="mission-image"
+            />
           </div>
         </div>
       </section>

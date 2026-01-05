@@ -1,10 +1,16 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import "../styles/categories.css";
 
+// Card frame images
+const cardFrameOff = "/card frame/turned off galeries card.png";
+const cardFrameOn = "/card frame/turned on galeries card.png";
+
 function Categories() {
   const navigate = useNavigate();
+  const [hoveredCard, setHoveredCard] = useState(null);
 
   const categories = [
     {
@@ -104,59 +110,76 @@ function Categories() {
         animate="visible"
       >
         {categories.map((category) => {
+          const isHovered = hoveredCard === category.id;
           return (
             <motion.div
               key={category.id}
               className="category-card"
               variants={cardVariants}
+              onMouseEnter={() => setHoveredCard(category.id)}
+              onMouseLeave={() => setHoveredCard(null)}
               whileHover={{
-                y: -6,
+                y: -5,
                 scale: 1.02,
                 transition: {
-                  duration: 0.5,
-                  ease: [0.25, 0.1, 0.25, 1],
+                  duration: 0.2,
+                  ease: "easeOut",
                 },
               }}
               whileTap={{
                 scale: 0.98,
-                transition: { duration: 0.15, ease: "easeOut" },
+                transition: { duration: 0.1, ease: "easeOut" },
               }}
               onClick={() => handleCategoryClick(category.name)}
             >
-              <div
-                className="category-icon-wrapper"
-                style={{ "--category-color": category.color }}
-              >
-                {category.image ? (
-                  <img 
-                    src={category.image} 
-                    alt={category.name}
-                    className="category-image"
-                  />
-                ) : (
-                  <div className="category-placeholder">
-                    <span>+</span>
-                  </div>
-                )}
+              {/* Card frame background */}
+              <div className="card-frame-container">
+                <img 
+                  src={cardFrameOff} 
+                  alt="" 
+                  className={`card-frame card-frame-off ${isHovered ? 'hidden' : ''}`}
+                />
+                <img 
+                  src={cardFrameOn} 
+                  alt="" 
+                  className={`card-frame card-frame-on ${isHovered ? '' : 'hidden'}`}
+                />
               </div>
-              <div className="category-content">
-                <h2>{category.name}</h2>
-                <p>{category.description}</p>
-                <div className="category-footer">
-                  <motion.button
-                    className="category-btn"
-                    whileHover={{
-                      x: 3,
-                      transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
-                    }}
-                    whileTap={{
-                      scale: 0.97,
-                      transition: { duration: 0.15, ease: "easeOut" },
-                    }}
+              
+              <div className="category-card-inner">
+                <div className="category-header-row">
+                  <div
+                    className="category-icon-wrapper"
+                    style={{ "--category-color": category.color }}
                   >
-                    Explorer <FaArrowRight />
-                  </motion.button>
+                    {category.image ? (
+                      <img 
+                        src={category.image} 
+                        alt={category.name}
+                        className="category-image"
+                      />
+                    ) : (
+                      <div className="category-placeholder">
+                        <span>+</span>
+                      </div>
+                    )}
+                  </div>
+                  <h2 className="category-title">{category.name}</h2>
                 </div>
+                <p className="category-desc">{category.description}</p>
+                <motion.button
+                  className="category-btn"
+                  whileHover={{
+                    x: 3,
+                    transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] },
+                  }}
+                  whileTap={{
+                    scale: 0.97,
+                    transition: { duration: 0.15, ease: "easeOut" },
+                  }}
+                >
+                  Explorer <FaArrowRight />
+                </motion.button>
               </div>
             </motion.div>
           );

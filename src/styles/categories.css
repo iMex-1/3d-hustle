@@ -55,64 +55,98 @@
 }
 
 .category-card {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: transparent;
+  border: none;
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 0;
   cursor: pointer;
-  transition: border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.25s ease;
+  transition: transform 0.25s ease;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
   min-height: 280px;
   width: 100%;
   box-sizing: border-box;
-  will-change: transform, box-shadow;
+  will-change: transform;
 }
 
-.category-card::before {
-  content: "";
+/* Card frame container */
+.card-frame-container {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 0.3s ease;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
 }
 
-.category-card:hover::before {
-  transform: scaleX(1);
+.card-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.15s ease-out;
 }
 
-.category-card:hover {
-  border-color: var(--accent);
-  box-shadow: 0 24px 48px hsla(30, 20%, 6%, 0.35);
+.card-frame.hidden {
+  opacity: 0;
+}
+
+.card-frame-off {
+  opacity: 1;
+}
+
+.card-frame-on {
+  opacity: 0;
+}
+
+.category-card:hover .card-frame-off {
+  opacity: 0;
+}
+
+.category-card:hover .card-frame-on {
+  opacity: 1;
+}
+
+/* Inner content wrapper */
+.category-card-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  height: 100%;
+  min-height: 280px;
+  padding: 5.5rem 1rem 2rem;
+}
+
+.category-card::before {
+  display: none;
 }
 
 .category-icon-wrapper {
-  width: 80px;
-  height: 80px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: var(--muted);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
-  transition: all 0.25s ease;
+  transition: all 0.15s ease-out;
   border: 2px solid var(--border);
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .category-card:hover .category-icon-wrapper {
   border-color: var(--accent);
-  transform: scale(1.08);
-  box-shadow: 0 8px 24px hsla(42, 80%, 55%, 0.2);
+  box-shadow: 0 4px 12px hsla(42, 80%, 55%, 0.2);
 }
 
 .category-image {
@@ -120,7 +154,7 @@
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
-  transition: transform 0.25s ease;
+  transition: transform 0.15s ease-out;
 }
 
 .category-card:hover .category-image {
@@ -135,9 +169,9 @@
   justify-content: center;
   background: var(--muted);
   color: var(--muted-foreground);
-  font-size: 2rem;
+  font-size: 1rem;
   font-weight: 300;
-  transition: all 0.25s ease;
+  transition: all 0.15s ease-out;
 }
 
 .category-card:hover .category-placeholder {
@@ -145,67 +179,46 @@
   color: var(--accent-foreground);
 }
 
-.category-icon {
-  font-size: 2rem;
-  color: var(--sand);
-  transition: all 0.25s ease;
-}
-
-.category-card:hover .category-icon {
-  color: var(--accent-foreground);
-  transform: scale(1.05);
-}
-
-.category-content {
-  flex: 1;
+/* Header row with icon and title side by side */
+.category-header-row {
   display: flex;
-  flex-direction: column;
-}
-
-.category-content h2 {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.35rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: var(--foreground);
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-.category-content p {
-  font-size: 0.9rem;
-  color: var(--muted-foreground);
-  line-height: 1.5;
-  margin-bottom: 1rem;
-  flex: 1;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-.category-footer {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border);
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.category-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.category-desc {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  line-height: 1.4;
+  margin-bottom: auto;
+  max-width: 180px;
 }
 
 .category-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1.25rem;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
   background: var(--accent);
   color: var(--accent-foreground);
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.15s ease-out;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  margin-top: auto;
 }
 
 .category-btn:hover {
@@ -215,7 +228,8 @@
 }
 
 .category-btn svg {
-  transition: transform 0.25s ease;
+  transition: transform 0.15s ease-out;
+  font-size: 0.65rem;
 }
 
 .category-card:hover .category-btn svg {
@@ -230,6 +244,10 @@
   }
 
   .category-card {
+    min-height: 260px;
+  }
+
+  .category-card-inner {
     min-height: 260px;
   }
 }
@@ -254,21 +272,20 @@
   }
 
   .category-card {
-    padding: 1.5rem;
+    min-height: 240px;
+  }
+
+  .category-card-inner {
     min-height: 240px;
   }
 
   .category-icon-wrapper {
-    width: 70px;
-    height: 70px;
+    width: 42px;
+    height: 42px;
   }
 
-  .category-icon {
-    font-size: 1.75rem;
-  }
-
-  .category-content h2 {
-    font-size: 1.25rem;
+  .category-title {
+    font-size: 1.2rem;
   }
 }
 
@@ -278,16 +295,20 @@
   }
 
   .category-card {
-    padding: 1.25rem;
     min-height: 220px;
   }
 
-  .category-icon-wrapper {
-    width: 60px;
-    height: 60px;
+  .category-card-inner {
+    min-height: 220px;
+    padding: 1.5rem 1rem;
   }
 
-  .category-icon {
-    font-size: 1.5rem;
+  .category-icon-wrapper {
+    width: 36px;
+    height: 36px;
+  }
+
+  .category-title {
+    font-size: 1.1rem;
   }
 }
