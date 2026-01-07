@@ -510,13 +510,33 @@
 
 .category-card {
   background: var(--card);
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   border-radius: 16px;
   padding: 32px;
   cursor: pointer;
-  transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
   position: relative;
   overflow: hidden;
+  /* Dark theme outline - subtle border glow */
+  box-shadow: 0 0 0 1px var(--border),
+              inset 0 0 0 1px transparent;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+/* Outer glow ring for hover effect */
+.category-card::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  pointer-events: none;
+  opacity: 0;
 }
 
 .category-card::before {
@@ -533,13 +553,47 @@
 }
 
 .category-card:hover::before {
-  opacity: 0.05;
+  opacity: 0.08;
+}
+
+.category-card:hover::after {
+  border-color: var(--foreground);
+  opacity: 0.4;
+  box-shadow: 0 0 20px var(--foreground),
+              0 0 40px hsla(35, 30%, 90%, 0.3);
 }
 
 .category-card:hover {
-  border-color: var(--accent);
+  border-color: var(--foreground);
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px hsla(30, 20%, 6%, 0.3);
+  /* Light up effect - glowing outline matching light theme */
+  box-shadow: 0 0 0 1px var(--foreground),
+              0 0 15px hsla(35, 30%, 90%, 0.25),
+              0 0 30px hsla(35, 30%, 90%, 0.15),
+              0 0 45px hsla(42, 80%, 55%, 0.1),
+              0 20px 40px hsla(30, 20%, 6%, 0.4);
+  outline: 2px solid var(--foreground);
+  outline-offset: 3px;
+}
+
+/* Light theme specific glow */
+[data-theme="light"] .category-card {
+  box-shadow: 0 0 0 1px var(--border),
+              0 2px 8px hsla(30, 20%, 6%, 0.1);
+}
+
+[data-theme="light"] .category-card:hover {
+  border-color: hsl(30 10% 10%);
+  box-shadow: 0 0 0 1px hsl(30 10% 10%),
+              0 0 15px hsla(30, 10%, 10%, 0.15),
+              0 0 30px hsla(30, 10%, 10%, 0.1),
+              0 20px 40px hsla(30, 20%, 6%, 0.2);
+  outline-color: hsl(30 10% 10%);
+}
+
+[data-theme="light"] .category-card:hover::after {
+  border-color: hsl(30 10% 10%);
+  box-shadow: 0 0 15px hsl(30 10% 10%);
 }
 
 /* Lantern Container Styles - Background */
