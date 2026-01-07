@@ -63,6 +63,7 @@
 
 .nav-brand .brand-name {
   color: hsl(var(--foreground));
+  font-family: var(--font-lora);
   font-size: 1.25rem;
   font-weight: 600;
   white-space: nowrap;
@@ -87,7 +88,7 @@
   align-items: center;
   gap: 0.4rem;
   color: hsl(var(--muted-foreground));
-  font-family: var(--font-body);
+  font-family: var(--font-poppins);
   font-weight: 500;
   font-size: 0.875rem;
   text-decoration: none;
@@ -250,6 +251,7 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 6px;
   color: #ffffff !important;
+  font-family: var(--font-poppins);
   font-weight: 500 !important;
   font-size: 0.85rem;
   cursor: pointer;
@@ -664,10 +666,32 @@
 
   /* Scramble text animation styling */
   .nav-links .scramble-text {
-    font-family: 'Courier New', monospace;
-    letter-spacing: 0.05em;
-    min-width: 100px;
+    font-family: var(--font-poppins);
+    letter-spacing: 0.02em;
     display: inline-block;
+  }
+
+  /* Fade-in animation for mobile nav items */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .nav-links.mobile-open .fade-in-item {
+    opacity: 0;
+    animation: fadeInUp 0.4s ease forwards;
+    animation-delay: var(--fade-delay, 0ms);
+  }
+
+  .nav-links.mobile-open .fade-in-item a,
+  .nav-links.mobile-open .fade-in-item .user-profile-container {
+    opacity: inherit;
   }
 }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   FaHome,
@@ -10,22 +10,12 @@ import {
   FaBars,
   FaTimes,
 } from "react-icons/fa";
-import ScrambleText from "./ScrambleText";
 import "../styles/navigation.css";
 
 function Navigation({ user, userRecord, onLogout }) {
   const location = useLocation();
   const currentPage = location.pathname.substring(1) || "home";
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 992);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 992);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const handleNavClick = () => {
     setMobileMenuOpen(false);
@@ -62,72 +52,59 @@ function Navigation({ user, userRecord, onLogout }) {
 
         <ul className={`nav-links ${mobileMenuOpen ? "mobile-open" : ""}`}>
           <li
-            className={
-              currentPage === "" || currentPage === "home" ? "active" : ""
-            }
+            className={`${currentPage === "" || currentPage === "home" ? "active" : ""} ${mobileMenuOpen ? "fade-in-item" : ""}`}
+            style={{ "--fade-delay": "0ms" }}
           >
             <Link to="/" onClick={handleNavClick}>
               <span>
                 <FaHome />
               </span>
-              <span className="nav-text">
-                {isMobile && mobileMenuOpen ? (
-                  <ScrambleText text="Accueil" isActive={mobileMenuOpen} delay={0} />
-                ) : (
-                  "Accueil"
-                )}
-              </span>
+              <span className="nav-text">Accueil</span>
             </Link>
           </li>
 
-          <li className={currentPage === "gallery" ? "active" : ""}>
+          <li 
+            className={`${currentPage === "gallery" ? "active" : ""} ${mobileMenuOpen ? "fade-in-item" : ""}`}
+            style={{ "--fade-delay": "100ms" }}
+          >
             <Link to="/gallery" onClick={handleNavClick}>
               <span>
                 <FaCube />
               </span>
-              <span className="nav-text">
-                {isMobile && mobileMenuOpen ? (
-                  <ScrambleText text="Galerie" isActive={mobileMenuOpen} delay={200} />
-                ) : (
-                  "Galerie"
-                )}
-              </span>
+              <span className="nav-text">Galerie</span>
             </Link>
           </li>
 
-          <li className={currentPage === "about" ? "active" : ""}>
+          <li 
+            className={`${currentPage === "about" ? "active" : ""} ${mobileMenuOpen ? "fade-in-item" : ""}`}
+            style={{ "--fade-delay": "200ms" }}
+          >
             <Link to="/about" onClick={handleNavClick}>
               <span>
                 <FaInfoCircle />
               </span>
-              <span className="nav-text">
-                {isMobile && mobileMenuOpen ? (
-                  <ScrambleText text="À propos" isActive={mobileMenuOpen} delay={400} />
-                ) : (
-                  "À propos"
-                )}
-              </span>
+              <span className="nav-text">À propos</span>
             </Link>
           </li>
 
           {user && userRecord && userRecord.isAdmin && (
-            <li className={currentPage === "admin" ? "active" : ""}>
+            <li 
+              className={`${currentPage === "admin" ? "active" : ""} ${mobileMenuOpen ? "fade-in-item" : ""}`}
+              style={{ "--fade-delay": "300ms" }}
+            >
               <Link to="/admin" onClick={handleNavClick}>
                 <span>
                   <FaUserShield />
                 </span>
-                <span className="nav-text">
-                  {isMobile && mobileMenuOpen ? (
-                    <ScrambleText text="Admin" isActive={mobileMenuOpen} delay={600} />
-                  ) : (
-                    "Admin"
-                  )}
-                </span>
+                <span className="nav-text">Admin</span>
               </Link>
             </li>
           )}
 
-          <li className="auth-item">
+          <li 
+            className={`auth-item ${mobileMenuOpen ? "fade-in-item" : ""}`}
+            style={{ "--fade-delay": user && userRecord?.isAdmin ? "400ms" : "300ms" }}
+          >
             {user ? (
               <div className="user-profile-container">
                 <div className="user-profile-info">
@@ -150,13 +127,7 @@ function Navigation({ user, userRecord, onLogout }) {
                   }}
                 >
                   <FaSignOutAlt />
-                  <span className="nav-text">
-                    {isMobile && mobileMenuOpen ? (
-                      <ScrambleText text="Déconnexion" isActive={mobileMenuOpen} delay={800} />
-                    ) : (
-                      "Déconnexion"
-                    )}
-                  </span>
+                  <span className="nav-text">Déconnexion</span>
                 </button>
               </div>
             ) : (
@@ -164,13 +135,7 @@ function Navigation({ user, userRecord, onLogout }) {
                 <span>
                   <FaSignInAlt />
                 </span>
-                <span className="nav-text">
-                  {isMobile && mobileMenuOpen ? (
-                    <ScrambleText text="Connexion" isActive={mobileMenuOpen} delay={600} />
-                  ) : (
-                    "Connexion"
-                  )}
-                </span>
+                <span className="nav-text">Connexion</span>
               </Link>
             )}
           </li>
