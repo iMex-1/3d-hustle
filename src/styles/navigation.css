@@ -661,6 +661,14 @@
     font-size: 1.1rem;
     padding: 0.5rem;
   }
+
+  /* Scramble text animation styling */
+  .nav-links .scramble-text {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.05em;
+    min-width: 100px;
+    display: inline-block;
+  }
 }
 
 @media (max-width: 768px) {

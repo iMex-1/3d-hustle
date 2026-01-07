@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   FaHome,
@@ -10,21 +10,22 @@ import {
   FaBars,
   FaTimes,
 } from "react-icons/fa";
+import ScrambleText from "./ScrambleText";
 import "../styles/navigation.css";
 
-function Navigation({ user, userRecord, onLogout, onSearch }) {
+function Navigation({ user, userRecord, onLogout }) {
   const location = useLocation();
   const currentPage = location.pathname.substring(1) || "home";
-  const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 992);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      onSearch(searchQuery);
-      setMobileMenuOpen(false);
-    }
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 992);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleNavClick = () => {
     setMobileMenuOpen(false);
@@ -69,7 +70,13 @@ function Navigation({ user, userRecord, onLogout, onSearch }) {
               <span>
                 <FaHome />
               </span>
-              <span className="nav-text">Accueil</span>
+              <span className="nav-text">
+                {isMobile && mobileMenuOpen ? (
+                  <ScrambleText text="Accueil" isActive={mobileMenuOpen} delay={0} />
+                ) : (
+                  "Accueil"
+                )}
+              </span>
             </Link>
           </li>
 
@@ -78,7 +85,13 @@ function Navigation({ user, userRecord, onLogout, onSearch }) {
               <span>
                 <FaCube />
               </span>
-              <span className="nav-text">Galerie</span>
+              <span className="nav-text">
+                {isMobile && mobileMenuOpen ? (
+                  <ScrambleText text="Galerie" isActive={mobileMenuOpen} delay={200} />
+                ) : (
+                  "Galerie"
+                )}
+              </span>
             </Link>
           </li>
 
@@ -87,7 +100,13 @@ function Navigation({ user, userRecord, onLogout, onSearch }) {
               <span>
                 <FaInfoCircle />
               </span>
-              <span className="nav-text">À propos</span>
+              <span className="nav-text">
+                {isMobile && mobileMenuOpen ? (
+                  <ScrambleText text="À propos" isActive={mobileMenuOpen} delay={400} />
+                ) : (
+                  "À propos"
+                )}
+              </span>
             </Link>
           </li>
 
@@ -97,7 +116,13 @@ function Navigation({ user, userRecord, onLogout, onSearch }) {
                 <span>
                   <FaUserShield />
                 </span>
-                <span className="nav-text">Admin</span>
+                <span className="nav-text">
+                  {isMobile && mobileMenuOpen ? (
+                    <ScrambleText text="Admin" isActive={mobileMenuOpen} delay={600} />
+                  ) : (
+                    "Admin"
+                  )}
+                </span>
               </Link>
             </li>
           )}
@@ -125,7 +150,13 @@ function Navigation({ user, userRecord, onLogout, onSearch }) {
                   }}
                 >
                   <FaSignOutAlt />
-                  <span className="nav-text">Déconnexion</span>
+                  <span className="nav-text">
+                    {isMobile && mobileMenuOpen ? (
+                      <ScrambleText text="Déconnexion" isActive={mobileMenuOpen} delay={800} />
+                    ) : (
+                      "Déconnexion"
+                    )}
+                  </span>
                 </button>
               </div>
             ) : (
@@ -133,7 +164,13 @@ function Navigation({ user, userRecord, onLogout, onSearch }) {
                 <span>
                   <FaSignInAlt />
                 </span>
-                <span className="nav-text">Connexion</span>
+                <span className="nav-text">
+                  {isMobile && mobileMenuOpen ? (
+                    <ScrambleText text="Connexion" isActive={mobileMenuOpen} delay={600} />
+                  ) : (
+                    "Connexion"
+                  )}
+                </span>
               </Link>
             )}
           </li>
