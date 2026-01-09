@@ -3,6 +3,28 @@
 const WORKER_URL = import.meta.env.VITE_R2_WORKER_URL;
 const ADMIN_SECRET = import.meta.env.VITE_ADMIN_SECRET;
 
+// Supported file types for downloads
+export const SUPPORTED_DOWNLOAD_TYPES = ['ifc', 'rvt', 'rfa'];
+export const SUPPORTED_DISPLAY_TYPES = ['xkt', 'jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+/**
+ * Check if a file type is supported for downloads
+ * @param {string} fileType - File extension (e.g., 'ifc', 'rfa', 'rvt')
+ * @returns {boolean}
+ */
+export const isSupportedDownloadType = (fileType) => {
+  return SUPPORTED_DOWNLOAD_TYPES.includes(fileType.toLowerCase());
+};
+
+/**
+ * Check if a file type is supported for display
+ * @param {string} fileType - File extension (e.g., 'xkt', 'jpg', 'png')
+ * @returns {boolean}
+ */
+export const isSupportedDisplayType = (fileType) => {
+  return SUPPORTED_DISPLAY_TYPES.includes(fileType.toLowerCase());
+};
+
 /**
  * Generate a folder-safe name from model name
  * Example: "Building Architecture" -> "building-architecture"
@@ -24,10 +46,10 @@ export const generateModelPaths = (modelName, downloadFileType = "ifc") => {
 
   return {
     folder: folderName,
-    downloadPath: `${basePath}/${folderName}.${downloadFileType}`,
+    downloadPath: `${basePath}/${folderName}.${downloadFileType.toLowerCase()}`,
     xktPath: `${basePath}/${folderName}.xkt`,
     imagePath: `${basePath}/${folderName}`, // Will append extension based on file type
-    downloadFileName: `${folderName}.${downloadFileType}`,
+    downloadFileName: `${folderName}.${downloadFileType.toLowerCase()}`,
     xktFileName: `${folderName}.xkt`,
     // Legacy support
     ifcPath: `${basePath}/${folderName}.ifc`,
@@ -60,12 +82,13 @@ export const getPublicFileUrl = (path) => {
  * @returns {Promise<{path: string, url: string, size: number}>}
  */
 export const uploadToR2 = async (file, modelName, fileType) => {
-  const paths = generateModelPaths(modelName, fileType);
+  const normalizedFileType = fileType.toLowerCase();
+  const paths = generateModelPaths(modelName, normalizedFileType);
   let path;
 
-  if (fileType === "xkt") {
+  if (normalizedFileType === "xkt") {
     path = paths.xktPath;
-  } else if (fileType === "image") {
+  } else if (normalizedFileType === "image") {
     // For images, use the original file extension
     const fileExtension = file.name.split('.').pop().toLowerCase();
     path = `${paths.imagePath}.${fileExtension}`;
@@ -156,7 +179,8 @@ export const deleteModelFromR2 = async (
   modelName,
   downloadFileType = "ifc"
 ) => {
-  const paths = generateModelPaths(modelName, downloadFileType);
+  const normalizedFileType = downloadFileType.toLowerCase();
+  const paths = generateModelPaths(modelName, normalizedFileType);
 
   try {
     // Delete both files
